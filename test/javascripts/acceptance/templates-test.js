@@ -11,7 +11,7 @@ import { test } from "qunit";
 import TemplatesFixtures from "../fixtures/templates-fixtures";
 
 function templatesPretender(server, helper) {
-  const repliesPath = "/templates";
+  const repliesPath = "/discourse_templates";
   const replies = TemplatesFixtures[repliesPath];
 
   server.get(repliesPath, () => helper.response(replies));

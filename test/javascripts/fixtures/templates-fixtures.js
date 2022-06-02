@@ -1,5 +1,5 @@
 export default {
-  "/templates": {
+  "/discourse_templates": {
     templates: [
       {
         id: 1,
