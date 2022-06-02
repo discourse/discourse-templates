@@ -1,58 +1,57 @@
 # frozen_string_literal: true
 
-# name: discourse-canned-replies
-# about: Add canned replies through the composer
+# name: discourse-templates
+# about: Use topics in a category as source for templates that can be quickly used in the composer
 # version: 2.0.0
-# authors: Jay Pfaffman and André Pereira
-# url: https://github.com/discourse/discourse-canned-replies
+# authors: Discourse (discourse-templates), Jay Pfaffman and André Pereira (canned-replies)
+# url: https://github.com/discourse/discourse-templates
 # transpile_js: true
 
-enabled_site_setting :canned_replies_enabled
+enabled_site_setting :discourse_templates_enabled
 
-register_asset 'stylesheets/canned-replies.scss'
+register_asset 'stylesheets/discourse-templates.scss'
 
 register_svg_icon 'far-clipboard' if respond_to?(:register_svg_icon)
 
 after_initialize do
-  module ::DiscourseCannedReplies
-    PLUGIN_NAME ||= 'discourse-canned-replies'.freeze
+  module ::DiscourseTemplates
+    PLUGIN_NAME ||= 'discourse-templates'.freeze
 
     class Engine < ::Rails::Engine
-      engine_name DiscourseCannedReplies::PLUGIN_NAME
-      isolate_namespace DiscourseCannedReplies
+      engine_name DiscourseTemplates::PLUGIN_NAME
+      isolate_namespace DiscourseTemplates
     end
   end
 
   %w[
-    ../app/jobs/onceoff/rename_canned_replies.rb
-    ../app/controllers/discourse_canned_replies/replies_controller.rb
-    ../app/models/discourse_canned_replies/usage_count.rb
-    ../app/serializers/discourse_canned_replies/replies_serializer.rb
-    ../lib/discourse_canned_replies/guardian_extension.rb
-    ../lib/discourse_canned_replies/topic_extension.rb
-    ../lib/discourse_canned_replies/topic_query_extension.rb
-    ../lib/discourse_canned_replies/user_extension.rb
+    ../app/controllers/discourse_templates/templates_controller.rb
+    ../app/models/discourse_templates/usage_count.rb
+    ../app/serializers/discourse_templates/templates_serializer.rb
+    ../lib/discourse_templates/guardian_extension.rb
+    ../lib/discourse_templates/topic_extension.rb
+    ../lib/discourse_templates/topic_query_extension.rb
+    ../lib/discourse_templates/user_extension.rb
   ].each { |path| load File.expand_path(path, __FILE__) }
 
   reloadable_patch do |plugin|
-    Guardian.class_eval { prepend DiscourseCannedReplies::GuardianExtension }
-    Topic.class_eval { prepend DiscourseCannedReplies::TopicExtension }
+    Guardian.class_eval { prepend DiscourseTemplates::GuardianExtension }
+    Topic.class_eval { prepend DiscourseTemplates::TopicExtension }
     TopicQuery.class_eval do
-      prepend DiscourseCannedReplies::TopicQueryExtension
+      prepend DiscourseTemplates::TopicQueryExtension
     end
-    User.class_eval { prepend DiscourseCannedReplies::UserExtension }
+    User.class_eval { prepend DiscourseTemplates::UserExtension }
   end
 
-  add_to_serializer(:current_user, :can_use_canned_replies) do
-    object.can_use_canned_replies?
+  add_to_serializer(:current_user, :can_use_templates) do
+    object.can_use_templates?
   end
 
   Discourse::Application.routes.append do
-    mount ::DiscourseCannedReplies::Engine, at: '/canned_replies'
+    mount ::DiscourseTemplates::Engine, at: '/discourse_templates'
   end
 
-  DiscourseCannedReplies::Engine.routes.draw do
-    resources :canned_replies, path: '/', only: [:index] do
+  DiscourseTemplates::Engine.routes.draw do
+    resources :templates, path: '/', only: [:index] do
       member { post 'use' }
     end
   end

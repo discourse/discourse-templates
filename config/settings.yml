@@ -1,10 +1,10 @@
 plugins:
-  canned_replies_enabled:
+  discourse_templates_enabled:
     default: true
     client: true
-  canned_replies_category:
+  discourse_templates_category:
     default: ""
     type: category
-  canned_replies_max_replies_fetched:
+  discourse_templates_max_replies_fetched:
     default: 1000
     hidden: true

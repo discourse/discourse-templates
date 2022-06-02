@@ -1,25 +1,14 @@
 en:
   site_settings:
-    canned_replies_enabled: 'Show insert canned reply button on composer window?'
-    canned_replies_category: 'Category to fetch the canned replies from'
-    canned_replies_groups: 'Add access to canned replies for non-staff groups by group name'
-    canned_replies_everyone_enabled: 'Allow everyone to use canned replies'
-    canned_replies_everyone_can_edit: 'Allow everyone to create, edit, and delete canned replies'
-  default_category:
-    name: Canned Replies
+    discourse_templates_enabled: 'Allow users with view access on the category specified below to use available templates'
+    discourse_templates_category: 'Category to fetch the templates from'
+  default_category_template:
+    name: Templates
     description: | 
-      This category is used to store canned replies.
+      This category is used to store templates.
     
-      Canned replies allow users to store replies for frequently repeated use. 
+      Templates allow users to store content for frequently repeated use. 
       
-      Each topic in this category represents a different canned reply. **The first post** of each topic is used as the template for the reply.
+      Each topic in this category represents a different template. **The first post** of each topic is used as the model for the template.
       
-      Note that every user with access in this category will be allowed to used canned replies.
-  replies:
-    default_reply:
-      title: "My first canned reply"
-      body: |
-        This is an example canned reply.
-        You can use **markdown** to style your replies. Click the **new** button to create new replies or the **edit** button to edit or remove an existing canned reply.
-
-        *This canned reply will be added when the replies list is empty.*
+      Note that every user with access in this category will be allowed to used templates.

@@ -1,0 +1,17 @@
+{{#conditional-loading-spinner condition=loadingReplies}}
+  <div class="templates-filter-bar">
+    {{#if siteSettings.tagging_enabled}}
+      {{templates-tag-drop
+        availableTags=availableTags
+        tagId=selectedTag
+        onChange=(action "changeSelectedTag")
+      }}
+    {{/if}}
+    {{text-field class="templates-filter" value=listFilter placeholder=(i18n "templates.filter_hint")}}
+  </div>
+  <div class="templates-list">
+    {{#each filteredReplies as |r|}}
+      {{template-item template=r model=model onInsertTemplate=onInsertTemplate}}
+    {{/each}}
+  </div>
+{{/conditional-loading-spinner}}

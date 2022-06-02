@@ -12,9 +12,9 @@ describe CurrentUserSerializer, type: :serializer do
   context 'CurrentUserSerializer extension' do
     fab!(:user) { Fabricate(:user) }
 
-    it 'includes can_use_canned_replies in serialization' do
+    it 'includes can_use_templates in serialization' do
       json = serializer.as_json
-      expect(json).to have_key(:can_use_canned_replies)
+      expect(json).to have_key(:can_use_templates)
     end
   end
 end

@@ -2,37 +2,37 @@
 
 require 'rails_helper'
 
-describe DiscourseCannedReplies::TopicExtension do
+describe DiscourseTemplates::TopicExtension do
   fab!(:topic) { Fabricate(:topic) }
 
   describe Topic, type: :model do
-    it { is_expected.to have_one :canned_reply_usage }
+    it { is_expected.to have_one :template_item_usage }
   end
 
-  context 'canned_reply_usage_count' do
+  context 'template_item_usage_count' do
     it 'retrieves usage count as expected' do
-      expect(topic.canned_reply_usage_count).to eq(0)
+      expect(topic.template_item_usage_count).to eq(0)
     end
   end
 
-  context 'increment_canned_reply_usage_count!' do
+  context 'increment_template_item_usage_count!' do
     it 'increments usage count as expected' do
-      expect(topic.canned_reply_usage_count).to eq(0)
+      expect(topic.template_item_usage_count).to eq(0)
 
-      topic.increment_canned_reply_usage_count!
+      topic.increment_template_item_usage_count!
       topic.reload
 
-      expect(topic.canned_reply_usage_count).to eq(1)
+      expect(topic.template_item_usage_count).to eq(1)
 
-      topic.increment_canned_reply_usage_count!
+      topic.increment_template_item_usage_count!
       topic.reload
 
-      expect(topic.canned_reply_usage_count).to eq(2)
+      expect(topic.template_item_usage_count).to eq(2)
 
-      topic.increment_canned_reply_usage_count!
+      topic.increment_template_item_usage_count!
       topic.reload
 
-      expect(topic.canned_reply_usage_count).to eq(3)
+      expect(topic.template_item_usage_count).to eq(3)
     end
   end
 end

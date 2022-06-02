@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-module DiscourseCannedReplies::TopicsHelper
+module DiscourseTemplates::TopicsHelper
   def serialize_topics(topics)
     JSON.parse(
       ActiveModel::ArraySerializer.new(
         topics,
-        each_serializer: DiscourseCannedReplies::CannedRepliesSerializer
+        each_serializer: DiscourseTemplates::TemplatesSerializer
       ).to_json
     )
   end
