@@ -1,17 +1,15 @@
-# Canned replies plugin
-This plugin adds support for inserting a canned reply into the composer window via a UI.
+# Discourse Templates plugin
+This plugin adds support for inserting a template into the composer window via a UI.
 
-Official Plugin Topic & Documentation: https://meta.discourse.org/t/discourse-canned-replies/48296/
+Official Plugin Topic & Documentation: 
 
 ## Installation
 
-Follow the directions at [Install a Plugin](https://meta.discourse.org/t/install-a-plugin/19157) using https://github.com/discourse/discourse-canned-replies.git as the repository URL.
+Follow the directions at [Install a Plugin](https://meta.discourse.org/t/install-a-plugin/19157) using https://github.com/discourse/discourse-templates.git as the repository URL.
 
-## Authors
+## Previous plugin
 
-Jay Pfaffman
-
-André Pereira
+[Discourse Canned Replies](https://github.com/discourse/discourse-canned-replies)
 
 ## License
 

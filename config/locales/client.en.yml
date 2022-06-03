@@ -1,26 +1,5 @@
 en:
   js:
-    canned_replies:
+    templates:
       filter_hint: "Filter by title..."
-      composer_button_text: "Canned replies"
-      title:
-        name: "Title"
-        invalid: Title can't be empty.
-      content:
-        name: "Content"
-        invalid: Content can't be empty.
-      insert:
-        choose: "(choose a reply)"
-        insert_button: "Insert Reply"
-        new_button: "New"
-        edit_button: "Edit"
-        modal_title: "Insert Canned Reply"
-        sort:
-          alphabetically: "Sort alphabetically"
-          usage: "Sort by frequency of use"
-      add:
-        modal_title: "Add Canned Reply"
-      edit:
-        modal_title: "Edit Canned Reply"
-        remove_confirm: "Are you sure you want to delete this canned reply?"
-      back: "Back"
+      insert_template: "Insert template"
