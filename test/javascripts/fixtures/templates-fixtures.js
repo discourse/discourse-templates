@@ -65,9 +65,17 @@ export default {
       },
       {
         id: 9,
-        title: "Using variables",
+        title: "Using variables (1)",
         content:
-          "Hi %{template_to_username,fallback:there}, regards %{my_username}.",
+          "Hi %{reply_to_username,fallback:there}, regards %{my_username}.",
+        tags: ["old-tests", "variables"],
+        usages: 0,
+      },
+      {
+        id: 10,
+        title: "Using variables (2)",
+        content:
+          "Hi %{reply_to_or_last_poster_username,fallback:there}, regards %{my_name}.",
         tags: ["old-tests", "variables"],
         usages: 0,
       },

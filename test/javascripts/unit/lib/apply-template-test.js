@@ -14,10 +14,10 @@ discourseModule(
         topic_url: "/t/villains/6",
         original_poster_username: "mr_hide",
         original_poster_name: "Dr. Henry Jekyll",
-        template_to_username: "dracula",
-        template_to_name: "Vlad",
+        reply_to_username: "dracula",
+        reply_to_name: "Vlad",
         last_poster_username: "frankenstein",
-        template_to_or_last_poster_username: "dracula",
+        reply_to_or_last_poster_username: "dracula",
       };
 
       const fakeModel = EmberObject.create({
@@ -37,8 +37,8 @@ discourseModule(
           url: "/t/villains/6",
         },
         post: {
-          username: expectedVariables.template_to_username,
-          name: expectedVariables.template_to_name,
+          username: expectedVariables.reply_to_username,
+          name: expectedVariables.reply_to_name,
         },
       });
 
