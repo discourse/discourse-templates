@@ -8,10 +8,10 @@ export function prepareTemplate(templateTitle, templateContent, model) {
       topic_url: model.get("topic.url"),
       original_poster_username: model.get("topic.details.created_by.username"),
       original_poster_name: model.get("topic.details.created_by.name"),
-      template_to_username: model.get("post.username"),
-      template_to_name: model.get("post.name"),
+      reply_to_username: model.get("post.username"),
+      reply_to_name: model.get("post.name"),
       last_poster_username: model.get("topic.last_poster_username"),
-      template_to_or_last_poster_username:
+      reply_to_or_last_poster_username:
         model.get("post.username") || model.get("topic.last_poster_username"),
     };
 
