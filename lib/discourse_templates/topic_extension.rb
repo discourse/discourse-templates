@@ -3,7 +3,7 @@
 module DiscourseTemplates::TopicExtension
   def self.prepended(base)
     base.has_one :template_item_usage,
-                 class_name: 'DiscourseTemplates::UsageCount',
+                 class_name: "DiscourseTemplates::UsageCount",
                  dependent: :destroy
   end
 

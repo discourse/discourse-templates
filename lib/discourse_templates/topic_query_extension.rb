@@ -3,7 +3,7 @@
 module DiscourseTemplates::TopicQueryExtension
   def list_templates
     if SiteSetting.discourse_templates_category.blank?
-      raise Discourse::SiteSettingMissing.new('discourse_templates_category')
+      raise Discourse::SiteSettingMissing.new("discourse_templates_category")
     end
 
     create_list(
@@ -20,8 +20,8 @@ module DiscourseTemplates::TopicQueryExtension
         visible: true,
         archived: false
       ) # filter out archived or unlisted topics
-        .where('categories.topic_id IS DISTINCT FROM topics.id') # filter out the category description topic
-        .reorder('topics.title ASC')
+        .where("categories.topic_id IS DISTINCT FROM topics.id") # filter out the category description topic
+        .reorder("topics.title ASC")
     end
   end
 end
