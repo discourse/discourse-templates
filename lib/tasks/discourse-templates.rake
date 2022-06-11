@@ -2,25 +2,25 @@
 
 def create_category
   old_settings_canned_replies_groups =
-    SiteSetting.find_by(name: 'canned_replies_groups')&.value || ''
+    SiteSetting.find_by(name: "canned_replies_groups")&.value || ""
   old_settings_canned_replies_everyone_enabled =
     SiteSetting
-      .find_by(name: 'canned_replies_everyone_enabled')
+      .find_by(name: "canned_replies_everyone_enabled")
       &.value
-      &.starts_with?('t') || false
+      &.starts_with?("t") || false
   old_settings_canned_replies_everyone_can_edit =
     SiteSetting
-      .find_by(name: 'canned_replies_everyone_can_edit')
+      .find_by(name: "canned_replies_everyone_can_edit")
       &.value
-      &.starts_with?('t') || false
+      &.starts_with?("t") || false
 
   category = nil
 
   I18n.with_locale(SiteSetting.default_locale) do
     category =
       Category.new(
-        name: I18n.t('default_category_template.name')[0...50], # category names are limited to 50 chars in discourse
-        description: I18n.t('default_category_template.description'),
+        name: I18n.t("default_category_template.name")[0...50], # category names are limited to 50 chars in discourse
+        description: I18n.t("default_category_template.description"),
         user: Discourse.system_user,
         all_topics_wiki: true
       )
@@ -34,7 +34,7 @@ def create_category
   groups = Group.all
 
   granted_group_list =
-    old_settings_canned_replies_groups.split('|').map(&:downcase)
+    old_settings_canned_replies_groups.split("|").map(&:downcase)
 
   groups
     .select { |group| granted_group_list.include?(group.name.downcase) }
@@ -102,9 +102,9 @@ def create_topic_from_v1_reply(reply, category)
   topic
 end
 
-desc 'Migrate data from discourse-canned-replies to discourse-templates'
-task 'discourse-templates:migrate-from-canned-replies' => [:environment] do |_, args|
-  puts 'Migrating data from discourse-canned-replies to discourse-templates'
+desc "Migrate data from discourse-canned-replies to discourse-templates"
+task "discourse-templates:migrate-from-canned-replies" => [:environment] do |_, args|
+  puts "Migrating data from discourse-canned-replies to discourse-templates"
 
   begin
     ActiveRecord::Base.transaction do
@@ -119,28 +119,28 @@ task 'discourse-templates:migrate-from-canned-replies' => [:environment] do |_, 
             Category.find_by(id: SiteSetting.discourse_templates_category.to_i)
 
           if existing_category.blank?
-            raise 'Category specified not found. Check Settings.discourse_templates_category'
+            raise "Category specified not found. Check Settings.discourse_templates_category"
           end
 
-          puts '',
-               '****************************',
+          puts "",
+               "****************************",
                "Using existing_category #{existing_category.name}(id: #{existing_category.id}) defined in ",
-               'Settings.discourse_templates_category',
-               'Please note that access to canned replies will follow this existing_category security settings',
-               '****************************',
-               ''
+               "Settings.discourse_templates_category",
+               "Please note that access to canned replies will follow this existing_category security settings",
+               "****************************",
+               ""
 
           existing_category
         end
 
-      canned_replies_plugin_name = 'discourse-canned-replies'
-      canned_replies_store_name = 'replies'
+      canned_replies_plugin_name = "discourse-canned-replies"
+      canned_replies_store_name = "replies"
       replies_v1 =
         PluginStore.get(canned_replies_plugin_name, canned_replies_store_name)
 
       count = replies_v1&.size || 0
       if count == 0
-        puts 'no canned replies from v1 were located to be migrated to v2'
+        puts "no canned replies from v1 were located to be migrated to v2"
       end
 
       # duplicate topic titles must be temporarily enabled to ensure that all
@@ -172,38 +172,38 @@ task 'discourse-templates:migrate-from-canned-replies' => [:environment] do |_, 
       # restores the setting to the previous value after importing the topics
       SiteSetting.allow_duplicate_topic_titles = allow_duplicate_topic_titles
     end
-    puts '', 'Canned replies migration to templates finished!'
+    puts "", "Canned replies migration to templates finished!"
   rescue StandardError => e
     puts e.to_s
-    puts 'Transaction aborted! All changes were rolled back!'
+    puts "Transaction aborted! All changes were rolled back!"
   end
 end
 
-desc 'Purge old data from canned replies'
-task 'discourse-templates:purge-old-canned-replies-data' => [:environment] do |_, args|
-  puts 'Removing canned replies data'
+desc "Purge old data from canned replies"
+task "discourse-templates:purge-old-canned-replies-data" => [:environment] do |_, args|
+  puts "Removing canned replies data"
 
   begin
     ActiveRecord::Base.transaction do
       DB.exec <<~SQL
-        DELETE FROM site_settings#{' '}
+        DELETE FROM site_settings#{" "}
         WHERE name IN (
-          'canned_replies_groups',#{' '}
-          'canned_replies_everyone_enabled',#{' '}
+          'canned_replies_groups',#{" "}
+          'canned_replies_everyone_enabled',#{" "}
           'canned_replies_everyone_can_edit'
         )
       SQL
 
-      canned_replies_plugin_name = 'discourse-canned-replies'
-      canned_replies_store_name = 'replies'
+      canned_replies_plugin_name = "discourse-canned-replies"
+      canned_replies_store_name = "replies"
       old_replies =
         PluginStoreRow.find_by(plugin_name: canned_replies_plugin_name, key: canned_replies_store_name)
       old_replies.destroy!
 
-      puts 'Finished!'
+      puts "Finished!"
     rescue StandardError => e
       puts e.to_s
-      puts 'Transaction aborted! All changes were rolled back!'
+      puts "Transaction aborted! All changes were rolled back!"
     end
   end
 end

@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-require_relative '../helpers/topics_helper'
+require "rails_helper"
+require_relative "../helpers/topics_helper"
 
 RSpec.configure { |c| c.include DiscourseTemplates::TopicsHelper }
 
 describe DiscourseTemplates::TemplatesSerializer do
   fab!(:template_item) { Fabricate(:template_item) } # uncategorized
-  fab!(:tag1) { Fabricate(:tag, topics: [template_item], name: 'tag1') }
-  fab!(:tag2) { Fabricate(:tag, topics: [template_item], name: 'tag2') }
+  fab!(:tag1) { Fabricate(:tag, topics: [template_item], name: "tag1") }
+  fab!(:tag2) { Fabricate(:tag, topics: [template_item], name: "tag2") }
 
   subject(:serializer) { described_class.new(template_item, root: false) }
 
-  context 'when serializing templates' do
-    it 'serializes correctly to json including tags when tagging is enabled' do
+  context "when serializing templates" do
+    it "serializes correctly to json including tags when tagging is enabled" do
       SiteSetting.tagging_enabled = true
 
       json = serializer.as_json
@@ -26,7 +26,7 @@ describe DiscourseTemplates::TemplatesSerializer do
       expect(json[:usages]).to eq(0)
     end
 
-    it 'serializes correctly to json excluding tags when tagging is disabled' do
+    it "serializes correctly to json excluding tags when tagging is disabled" do
       SiteSetting.tagging_enabled = false
 
       json = serializer.as_json

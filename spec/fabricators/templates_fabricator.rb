@@ -21,5 +21,5 @@ Fabricator(:template_item, from: :topic) do
 end
 
 Fabricator(:random_template_item, from: :template_item) do
-  title { "This is a test template #{rand(999_999).to_s.rjust(6, '0')}" }
+  title { "This is a test template #{rand(999_999).to_s.rjust(6, "0")}" }
 end

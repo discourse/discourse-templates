@@ -17,7 +17,7 @@ module DiscourseTemplates
       topic = Topic.find_by(id: template_id)
 
       if topic.blank?
-        return render_json_error('Invalid template id', status: 422)
+        return render_json_error("Invalid template id", status: 422)
       end
 
       discourse_templates_category = SiteSetting.discourse_templates_category.to_i
@@ -26,7 +26,7 @@ module DiscourseTemplates
       unless topic.category_id == discourse_templates_category ||
                subcategory_ids.include?(topic.category_id)
         return(
-          render_json_error('Id does not belong to a template', status: 422)
+          render_json_error("Id does not belong to a template", status: 422)
         )
       end
 

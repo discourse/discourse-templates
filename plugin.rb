@@ -9,13 +9,13 @@
 
 enabled_site_setting :discourse_templates_enabled
 
-register_asset 'stylesheets/discourse-templates.scss'
+register_asset "stylesheets/discourse-templates.scss"
 
-register_svg_icon 'far-clipboard' if respond_to?(:register_svg_icon)
+register_svg_icon "far-clipboard" if respond_to?(:register_svg_icon)
 
 after_initialize do
   module ::DiscourseTemplates
-    PLUGIN_NAME ||= 'discourse-templates'.freeze
+    PLUGIN_NAME ||= "discourse-templates".freeze
 
     class Engine < ::Rails::Engine
       engine_name DiscourseTemplates::PLUGIN_NAME
@@ -47,12 +47,12 @@ after_initialize do
   end
 
   Discourse::Application.routes.append do
-    mount ::DiscourseTemplates::Engine, at: '/discourse_templates'
+    mount ::DiscourseTemplates::Engine, at: "/discourse_templates"
   end
 
   DiscourseTemplates::Engine.routes.draw do
-    resources :templates, path: '/', only: [:index] do
-      member { post 'use' }
+    resources :templates, path: "/", only: [:index] do
+      member { post "use" }
     end
   end
 end
