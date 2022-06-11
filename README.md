@@ -1,7 +1,8 @@
 # Discourse Templates plugin
+
 This plugin adds support for inserting a template into the composer window via a UI.
 
-Official Plugin Topic & Documentation: 
+Official Plugin Topic & Documentation:
 
 ## Installation
 
