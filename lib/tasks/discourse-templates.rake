@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+desc "Migrate data from discourse-canned-replies to discourse-templates"
+task "discourse-templates:migrate-from-canned-replies" => :environment do
+  ENV['RAILS_DB'] ? migrate_data : migrate_data_all_sites
+end
+
+desc "Purge old data from canned replies"
+task "discourse-templates:purge-old-canned-replies-data" => :environment do
+  ENV['RAILS_DB'] ? purge_old_data : purge_old_data_all_sites
+end
+
 def create_category
   old_settings_canned_replies_groups =
     SiteSetting.find_by(name: "canned_replies_groups")&.value || ""
@@ -102,8 +112,15 @@ def create_topic_from_v1_reply(reply, category)
   topic
 end
 
-desc "Migrate data from discourse-canned-replies to discourse-templates"
-task "discourse-templates:migrate-from-canned-replies" => [:environment] do |_, args|
+def migrate_data_all_sites
+  RailsMultisite::ConnectionManagement.each_connection do |db|
+    puts "Starting DB: #{db} >>>>>>>>>>>>>>>>>>>>>>>>>"
+    migrate_data
+    puts "Ended DB: #{db} >>>>>>>>>>>>>>>>>>>>>>>>>"
+  end
+end
+
+def migrate_data
   puts "Migrating data from discourse-canned-replies to discourse-templates"
 
   begin
@@ -124,9 +141,8 @@ task "discourse-templates:migrate-from-canned-replies" => [:environment] do |_, 
 
           puts "",
                "****************************",
-               "Using existing_category #{existing_category.name}(id: #{existing_category.id}) defined in ",
-               "Settings.discourse_templates_category",
-               "Please note that access to canned replies will follow this existing_category security settings",
+               "Using existing_category #{existing_category.name}(id: #{existing_category.id}) defined in Settings.discourse_templates_category",
+               "Please note that access to templates will follow this existing_category security settings",
                "****************************",
                ""
 
@@ -179,8 +195,15 @@ task "discourse-templates:migrate-from-canned-replies" => [:environment] do |_, 
   end
 end
 
-desc "Purge old data from canned replies"
-task "discourse-templates:purge-old-canned-replies-data" => [:environment] do |_, args|
+def purge_old_data_all_sites
+  RailsMultisite::ConnectionManagement.each_connection do |db|
+    puts "Starting DB: #{db} >>>>>>>>>>>>>>>>>>>>>>>>>"
+    purge_old_data
+    puts "Ended DB: #{db} >>>>>>>>>>>>>>>>>>>>>>>>>"
+  end
+end
+
+def purge_old_data
   puts "Removing canned replies data"
 
   begin
@@ -198,7 +221,10 @@ task "discourse-templates:purge-old-canned-replies-data" => [:environment] do |_
       canned_replies_store_name = "replies"
       old_replies =
         PluginStoreRow.find_by(plugin_name: canned_replies_plugin_name, key: canned_replies_store_name)
-      old_replies.destroy!
+
+      if old_replies.present?
+        old_replies.destroy!
+      end
 
       puts "Finished!"
     rescue StandardError => e
