@@ -2,12 +2,12 @@
 
 desc "Migrate data from discourse-canned-replies to discourse-templates"
 task "discourse-templates:migrate-from-canned-replies" => :environment do
-  ENV['RAILS_DB'] ? migrate_data : migrate_data_all_sites
+  ENV["RAILS_DB"] ? migrate_data : migrate_data_all_sites
 end
 
 desc "Purge old data from canned replies"
 task "discourse-templates:purge-old-canned-replies-data" => :environment do
-  ENV['RAILS_DB'] ? purge_old_data : purge_old_data_all_sites
+  ENV["RAILS_DB"] ? purge_old_data : purge_old_data_all_sites
 end
 
 def create_category
