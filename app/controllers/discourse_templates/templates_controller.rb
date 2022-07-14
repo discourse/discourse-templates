@@ -22,9 +22,9 @@ module DiscourseTemplates
 
       parent_categories_ids = SiteSetting.discourse_templates_categories&.split("|")&.map(&:to_i)
 
-      all_templates_categories_ids = parent_categories_ids.inject([]) do |list, category_id|
-        list << category_id << Category.subcategory_ids(category_id)
-      end.flatten
+      all_templates_categories_ids = parent_categories_ids.flat_map do |category_id|
+        Category.subcategory_ids(category_id).prepend(category_id)
+      end
 
       unless all_templates_categories_ids.include?(topic.category_id)
         return(
