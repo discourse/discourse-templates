@@ -2,9 +2,9 @@ plugins:
   discourse_templates_enabled:
     default: true
     client: true
-  discourse_templates_category:
+  discourse_templates_categories:
     default: ""
-    type: category
+    type: category_list
   discourse_templates_max_replies_fetched:
     default: 1000
     hidden: true

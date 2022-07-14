@@ -1,7 +1,7 @@
 en:
   site_settings:
     discourse_templates_enabled: "Allow users with view access on the category specified below to use available templates"
-    discourse_templates_category: "Category to fetch the templates from"
+    discourse_templates_categories: "Categories to fetch the templates from"
   default_category_template:
     name: Templates
     description: |
