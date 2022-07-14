@@ -7,8 +7,8 @@ RSpec.configure { |c| c.include DiscourseTemplates::TopicsHelper }
 
 describe DiscourseTemplates::TopicQueryExtension do
   fab!(:user) { Fabricate(:user) }
-  fab!(:unrelated_category) { Fabricate(:category_with_definition) }
-  fab!(:unrelated_topic) { Fabricate(:topic, category: unrelated_category) }
+  fab!(:other_category) { Fabricate(:category_with_definition) }
+  fab!(:other_topics) { Fabricate.times(5, :topic, category: other_category) }
   fab!(:discourse_templates_category) { Fabricate(:category_with_definition) }
   fab!(:templates) do
     Fabricate.times(
@@ -19,7 +19,7 @@ describe DiscourseTemplates::TopicQueryExtension do
   end
 
   context "list_templates" do
-    before { SiteSetting.discourse_templates_category = discourse_templates_category.id }
+    before { SiteSetting.discourse_templates_category = discourse_templates_category.id.to_s }
 
     it "raises an error when SiteSetting.discourse_templates_category is not set" do
       SiteSetting.discourse_templates_category = ""
@@ -31,6 +31,14 @@ describe DiscourseTemplates::TopicQueryExtension do
     it "retrieves all topics in the category" do
       topics = TopicQuery.new(user).list_templates.topics
       expect(topics.size).to eq(templates.size)
+    end
+
+    it "retrives topics from multiple parent_categories" do
+      SiteSetting.discourse_templates_category =
+        [discourse_templates_category, other_category].map(&:id).join("|")
+
+      topics = TopicQuery.new(user).list_templates.topics
+      expect(topics.size).to eq(templates.size + other_topics.size)
     end
 
     it "limits retrieved topics to SiteSetting.discourse_templates_max_replies_fetched" do

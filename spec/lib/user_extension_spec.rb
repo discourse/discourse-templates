@@ -9,6 +9,9 @@ describe DiscourseTemplates::UserExtension do
   fab!(:templates_private_category) do
     Fabricate(:private_category_with_definition, group: Group[:moderators])
   end
+  fab!(:templates_private_category2) do
+    Fabricate(:private_category_with_definition, group: Group[:admins])
+  end
 
   context "can_use_templates?" do
     before { Group.refresh_automatic_groups!(:moderators) }
@@ -19,21 +22,37 @@ describe DiscourseTemplates::UserExtension do
       expect(user.can_use_templates?).to eq(false)
     end
 
-    it "is false when SiteSetting.discourse_templates_category points to category that does not exist" do
-      SiteSetting.discourse_templates_category = -99_999
-      expect(moderator.can_use_templates?).to eq(false)
-      expect(user.can_use_templates?).to eq(false)
+    context "when only one parent categories is specified" do
+      it "is false when SiteSetting.discourse_templates_category points to category that does not exist" do
+        SiteSetting.discourse_templates_category = "-99999"
+        expect(moderator.can_use_templates?).to eq(false)
+        expect(user.can_use_templates?).to eq(false)
+      end
+
+      it "is true when user can access category" do
+        SiteSetting.discourse_templates_category = discourse_templates_category.id.to_s
+        expect(moderator.can_use_templates?).to eq(true)
+        expect(user.can_use_templates?).to eq(true)
+      end
+
+      it "is false when user can't access category" do
+        SiteSetting.discourse_templates_category = templates_private_category.id.to_s
+        expect(user.can_use_templates?).to eq(false)
+      end
     end
 
-    it "is true when user can access category" do
-      SiteSetting.discourse_templates_category = discourse_templates_category.id
-      expect(moderator.can_use_templates?).to eq(true)
-      expect(user.can_use_templates?).to eq(true)
-    end
+    context "when multiples parent categories are specified" do
+      it "is false when the user cannot access any of the parent categories" do
+        SiteSetting.discourse_templates_category =
+          [templates_private_category, templates_private_category2].map(&:id).join("|")
+        expect(user.can_use_templates?).to eq(false)
+      end
 
-    it "is false when user can't access category" do
-      SiteSetting.discourse_templates_category = templates_private_category.id
-      expect(user.can_use_templates?).to eq(false)
+      it "is true when user can access at least one of the parent categories" do
+        SiteSetting.discourse_templates_category =
+          [templates_private_category, templates_private_category2].map(&:id).join("|")
+        expect(moderator.can_use_templates?).to eq(true)
+      end
     end
   end
 end

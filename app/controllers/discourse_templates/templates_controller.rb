@@ -20,11 +20,13 @@ module DiscourseTemplates
         return render_json_error("Invalid template id", status: 422)
       end
 
-      discourse_templates_category = SiteSetting.discourse_templates_category.to_i
-      subcategory_ids = Category.subcategory_ids(discourse_templates_category)
+      parent_categories_ids = SiteSetting.discourse_templates_category&.split("|")&.map(&:to_i)
 
-      unless topic.category_id == discourse_templates_category ||
-               subcategory_ids.include?(topic.category_id)
+      all_templates_categories_ids = parent_categories_ids.inject([]) do |list, category_id|
+        list << category_id << Category.subcategory_ids(category_id)
+      end.flatten
+
+      unless all_templates_categories_ids.include?(topic.category_id)
         return(
           render_json_error("Id does not belong to a template", status: 422)
         )

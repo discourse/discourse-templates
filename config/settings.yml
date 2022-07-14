@@ -4,7 +4,7 @@ plugins:
     client: true
   discourse_templates_category:
     default: ""
-    type: category
+    type: category_list
   discourse_templates_max_replies_fetched:
     default: 1000
     hidden: true

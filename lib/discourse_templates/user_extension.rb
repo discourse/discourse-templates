@@ -4,10 +4,16 @@ module DiscourseTemplates::UserExtension
   def can_use_templates?
     return false if SiteSetting.discourse_templates_category.blank?
 
-    category = Category.find_by(id: SiteSetting.discourse_templates_category.to_i)
-    return false if category.blank?
+    parent_categories_ids = SiteSetting.discourse_templates_category&.split("|")&.map(&:to_i)
 
-    # the user can use templates if can see in the source category
-    guardian.can_see?(category)
+    parent_categories_ids.any? do |category_id|
+      return false if category_id == 0
+
+      category = Category.find_by(id: category_id)
+      return false if category.blank?
+
+      # the user can use templates if can see topics in at least one of the source categories
+      guardian.can_see?(category)
+    end
   end
 end
