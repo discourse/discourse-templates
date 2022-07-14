@@ -22,29 +22,29 @@ describe DiscourseTemplates::GuardianExtension do
 
     context "when only one parent categories is specified" do
       it "is true when user can access category" do
-        SiteSetting.discourse_templates_category = discourse_templates_category.id.to_s
+        SiteSetting.discourse_templates_categories = discourse_templates_category.id.to_s
         expect(Guardian.new(moderator).can_use_templates?).to eq(true)
         expect(Guardian.new(user).can_use_templates?).to eq(true)
 
-        SiteSetting.discourse_templates_category = templates_private_category.id.to_s
+        SiteSetting.discourse_templates_categories = templates_private_category.id.to_s
         expect(Guardian.new(moderator).can_use_templates?).to eq(true)
       end
 
       it "is false when user can't access category" do
-        SiteSetting.discourse_templates_category = templates_private_category.id.to_s
+        SiteSetting.discourse_templates_categories = templates_private_category.id.to_s
         expect(Guardian.new(user).can_use_templates?).to eq(false)
       end
     end
 
     context "when multiple parent categories are specified" do
       it "is true when user can access at least one category" do
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           [templates_private_category, templates_private_category2].map(&:id).join("|")
         expect(Guardian.new(moderator).can_use_templates?).to eq(true)
       end
 
       it "is false when user can't access any category" do
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           [templates_private_category, templates_private_category2].map(&:id).join("|")
         expect(Guardian.new(user).can_use_templates?).to eq(false)
       end

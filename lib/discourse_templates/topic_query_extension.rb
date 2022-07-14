@@ -2,11 +2,11 @@
 
 module DiscourseTemplates::TopicQueryExtension
   def list_templates
-    if SiteSetting.discourse_templates_category.blank?
-      raise Discourse::SiteSettingMissing.new("discourse_templates_category")
+    if SiteSetting.discourse_templates_categories.blank?
+      raise Discourse::SiteSettingMissing.new("discourse_templates_categories")
     end
 
-    parent_categories = SiteSetting.discourse_templates_category&.split("|")&.map(&:to_i)
+    parent_categories = SiteSetting.discourse_templates_categories&.split("|")&.map(&:to_i)
     if parent_categories.blank?
       raise Discourse::InvalidParameters.new("At least one category must be select as source for templates")
     end

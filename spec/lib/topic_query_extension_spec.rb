@@ -19,10 +19,10 @@ describe DiscourseTemplates::TopicQueryExtension do
   end
 
   context "list_templates" do
-    before { SiteSetting.discourse_templates_category = discourse_templates_category.id.to_s }
+    before { SiteSetting.discourse_templates_categories = discourse_templates_category.id.to_s }
 
-    it "raises an error when SiteSetting.discourse_templates_category is not set" do
-      SiteSetting.discourse_templates_category = ""
+    it "raises an error when SiteSetting.discourse_templates_categories is not set" do
+      SiteSetting.discourse_templates_categories = ""
       expect { TopicQuery.new(user).list_templates }.to raise_error(
         Discourse::SiteSettingMissing
       )
@@ -34,7 +34,7 @@ describe DiscourseTemplates::TopicQueryExtension do
     end
 
     it "retrives topics from multiple parent_categories" do
-      SiteSetting.discourse_templates_category =
+      SiteSetting.discourse_templates_categories =
         [discourse_templates_category, other_category].map(&:id).join("|")
 
       topics = TopicQuery.new(user).list_templates.topics

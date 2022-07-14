@@ -68,7 +68,7 @@ def create_category
     ERROR while creating the existing_category to store the templates: #{category.errors.full_messages}
 
     If you can't fix the reason of the error, you can create a existing_category manually
-    to store the templates and define it in Settings.discourse_templates_category.
+    to store the templates and define it in Settings.discourse_templates_categories.
 
     Then proceed with this migration.
   ERROR
@@ -126,23 +126,23 @@ def migrate_data
   begin
     ActiveRecord::Base.transaction do
       category =
-        if SiteSetting.discourse_templates_category.blank?
+        if SiteSetting.discourse_templates_categories.blank?
           new_category = create_category
-          SiteSetting.discourse_templates_category = new_category.id.to_s
+          SiteSetting.discourse_templates_categories = new_category.id.to_s
 
           new_category
         else
           existing_category =
-            Category.find_by(id: SiteSetting.discourse_templates_category&.split("|")&.first.to_i)
+            Category.find_by(id: SiteSetting.discourse_templates_categories&.split("|")&.first.to_i)
 
           if existing_category.blank?
-            raise "Category specified not found. Check Settings.discourse_templates_category"
+            raise "Category specified not found. Check Settings.discourse_templates_categories"
           end
 
           puts "",
                "****************************",
-               "Using existing_category #{existing_category.name}(id: #{existing_category.id}) defined in Settings.discourse_templates_category",
-               "Please note that access to templates will follow this existing_category security settings",
+               "Using existing category #{existing_category.name}(id: #{existing_category.id}) defined in Settings.discourse_templates_categories",
+               "Please note that access to templates will follow this existing category security settings",
                "****************************",
                ""
 

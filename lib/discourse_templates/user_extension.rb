@@ -2,9 +2,9 @@
 
 module DiscourseTemplates::UserExtension
   def can_use_templates?
-    return false if SiteSetting.discourse_templates_category.blank?
+    return false if SiteSetting.discourse_templates_categories.blank?
 
-    parent_categories_ids = SiteSetting.discourse_templates_category&.split("|")&.map(&:to_i)
+    parent_categories_ids = SiteSetting.discourse_templates_categories&.split("|")&.map(&:to_i)
 
     parent_categories_ids.any? do |category_id|
       return false if category_id == 0

@@ -20,7 +20,7 @@ module DiscourseTemplates
         return render_json_error("Invalid template id", status: 422)
       end
 
-      parent_categories_ids = SiteSetting.discourse_templates_category&.split("|")&.map(&:to_i)
+      parent_categories_ids = SiteSetting.discourse_templates_categories&.split("|")&.map(&:to_i)
 
       all_templates_categories_ids = parent_categories_ids.inject([]) do |list, category_id|
         list << category_id << Category.subcategory_ids(category_id)

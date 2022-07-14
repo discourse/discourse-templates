@@ -114,7 +114,7 @@ describe DiscourseTemplates::TemplatesController do
       before { sign_in(user) }
 
       it "should list topics in the category assigned as templates" do
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           templates_sub_category_everyone.id.to_s
 
         get "/discourse_templates"
@@ -128,7 +128,7 @@ describe DiscourseTemplates::TemplatesController do
       end
 
       it "should list topics from multiple parent categories" do
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           [templates_sub_category_everyone, templates_other_parent_category].map(&:id).join("|")
 
         get "/discourse_templates"
@@ -142,7 +142,7 @@ describe DiscourseTemplates::TemplatesController do
       end
 
       it "should list topics in the parent category and subcategories that the user can see" do
-        SiteSetting.discourse_templates_category = templates_parent_category.id.to_s
+        SiteSetting.discourse_templates_categories = templates_parent_category.id.to_s
 
         get "/discourse_templates"
         expect(response.status).to eq(200)
@@ -163,19 +163,19 @@ describe DiscourseTemplates::TemplatesController do
       end
 
       it "should not be able to use templates if can't see topics in the category" do
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           templates_sub_category_moderators.id.to_s
 
         get "/discourse_templates"
         expect(response.status).to eq(403)
 
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           templates_sub_category_group.id.to_s
 
         get "/discourse_templates"
         expect(response.status).to eq(403)
 
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           templates_sub_category_group2.id.to_s
 
         get "/discourse_templates"
@@ -190,7 +190,7 @@ describe DiscourseTemplates::TemplatesController do
       end
 
       it "should list topics in the parent category and subcategories that the moderator can see" do
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           [templates_parent_category, templates_other_parent_category].map(&:id).join("|")
 
         get "/discourse_templates"
@@ -216,7 +216,7 @@ describe DiscourseTemplates::TemplatesController do
 
     context "when an user belonging to a group is logged" do
       it "should list topics in the parent category and subcategories that the user can see" do
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           [templates_parent_category, templates_other_parent_category].map(&:id).join("|")
 
         sign_in(user_in_group1)
@@ -265,7 +265,7 @@ describe DiscourseTemplates::TemplatesController do
 
     context "when an admin is logged" do
       before do
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           [templates_parent_category, templates_other_parent_category].map(&:id).join("|")
 
         sign_in(admin)
@@ -328,7 +328,7 @@ describe DiscourseTemplates::TemplatesController do
 
     context "when no user is signed in" do
       it "should return 404" do
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           templates_sub_category_everyone.id.to_s
 
         get "/discourse_templates"
@@ -340,7 +340,7 @@ describe DiscourseTemplates::TemplatesController do
   describe "#use" do
     context "check if the id received belongs to a template" do
       before do
-        SiteSetting.discourse_templates_category = templates_parent_category.id.to_s
+        SiteSetting.discourse_templates_categories = templates_parent_category.id.to_s
 
         sign_in(admin)
         Group.refresh_automatic_groups!
@@ -378,7 +378,7 @@ describe DiscourseTemplates::TemplatesController do
 
     context "when a template is used" do
       before do
-        SiteSetting.discourse_templates_category =
+        SiteSetting.discourse_templates_categories =
           templates_sub_category_moderators.id.to_s
 
         Group.refresh_automatic_groups!(:moderators)
