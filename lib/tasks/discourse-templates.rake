@@ -128,12 +128,12 @@ def migrate_data
       category =
         if SiteSetting.discourse_templates_category.blank?
           new_category = create_category
-          SiteSetting.discourse_templates_category = new_category.id
+          SiteSetting.discourse_templates_category = new_category.id.to_s
 
           new_category
         else
           existing_category =
-            Category.find_by(id: SiteSetting.discourse_templates_category.to_i)
+            Category.find_by(id: SiteSetting.discourse_templates_category&.split("|")&.first.to_i)
 
           if existing_category.blank?
             raise "Category specified not found. Check Settings.discourse_templates_category"
