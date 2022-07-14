@@ -11,7 +11,7 @@ module DiscourseTemplates::TopicQueryExtension
       raise Discourse::InvalidParameters.new("At least one category must be select as source for templates")
     end
 
-    all_templates_categories = parent_categories.map { |category_id| Category.subcategory_ids(category_id) }.flatten
+    all_templates_categories = parent_categories.flat_map { |category_id| Category.subcategory_ids(category_id) }
 
     list_options = {
       # limit defined in a hidden setting with a sane default value (1000) that should be enough to fetch all
