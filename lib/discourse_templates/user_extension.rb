@@ -32,11 +32,8 @@ module DiscourseTemplates::UserExtension
     allowed_groups_ids.any? do |group_id|
       return false if group_id == 0
 
-      group = Group.find_by(id: group_id)
-      return false if group.blank?
-
-      # the user can use templates if can see topics in at least one of the source groups
-      guardian.can_see?(group)
+      # the user can use templates if belongs to at least one of the allowed groups
+      GroupUser.where(group_id: group_id, user_id: self.id).exists?
     end
   end
 end

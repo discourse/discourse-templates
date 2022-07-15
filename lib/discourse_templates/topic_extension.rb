@@ -34,6 +34,9 @@ module DiscourseTemplates::TopicExtension
     # it is template if the topic belongs to any of the template categories
     return true if all_templates_categories_ids.include?(self.category_id)
 
+    return false unless SiteSetting.tagging_enabled &&
+      SiteSetting.discourse_templates_enable_private_templates
+
     # or is a private message where the user is the author and at least one tag
     # matches with the tags configured in the plugin for private templates
     private_template_tags = SiteSetting.discourse_templates_private_templates_tags&.split("|")
