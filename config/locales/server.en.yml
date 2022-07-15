@@ -2,6 +2,9 @@ en:
   site_settings:
     discourse_templates_enabled: "Allow users with view access on the category specified below to use available templates"
     discourse_templates_categories: "Categories to fetch the templates from"
+    discourse_templates_enable_private_templates: "Enables the use of private templates"
+    discourse_templates_groups_allowed_private_templates: "Groups allowed to use private templates"
+    discourse_templates_private_templates_tags: "Tags that identify a private message as a private template"
   default_category_template:
     name: Templates
     description: |

@@ -2,6 +2,10 @@
 
 module DiscourseTemplates::UserExtension
   def can_use_templates?
+    can_use_category_templates? || can_use_private_templates?
+  end
+
+  def can_use_category_templates?
     return false if SiteSetting.discourse_templates_categories.blank?
 
     parent_categories_ids = SiteSetting.discourse_templates_categories&.split("|")&.map(&:to_i)
@@ -14,6 +18,25 @@ module DiscourseTemplates::UserExtension
 
       # the user can use templates if can see topics in at least one of the source categories
       guardian.can_see?(category)
+    end
+  end
+
+  def can_use_private_templates?
+    return false unless SiteSetting.discourse_templates_enable_private_templates
+    return false unless SiteSetting.tagging_enabled
+    return false if SiteSetting.discourse_templates_private_templates_tags.blank?
+    return true if guardian.is_staff?
+
+    allowed_groups_ids = SiteSetting.discourse_templates_groups_allowed_private_templates&.split("|")&.map(&:to_i)
+
+    allowed_groups_ids.any? do |group_id|
+      return false if group_id == 0
+
+      group = Group.find_by(id: group_id)
+      return false if group.blank?
+
+      # the user can use templates if can see topics in at least one of the source groups
+      guardian.can_see?(group)
     end
   end
 end

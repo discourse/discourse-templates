@@ -21,15 +21,17 @@ describe DiscourseTemplates::TopicQueryExtension do
   context "list_templates" do
     before { SiteSetting.discourse_templates_categories = discourse_templates_category.id.to_s }
 
-    it "raises an error when SiteSetting.discourse_templates_categories is not set" do
+    let!(:topic_query) do
+      TopicQuery.new(user, per_page: SiteSetting.discourse_templates_max_replies_fetched.to_i)
+    end
+
+    it "returns nil when SiteSetting.discourse_templates_categories is not set" do
       SiteSetting.discourse_templates_categories = ""
-      expect { TopicQuery.new(user).list_templates }.to raise_error(
-        Discourse::SiteSettingMissing
-      )
+      expect(topic_query.list_category_templates).to be_nil
     end
 
     it "retrieves all topics in the category" do
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size)
     end
 
@@ -37,21 +39,14 @@ describe DiscourseTemplates::TopicQueryExtension do
       SiteSetting.discourse_templates_categories =
         [discourse_templates_category, other_category].map(&:id).join("|")
 
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size + other_topics.size)
-    end
-
-    it "limits retrieved topics to SiteSetting.discourse_templates_max_replies_fetched" do
-      SiteSetting.discourse_templates_max_replies_fetched = 42
-
-      topics = TopicQuery.new(user).list_templates.topics
-      expect(topics.size).to eq(SiteSetting.discourse_templates_max_replies_fetched)
     end
 
     it "filter out the category description topic" do
       expect(discourse_templates_category.topic_id).not_to eq(nil)
 
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       topics_without_category_description =
         topics.filter { |topic| topic.id != discourse_templates_category.topic_id }
 
@@ -59,18 +54,18 @@ describe DiscourseTemplates::TopicQueryExtension do
     end
 
     it "retrieves closed topics" do
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size)
 
       closed_replies = templates.sample(templates.size * 0.2)
       closed_replies.each { |template| template.update_status("closed", true, user) }
 
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size)
     end
 
     it "filter out unlisted topics" do
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size)
 
       unlisted_replies = templates.sample(templates.size * 0.15)
@@ -78,29 +73,29 @@ describe DiscourseTemplates::TopicQueryExtension do
         template.update_status("visible", false, user)
       end
 
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size - unlisted_replies.size)
     end
 
     it "filter out archived topics" do
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size)
 
       archived_replies = templates.sample(templates.size * 0.25)
       archived_replies.each { |template| template.update_attribute :archived, true }
 
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size - archived_replies.size)
     end
 
     it "filter out deleted topics" do
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size)
 
       deleted_replies = templates.sample(templates.size * 0.2)
       deleted_replies.each { |template| template.trash! }
 
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size - deleted_replies.size)
     end
 
@@ -111,7 +106,7 @@ describe DiscourseTemplates::TopicQueryExtension do
       # query to be useless
       expect(sorted_replies).not_to eq(templates)
 
-      topics = TopicQuery.new(user).list_templates.topics
+      topics = topic_query.list_category_templates.topics
       expect(topics).to eq(sorted_replies)
     end
   end
