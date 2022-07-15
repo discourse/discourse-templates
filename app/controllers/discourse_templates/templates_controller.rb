@@ -20,7 +20,7 @@ module DiscourseTemplates
         return render_json_error("Invalid template id", status: 422)
       end
 
-      unless topic.is_template?(current_user)
+      unless topic.template?(current_user)
         return(
           render_json_error("Id does not belong to a template", status: 422)
         )

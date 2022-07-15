@@ -24,7 +24,7 @@ module DiscourseTemplates::TopicExtension
     SQL
   end
 
-  def is_template?(user)
+  def template?(user)
     parent_categories_ids = SiteSetting.discourse_templates_categories&.split("|")&.map(&:to_i)
 
     all_templates_categories_ids = parent_categories_ids.flat_map do |category_id|

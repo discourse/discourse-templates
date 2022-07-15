@@ -36,7 +36,7 @@ describe DiscourseTemplates::TopicExtension do
     end
   end
 
-  context "is_template?" do
+  context "template?" do
     fab!(:user) { Fabricate(:user) }
 
     context "normal topics" do
@@ -57,16 +57,16 @@ describe DiscourseTemplates::TopicExtension do
 
       it "returns true when topic belongs to one of the assigned categories" do
         SiteSetting.discourse_templates_categories = "#{templates_category.id.to_s}|#{other_category.id.to_s}"
-        expect(template.is_template?(user)).to eq(true)
-        expect(other_topic.is_template?(user)).to eq(true)
+        expect(template.template?(user)).to eq(true)
+        expect(other_topic.template?(user)).to eq(true)
       end
 
       it "returns true when topic belongs to a sub-category of one of the assigned categories" do
-        expect(template_on_sub.is_template?(user)).to eq(true)
+        expect(template_on_sub.template?(user)).to eq(true)
       end
 
       it "returns false when topic does not belong to one of the assigned categories" do
-        expect(other_topic.is_template?(user)).to eq(false)
+        expect(other_topic.template?(user)).to eq(false)
       end
     end
 
@@ -85,34 +85,34 @@ describe DiscourseTemplates::TopicExtension do
       end
 
       it "returns false unless SiteSetting.tagging_enabled" do
-        expect(private_template_tag_a.is_template?(user)).to eq(true)
+        expect(private_template_tag_a.template?(user)).to eq(true)
 
         SiteSetting.tagging_enabled = false
-        expect(private_template_tag_a.is_template?(user)).to eq(false)
+        expect(private_template_tag_a.template?(user)).to eq(false)
       end
 
       it "returns false unless SiteSetting.discourse_templates_enable_private_templates" do
-        expect(private_template_tag_a.is_template?(user)).to eq(true)
+        expect(private_template_tag_a.template?(user)).to eq(true)
 
         SiteSetting.tagging_enabled = false
-        expect(private_template_tag_a.is_template?(user)).to eq(false)
+        expect(private_template_tag_a.template?(user)).to eq(false)
       end
 
       it "returns false when user is not the author of the private message" do
-        expect(private_template_tag_a.is_template?(other_user)).to eq(false)
+        expect(private_template_tag_a.template?(other_user)).to eq(false)
       end
 
       it "returns true only when the private message is tagged with at least one the allowed tags" do
-        expect(private_template_tag_a.is_template?(user)).to eq(true)
-        expect(private_template_tag_b.is_template?(user)).to eq(true)
+        expect(private_template_tag_a.template?(user)).to eq(true)
+        expect(private_template_tag_b.template?(user)).to eq(true)
 
         SiteSetting.discourse_templates_private_templates_tags = "tag-a"
-        expect(private_template_tag_a.is_template?(user)).to eq(true)
-        expect(private_template_tag_b.is_template?(user)).to eq(false)
+        expect(private_template_tag_a.template?(user)).to eq(true)
+        expect(private_template_tag_b.template?(user)).to eq(false)
 
         SiteSetting.discourse_templates_private_templates_tags = "tag-b"
-        expect(private_template_tag_a.is_template?(user)).to eq(false)
-        expect(private_template_tag_b.is_template?(user)).to eq(true)
+        expect(private_template_tag_a.template?(user)).to eq(false)
+        expect(private_template_tag_b.template?(user)).to eq(true)
       end
     end
 
