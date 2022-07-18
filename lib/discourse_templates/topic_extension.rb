@@ -41,7 +41,7 @@ module DiscourseTemplates::TopicExtension
     # matches with the tags configured in the plugin for private templates
     private_template_tags = SiteSetting.discourse_templates_private_templates_tags&.split("|")
 
-    archetype === Archetype.private_message &&
+    archetype == Archetype.private_message &&
       user_id == user&.id &&
       (tags.map(&:name) & private_template_tags).any?
   end
