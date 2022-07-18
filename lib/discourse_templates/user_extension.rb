@@ -33,7 +33,7 @@ module DiscourseTemplates::UserExtension
       return false if group_id == 0
 
       # the user can use templates if belongs to at least one of the allowed groups
-      GroupUser.where(group_id: group_id, user_id: self.id).exists?
+      GroupUser.exists?(group_id: group_id, user_id: self.id)
     end
   end
 end
