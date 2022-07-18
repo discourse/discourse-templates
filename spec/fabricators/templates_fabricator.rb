@@ -3,7 +3,7 @@
 Fabricator(:template_item, from: :topic) do
   transient :content
 
-  title { sequence(:title) { |i| "This is a test template #{i}" } }
+  title { sequence(:title) { |i| "This is a test template #{i.to_s.rjust(6, "0")}" } }
 
   after_create do |topic, transients|
     Fabricate(:post, topic: topic) do
@@ -12,7 +12,7 @@ Fabricator(:template_item, from: :topic) do
           transients[:content]
         else
           sequence(:title) do |i|
-            "This is the content of an awesome template #{i}"
+            "This is the content of an awesome template #{i.to_s.rjust(6, "0")}"
           end
         end
       end
@@ -23,7 +23,7 @@ end
 Fabricator(:private_template_item, from: :private_message_topic) do
   transient :content
 
-  title { sequence(:title) { |i| "This is a private test template #{i}" } }
+  title { sequence(:title) { |i| "This is a private test template #{i.to_s.rjust(6, "0")}" } }
 
   after_create do |topic, transients|
     Fabricate(:post, topic: topic) do
@@ -32,7 +32,7 @@ Fabricator(:private_template_item, from: :private_message_topic) do
           transients[:content]
         else
           sequence(:title) do |i|
-            "This is the content of an awesome private template #{i}"
+            "This is the content of an awesome private template #{i.to_s.rjust(6, "0")}"
           end
         end
       end
@@ -41,5 +41,5 @@ Fabricator(:private_template_item, from: :private_message_topic) do
 end
 
 Fabricator(:random_template_item, from: :template_item) do
-  title { sequence(:title) { |i| "This is private template #{i}" } }
+  title { "This is a test template #{rand(999_999).to_s.rjust(6, "0")}" }
 end

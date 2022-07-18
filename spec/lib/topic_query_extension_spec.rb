@@ -106,9 +106,9 @@ describe DiscourseTemplates::TopicQueryExtension do
     it "sorts retrieved replies by title" do
       sorted_replies = templates.sort_by(&:title)
 
-      # just to ensure the test sample isn't sorted because that would render the real test after the
+      # just to ensure the test sample isn't sorted because that would render the test after the
       # query to be useless
-      expect(sorted_replies).not_to eq(templates)
+      templates.shuffle! if (templates == sorted_replies)
 
       topics = topic_query.list_category_templates.topics
       expect(topics).to eq(sorted_replies)
