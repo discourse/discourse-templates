@@ -2,7 +2,7 @@
 
 This plugin adds support for inserting a template into the composer window via a UI.
 
-Official Plugin Topic & Documentation:
+For more information please check the [Official Plugin Topic & Documentation](https://meta.discourse.org/t/discourse-templates/229250) on Meta. 
 
 ## Installation
 
