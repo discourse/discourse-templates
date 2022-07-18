@@ -20,13 +20,7 @@ module DiscourseTemplates
         return render_json_error("Invalid template id", status: 422)
       end
 
-      parent_categories_ids = SiteSetting.discourse_templates_categories&.split("|")&.map(&:to_i)
-
-      all_templates_categories_ids = parent_categories_ids.flat_map do |category_id|
-        Category.subcategory_ids(category_id).prepend(category_id)
-      end
-
-      unless all_templates_categories_ids.include?(topic.category_id)
+      unless topic.template?(current_user)
         return(
           render_json_error("Id does not belong to a template", status: 422)
         )
@@ -38,8 +32,18 @@ module DiscourseTemplates
     end
 
     def index
-      query = TopicQuery.new(current_user).list_templates
-      templates = query.topics
+      list_options = {
+        # limit defined in a hidden setting with a sane default value (1000) that should be enough to fetch all
+        # templates at once in most cases, but it still small enough to prevent things to blow up if the user
+        # selected the wrong category in settings with thousands and thousands of posts
+        per_page: SiteSetting.discourse_templates_max_replies_fetched.to_i
+      }
+
+      topic_query = TopicQuery.new(current_user, list_options)
+      category_templates = topic_query.list_category_templates&.topics || []
+      private_templates = topic_query.list_private_templates&.topics || []
+
+      templates = category_templates + private_templates
 
       render json: templates, each_serializer: TemplatesSerializer
     end
