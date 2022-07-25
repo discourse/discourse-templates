@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module DiscourseTemplates
-  # frozen_string_literal: true
   class TemplatesSerializer < ApplicationSerializer
     attributes :id, :title, :content, :tags, :usages
 
@@ -14,7 +13,7 @@ module DiscourseTemplates
     end
 
     def tags
-      object.tags.map(&:name)
+      object.tags.map(&:name).sort
     end
 
     def usages
