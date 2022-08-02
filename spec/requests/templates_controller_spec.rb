@@ -347,7 +347,7 @@ describe DiscourseTemplates::TemplatesController do
       end
 
       it "should return 422 when id does not belong to a valid topic" do
-        post "/discourse_templates/404/use"
+        post "/discourse_templates/99999999/use"
         expect(response.status).to eq(422)
       end
 
