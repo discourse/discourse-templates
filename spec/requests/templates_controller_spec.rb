@@ -347,7 +347,11 @@ describe DiscourseTemplates::TemplatesController do
       end
 
       it "should return 422 when id does not belong to a valid topic" do
-        post "/discourse_templates/99999999/use"
+        # to avoid flaky testing we create a topic and immediately destroy it to obtain
+        # an invalid topic id
+        invalid_topic_id = Fabricate(:template_item).tap(&:destroy!).id
+
+        post "/discourse_templates/#{invalid_topic_id}/use"
         expect(response.status).to eq(422)
       end
 
