@@ -5,8 +5,8 @@ export default {
   name: "discourse-templates-add-ui-builder",
 
   initialize(container) {
-    const siteSettings = container.lookup("site-settings:main");
-    const currentUser = container.lookup("current-user:main");
+    const siteSettings = container.lookup("service:site-settings");
+    const currentUser = container.lookup("service:current-user");
 
     if (
       siteSettings.discourse_templates_enabled &&
@@ -39,10 +39,21 @@ export default {
         api.addKeyboardShortcut(
           "meta+shift+i",
           () => {
+            const appEvents = container.lookup("service:app-events");
+
             const activeElement = document.activeElement;
 
+            const composerModel = container.lookup("controller:composer").model;
+            const composerElement = document.querySelector(".d-editor");
+
+            if (composerModel && composerElement?.contains(activeElement)) {
+              appEvents.trigger("composer:show-preview");
+              appEvents.trigger("composer-messages:close");
+              appEvents.trigger("discourse-templates:show");
+              return;
+            }
+
             if (activeElement?.nodeName === "TEXTAREA") {
-              const appEvents = container.lookup("service:app-events");
               const modal = document.querySelector(".d-modal");
 
               if (modal?.contains(activeElement)) {
