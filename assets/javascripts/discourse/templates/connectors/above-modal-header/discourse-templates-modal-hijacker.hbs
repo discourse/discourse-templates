@@ -8,8 +8,9 @@
   </div>
   <div class="modal-body hijacked-modal-body discourse-templates discourse-templates-modal">
     {{templates-filterable-list
+      textarea=textarea
       model=model
-      onInsertTemplate=(action "insertTemplate")
+      onBeforeInsertTemplate=(action "hide")
     }}
   </div>
 {{/if}}

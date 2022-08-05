@@ -1,44 +1,8 @@
 import { action } from "@ember/object";
 import { getOwner } from "discourse-common/lib/get-owner";
-import TextareaTextManipulation from "discourse/mixins/textarea-text-manipulation";
-import { schedule } from "@ember/runloop";
 
 export default {
   setupComponent(args, component) {
-    component.reopen(TextareaTextManipulation, {
-      _hijackModal(textarea) {
-        const container = document.querySelector(".modal-inner-container");
-
-        if (textarea) {
-          this.set("active", true);
-          this.set("ready", true);
-          this.set("_textarea", textarea);
-
-          Array.from(container.children).forEach((element) => {
-            if (element === this.element) {
-              return;
-            }
-
-            this.displayMap.set(element, element.style.display);
-            element.style.display = "none";
-          });
-        }
-      },
-      _restoreModal() {
-        this.set("active", false);
-
-        const container = document.querySelector(".modal-inner-container");
-        Array.from(container.children).forEach((element) => {
-          const oldDisplay = this.displayMap.get(element);
-
-          if (oldDisplay != null) {
-            this.displayMap.delete(element);
-            element.style.display = oldDisplay;
-          }
-        });
-      },
-    });
-
     component.setProperties({
       active: false,
       model: getOwner(this).lookup("controller:composer").model,
@@ -58,25 +22,35 @@ export default {
 
   @action
   show({ textarea }) {
-    this._hijackModal(textarea);
+    const container = document.querySelector(".modal-inner-container");
+
+    if (textarea) {
+      this.set("active", true);
+      this.set("textarea", textarea);
+
+      Array.from(container.children).forEach((element) => {
+        if (element === this.element) {
+          return;
+        }
+
+        this.displayMap.set(element, element.style.display);
+        element.style.display = "none";
+      });
+    }
   },
 
   @action
   hide() {
-    this.set("ready", false);
-    this._restoreModal();
+    this.set("active", false);
 
-    schedule("afterRender", this, () => {
-      this.focusTextArea();
-      this.set("_textarea", null);
+    const container = document.querySelector(".modal-inner-container");
+    Array.from(container.children).forEach((element) => {
+      const oldDisplay = this.displayMap.get(element);
+
+      if (oldDisplay != null) {
+        this.displayMap.delete(element);
+        element.style.display = oldDisplay;
+      }
     });
-  },
-
-  @action
-  insertTemplate({ templateContent }) {
-    this._restoreModal();
-    this._addBlock(this.getSelected(), templateContent);
-
-    this.send("hide");
   },
 };

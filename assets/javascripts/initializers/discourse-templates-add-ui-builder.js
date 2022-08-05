@@ -50,7 +50,12 @@ export default {
                   textarea: activeElement,
                 });
               } else {
+                const modalController = container.lookup(
+                  "controller:discourse-templates-modal"
+                );
+
                 showModal("discourse-templates-modal");
+                modalController.set("textarea", activeElement);
               }
             }
           },

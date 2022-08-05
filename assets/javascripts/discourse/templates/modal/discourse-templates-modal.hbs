@@ -3,7 +3,8 @@
   class="discourse-templates discourse-templates-modal"
 }}
   {{templates-filterable-list
+    textarea=textarea
     model=model
-    onInsertTemplate=(action "insertTemplate")
+    onAfterInsertTemplate=(action "hide")
   }}
 {{/d-modal-body}}
