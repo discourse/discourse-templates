@@ -83,7 +83,6 @@ export default Component.extend(TextareaTextManipulation, {
     if (this._textarea) {
       this._addBlock(this.getSelected(), template.templateContent);
     } else {
-      this.set("model", this.owner.lookup("controller:composer").model);
       insertTemplateIntoComposer(this, template);
     }
 
