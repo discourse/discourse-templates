@@ -1,0 +1,15 @@
+{{#if active}}
+  <div class="modal-header hijacked-modal-header">
+    <DButton @icon="angle-double-left" @class="btn-flat modal-close close" @title="templates.close"
+             @action={{action "hide"}}/>
+    <div class="title">
+      <h3 id="discourse-modal-title">templates.insert_template</h3>
+    </div>
+  </div>
+  <div class="modal-body hijacked-modal-body discourse-templates discourse-templates-modal">
+    {{templates-filterable-list
+      model=model
+      onInsertTemplate=(action "insertTemplate")
+    }}
+  </div>
+{{/if}}
