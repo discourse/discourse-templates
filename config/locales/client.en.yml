@@ -1,5 +1,10 @@
 en:
   js:
+    keyboard_shortcuts_help:
+      templates:
+        title: "Templates (within a textarea)"
+        insert_template: "%{shortcut} Insert template"
     templates:
       filter_hint: "Filter by title..."
       insert_template: "Insert template"
+      close_templates: "Close the templates selector"
