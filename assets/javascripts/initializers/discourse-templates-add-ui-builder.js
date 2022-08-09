@@ -54,7 +54,9 @@ function addKeyboardShortcut(api, container) {
 
   api.addKeyboardShortcut(
     `${modKey}+shift+i`,
-    () => {
+    (event) => {
+      event.preventDefault();
+
       const appEvents = container.lookup("service:app-events");
 
       const activeElement = document.activeElement;
