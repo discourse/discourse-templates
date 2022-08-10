@@ -1,6 +1,5 @@
 import { action } from "@ember/object";
 import { getOwner } from "discourse-common/lib/get-owner";
-import { insertTemplateIntoComposer } from "../../lib/apply-template";
 
 const SELECTOR_EDITOR_PREVIEW =
   "#reply-control .d-editor-preview-wrapper > .d-editor-preview";
@@ -42,10 +41,5 @@ export default {
     }
 
     this.set("templatesVisible", false);
-  },
-
-  @action
-  insertTemplate(template) {
-    insertTemplateIntoComposer(this, template);
   },
 };

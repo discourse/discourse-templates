@@ -3,10 +3,12 @@ import { action } from "@ember/object";
 import { schedule } from "@ember/runloop";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
+import TextareaTextManipulation from "discourse/mixins/textarea-text-manipulation";
 import discourseComputed from "discourse-common/utils/decorators";
 import { ALL_TAGS_ID, NO_TAG_ID } from "select-kit/components/tag-drop";
+import { insertTemplateIntoComposer } from "../lib/apply-template";
 
-export default Component.extend({
+export default Component.extend(TextareaTextManipulation, {
   classNames: ["templates-filterable-list"],
 
   init() {
@@ -18,6 +20,8 @@ export default Component.extend({
       replies: [],
       selectedTag: ALL_TAGS_ID,
       availableTags: [],
+      _textarea: null,
+      ready: false,
     });
   },
 
@@ -70,10 +74,26 @@ export default Component.extend({
     this.set("selectedTag", tagId);
   },
 
+  @action
+  insertTemplate(template) {
+    this._textarea = this.textarea;
+
+    this.onBeforeInsertTemplate?.();
+
+    if (this._textarea) {
+      this._addBlock(this.getSelected(), template.templateContent);
+    } else {
+      insertTemplateIntoComposer(this, template);
+    }
+
+    this.onAfterInsertTemplate?.();
+  },
+
   _load() {
     ajax("/discourse_templates")
       .then((results) => {
         this.setProperties({
+          ready: true,
           replies: results.templates,
           availableTags: this.siteSettings.tagging_enabled
             ? Object.values(

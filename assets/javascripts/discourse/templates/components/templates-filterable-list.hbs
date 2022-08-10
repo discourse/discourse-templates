@@ -15,7 +15,7 @@
   </div>
   <div class="templates-list">
     {{#each filteredReplies as |r|}}
-      {{template-item template=r model=model onInsertTemplate=onInsertTemplate}}
+      {{template-item template=r model=model onInsertTemplate=(action "insertTemplate")}}
     {{/each}}
   </div>
 {{/conditional-loading-spinner}}

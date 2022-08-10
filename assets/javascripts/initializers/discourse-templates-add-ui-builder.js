@@ -1,7 +1,27 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 import showModal from "discourse/lib/show-modal";
 
-function initializeTemplatesUIBuilder(api) {
+export default {
+  name: "discourse-templates-add-ui-builder",
+
+  initialize(container) {
+    const siteSettings = container.lookup("service:site-settings");
+    const currentUser = container.lookup("service:current-user");
+
+    if (
+      siteSettings.discourse_templates_enabled &&
+      currentUser?.can_use_templates
+    ) {
+      withPluginApi("0.5", (api) => {
+        patchComposer(api);
+        addOptionsMenuItem(api);
+        addKeyboardShortcut(api, container);
+      });
+    }
+  },
+};
+
+function patchComposer(api) {
   api.modifyClass("controller:composer", {
     pluginId: "discourse-templates",
     actions: {
@@ -15,7 +35,9 @@ function initializeTemplatesUIBuilder(api) {
       },
     },
   });
+}
 
+function addOptionsMenuItem(api) {
   api.addToolbarPopupMenuOptionsCallback(() => {
     return {
       id: "discourse_templates_button",
@@ -26,18 +48,56 @@ function initializeTemplatesUIBuilder(api) {
   });
 }
 
-export default {
-  name: "discourse-templates-add-ui-builder",
+function addKeyboardShortcut(api, container) {
+  const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+  const modKey = isMac ? "meta" : "ctrl";
 
-  initialize(container) {
-    const siteSettings = container.lookup("site-settings:main");
-    const currentUser = container.lookup("current-user:main");
+  api.addKeyboardShortcut(
+    `${modKey}+shift+i`,
+    (event) => {
+      event.preventDefault();
 
-    if (
-      siteSettings.discourse_templates_enabled &&
-      currentUser?.can_use_templates
-    ) {
-      withPluginApi("0.5", initializeTemplatesUIBuilder);
+      const appEvents = container.lookup("service:app-events");
+
+      const activeElement = document.activeElement;
+
+      const composerModel = container.lookup("controller:composer").model;
+      const composerElement = document.querySelector(".d-editor");
+
+      if (composerModel && composerElement?.contains(activeElement)) {
+        appEvents.trigger("composer:show-preview");
+        appEvents.trigger("composer-messages:close");
+        appEvents.trigger("discourse-templates:show");
+        return;
+      }
+
+      if (activeElement?.nodeName === "TEXTAREA") {
+        const modal = document.querySelector(".d-modal");
+
+        if (modal?.contains(activeElement)) {
+          appEvents.trigger("discourse-templates:hijack-modal", {
+            textarea: activeElement,
+          });
+        } else {
+          const modalController = container.lookup(
+            "controller:discourse-templates-modal"
+          );
+
+          showModal("discourse-templates-modal");
+          modalController.set("textarea", activeElement);
+        }
+      }
+    },
+    {
+      global: true,
+      help: {
+        category: "templates",
+        name: "templates.insert_template",
+        definition: {
+          keys1: [modKey, "shift", "I"],
+          keysDelimiter: "plus",
+        },
+      },
     }
-  },
-};
+  );
+}

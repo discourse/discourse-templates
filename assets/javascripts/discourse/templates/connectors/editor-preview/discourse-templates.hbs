@@ -7,7 +7,7 @@
     }}
     {{templates-filterable-list
       model=model
-      onInsertTemplate=(action "insertTemplate")
+      onAfterInsertTemplate=(action "hide")
     }}
   </div>
 {{/if}}

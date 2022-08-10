@@ -59,7 +59,4 @@ export function insertTemplateIntoComposer(
 
   // insert the content of the template in the compose
   context.appEvents.trigger("composer:insert-block", templateContent);
-
-  // hide the template panel
-  context.send("hide");
 }
