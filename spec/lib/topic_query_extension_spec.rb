@@ -18,7 +18,7 @@ describe DiscourseTemplates::TopicQueryExtension do
     fab!(:templates) do
       Fabricate.times(
         100,
-        :random_template_item,
+        :template_item,
         category: discourse_templates_category
       )
     end
@@ -39,7 +39,7 @@ describe DiscourseTemplates::TopicQueryExtension do
       expect(topics.size).to eq(templates.size)
     end
 
-    it "retrives topics from multiple parent_categories" do
+    it "retrieves topics from multiple parent_categories" do
       SiteSetting.discourse_templates_categories =
         [discourse_templates_category, other_category].map(&:id).join("|")
 
@@ -201,17 +201,16 @@ describe DiscourseTemplates::TopicQueryExtension do
       topics = topic_query.list_private_templates.topics
       expect(topics.size).to eq(private_templates_tag_a.size)
 
-      # it shouldn´t return any template if none of the tags match
+      # it shouldn't return any template if none of the tags match
       SiteSetting.discourse_templates_private_templates_tags = "other_unrelated_tag"
 
       topics = topic_query.list_private_templates.topics
       expect(topics.size).to eq(0)
     end
 
-    it "won´t list private messages received as templates" do
+    it "won't list private messages received as templates" do
       topics = topic_query.list_private_templates.topics
       expect(((topics.map(&:id) & private_messages_from_user_a.map(&:id)).any?)).to eq(false)
     end
   end
-
 end
