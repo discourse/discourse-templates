@@ -5,3 +5,12 @@
 # https://translate.discourse.org/
 
 sv:
+  js:
+    keyboard_shortcuts_help:
+      templates:
+        title: "Mallar (inom ett textområde)"
+        insert_template: "%{shortcut} Infoga mall"
+    templates:
+      filter_hint: "Filtrera efter titel..."
+      insert_template: "Infoga mall"
+      close_templates: "Stäng val av mallar"
