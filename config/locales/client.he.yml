@@ -5,3 +5,12 @@
 # https://translate.discourse.org/
 
 he:
+  js:
+    keyboard_shortcuts_help:
+      templates:
+        title: "תבניות (בתוך אזור טקסט)"
+        insert_template: "%{shortcut} הוספת תבנית"
+    templates:
+      filter_hint: "סנן לפי כותרת…"
+      insert_template: "הוספת תבנית"
+      close_templates: "סגירת בורר התבניות"
