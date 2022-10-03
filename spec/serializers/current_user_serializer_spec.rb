@@ -9,7 +9,7 @@ describe CurrentUserSerializer, type: :serializer do
 
   let(:guardian) { Guardian.new }
 
-  context "CurrentUserSerializer extension" do
+  describe "CurrentUserSerializer extension" do
     fab!(:user) { Fabricate(:user) }
 
     it "includes can_use_templates in serialization" do

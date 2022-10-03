@@ -338,7 +338,7 @@ describe DiscourseTemplates::TemplatesController do
   end
 
   describe "#use" do
-    context "check if the id received belongs to a template" do
+    describe "check if the id received belongs to a template" do
       before do
         SiteSetting.discourse_templates_categories = templates_parent_category.id.to_s
 
