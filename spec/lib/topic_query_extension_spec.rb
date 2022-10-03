@@ -11,7 +11,7 @@ describe DiscourseTemplates::TopicQueryExtension do
     TopicQuery.new(user, per_page: SiteSetting.discourse_templates_max_replies_fetched.to_i)
   end
 
-  context "list_category_templates" do
+  describe "list_category_templates" do
     fab!(:other_category) { Fabricate(:category_with_definition) }
     fab!(:other_topics) { Fabricate.times(5, :topic, category: other_category) }
     fab!(:discourse_templates_category) { Fabricate(:category_with_definition) }
@@ -115,7 +115,7 @@ describe DiscourseTemplates::TopicQueryExtension do
     end
   end
 
-  context "list_private_templates" do
+  describe "list_private_templates" do
 
     fab!(:user_a) { Fabricate(:user) }
     fab!(:user_b) { Fabricate(:user) }

@@ -9,13 +9,13 @@ describe DiscourseTemplates::TopicExtension do
     it { is_expected.to have_one :template_item_usage }
   end
 
-  context "template_item_usage_count" do
+  describe "template_item_usage_count" do
     it "retrieves usage count as expected" do
       expect(topic.template_item_usage_count).to eq(0)
     end
   end
 
-  context "increment_template_item_usage_count!" do
+  describe "increment_template_item_usage_count!" do
     it "increments usage count as expected" do
       expect(topic.template_item_usage_count).to eq(0)
 
@@ -36,10 +36,10 @@ describe DiscourseTemplates::TopicExtension do
     end
   end
 
-  context "template?" do
+  describe "template?" do
     fab!(:user) { Fabricate(:user) }
 
-    context "normal topics" do
+    context "with normal topics" do
       fab!(:templates_category) { Fabricate(:category_with_definition) }
       fab!(:template) do
         Fabricate(:template_item, category: templates_category)
@@ -70,7 +70,7 @@ describe DiscourseTemplates::TopicExtension do
       end
     end
 
-    context "private messages" do
+    describe "private messages" do
       fab!(:other_user) { Fabricate(:user) }
 
       fab!(:tag_a) { Fabricate(:tag, name: "tag-a") }

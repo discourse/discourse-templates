@@ -28,7 +28,7 @@ describe DiscourseTemplates::GuardianExtension do
     Fabricate(:private_category_with_definition, group: Group[:admins])
   end
 
-  context "can_use_templates?" do
+  describe "can_use_templates?" do
     let!(:guardian) { Guardian.new(user) }
 
     before do
@@ -71,7 +71,7 @@ describe DiscourseTemplates::GuardianExtension do
     end
   end
 
-  context "can_use_category_templates??" do
+  describe "can_use_category_templates??" do
     it "is false for anonymous users" do
       expect(Guardian.new.can_use_category_templates?).to eq(false)
     end
@@ -107,7 +107,7 @@ describe DiscourseTemplates::GuardianExtension do
     end
   end
 
-  context "can_use_private_templates?" do
+  describe "can_use_private_templates?" do
 
     before do
       SiteSetting.tagging_enabled = true
