@@ -21,6 +21,12 @@ function templatesPretender(server, helper) {
   );
 }
 
+async function selectCategory() {
+  const categoryChooser = selectKit(".category-chooser");
+  await categoryChooser.expand();
+  await categoryChooser.selectRowByValue(2);
+}
+
 acceptance("discourse-templates", function (needs) {
   needs.settings({
     discourse_templates_enabled: true,
@@ -39,6 +45,7 @@ acceptance("discourse-templates", function (needs) {
     await visit("/");
 
     await click("#create-topic");
+    await selectCategory();
     await popUpMenu.expand();
     await popUpMenu.selectRowByValue("showTemplatesButton");
 
@@ -82,6 +89,7 @@ acceptance("discourse-templates", function (needs) {
     await visit("/");
 
     await click("#create-topic");
+    await selectCategory();
     await popUpMenu.expand();
     await popUpMenu.selectRowByValue("showTemplatesButton");
 
@@ -107,6 +115,7 @@ acceptance("discourse-templates", function (needs) {
     await visit("/");
 
     await click("#create-topic");
+    await selectCategory();
     await popUpMenu.expand();
     await popUpMenu.selectRowByValue("showTemplatesButton");
 
@@ -140,6 +149,7 @@ acceptance(
       await visit("/");
 
       await click("#create-topic");
+      await selectCategory();
       await popUpMenu.expand();
       await popUpMenu.selectRowByValue("showTemplatesButton");
 
@@ -202,6 +212,7 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
     await visit("/");
 
     await click("#create-topic");
+    await selectCategory();
     const textarea = query(".d-editor-input");
 
     await triggerKeyboardShortcut();
@@ -212,6 +223,7 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
     await visit("/");
 
     await click("#create-topic");
+    await selectCategory();
 
     const textarea = query(".d-editor-input");
     await textarea.focus();
