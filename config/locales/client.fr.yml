@@ -5,3 +5,12 @@
 # https://translate.discourse.org/
 
 fr:
+  js:
+    keyboard_shortcuts_help:
+      templates:
+        title: "Modèles (dans une zone de texte)"
+        insert_template: "%{shortcut} Insérer un modèle"
+    templates:
+      filter_hint: "Filtrer par titre…"
+      insert_template: "Insérer un modèle"
+      close_templates: "Fermer le sélecteur de modèles"

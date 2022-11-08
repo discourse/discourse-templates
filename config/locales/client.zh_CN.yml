@@ -5,3 +5,12 @@
 # https://translate.discourse.org/
 
 zh_CN:
+  js:
+    keyboard_shortcuts_help:
+      templates:
+        title: "模板（文本区域内）"
+        insert_template: "%{shortcut} 插入模板"
+    templates:
+      filter_hint: "按标题过滤…"
+      insert_template: "插入模板"
+      close_templates: "关闭模板选择器"
