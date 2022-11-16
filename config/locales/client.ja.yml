@@ -5,3 +5,12 @@
 # https://translate.discourse.org/
 
 ja:
+  js:
+    keyboard_shortcuts_help:
+      templates:
+        title: "テンプレート (テキストエリア内)"
+        insert_template: "%{shortcut} テンプレートの挿入"
+    templates:
+      filter_hint: "タイトルで絞り込みます..."
+      insert_template: "テンプレートの挿入"
+      close_templates: "テンプレートセレクタを閉じる"

@@ -5,3 +5,12 @@
 # https://translate.discourse.org/
 
 ar:
+  js:
+    keyboard_shortcuts_help:
+      templates:
+        title: "القوالب (داخل منطقة نصية)"
+        insert_template: "%{shortcut} إدراج قالب"
+    templates:
+      filter_hint: "التصفية حسب العنوان..."
+      insert_template: "إدراج قالب"
+      close_templates: "إغلاق محدِّد القوالب"
