@@ -5,3 +5,12 @@
 # https://translate.discourse.org/
 
 nl:
+  js:
+    keyboard_shortcuts_help:
+      templates:
+        title: "Sjablonen (binnen een tekstgebied)"
+        insert_template: "%{shortcut} Sjabloon invoegen"
+    templates:
+      filter_hint: "Filteren op titel..."
+      insert_template: "Sjabloon invoegen"
+      close_templates: "Sluit de sjabloonkiezer"
