@@ -29,53 +29,34 @@ describe DiscourseTemplates::TemplatesController do
     Fabricate(
       :private_category_with_definition,
       parent_category_id: templates_parent_category.id,
-      group: Group[:moderators]
+      group: Group[:moderators],
     )
   end
   fab!(:templates_sub_category_group) do
     Fabricate(
       :private_category_with_definition,
       parent_category_id: templates_parent_category.id,
-      group: group1
+      group: group1,
     )
   end
   fab!(:templates_sub_category_group2) do
     Fabricate(
       :private_category_with_definition,
       parent_category_id: templates_parent_category.id,
-      group: group2
+      group: group2,
     )
   end
   fab!(:templates_sub_category_everyone) do
-    Fabricate(
-      :category_with_definition,
-      parent_category_id: templates_parent_category.id
-    )
+    Fabricate(:category_with_definition, parent_category_id: templates_parent_category.id)
   end
-  fab!(:template_item0) do
-    Fabricate(:template_item, category: templates_parent_category)
-  end
-  fab!(:template_item1) do
-    Fabricate(:template_item, category: templates_parent_category)
-  end
-  fab!(:template_item2) do
-    Fabricate(:template_item, category: templates_parent_category)
-  end
-  fab!(:template_item3) do
-    Fabricate(:template_item, category: templates_sub_category_moderators)
-  end
-  fab!(:template_item4) do
-    Fabricate(:template_item, category: templates_sub_category_group)
-  end
-  fab!(:template_item5) do
-    Fabricate(:template_item, category: templates_sub_category_group2)
-  end
-  fab!(:template_item6) do
-    Fabricate(:template_item, category: templates_sub_category_everyone)
-  end
-  fab!(:template_item7) do
-    Fabricate(:template_item, category: templates_sub_category_everyone)
-  end
+  fab!(:template_item0) { Fabricate(:template_item, category: templates_parent_category) }
+  fab!(:template_item1) { Fabricate(:template_item, category: templates_parent_category) }
+  fab!(:template_item2) { Fabricate(:template_item, category: templates_parent_category) }
+  fab!(:template_item3) { Fabricate(:template_item, category: templates_sub_category_moderators) }
+  fab!(:template_item4) { Fabricate(:template_item, category: templates_sub_category_group) }
+  fab!(:template_item5) { Fabricate(:template_item, category: templates_sub_category_group2) }
+  fab!(:template_item6) { Fabricate(:template_item, category: templates_sub_category_everyone) }
+  fab!(:template_item7) { Fabricate(:template_item, category: templates_sub_category_everyone) }
   fab!(:template_item_from_other_parent) do
     Fabricate(:template_item, category: templates_other_parent_category)
   end
@@ -87,25 +68,17 @@ describe DiscourseTemplates::TemplatesController do
       :tag,
       topics: [template_item4],
       categories: [templates_sub_category_moderators],
-      name: "category-tag"
+      name: "category-tag",
     )
   end
   fab!(:everyone_tag) do
     Fabricate(
       :tag,
-      topics: [
-        template_item0,
-        template_item1,
-        template_item2,
-        template_item6,
-        template_item7
-      ],
-      name: "use-anywhere"
+      topics: [template_item0, template_item1, template_item2, template_item6, template_item7],
+      name: "use-anywhere",
     )
   end
-  fab!(:group_tag) do
-    Fabricate(:tag, topics: [template_item4, template_item5], name: "use-group")
-  end
+  fab!(:group_tag) { Fabricate(:tag, topics: [template_item4, template_item5], name: "use-group") }
 
   before { SiteSetting.discourse_templates_enabled = true }
 
@@ -114,29 +87,31 @@ describe DiscourseTemplates::TemplatesController do
       before { sign_in(user) }
 
       it "should list topics in the category assigned as templates" do
-        SiteSetting.discourse_templates_categories =
-          templates_sub_category_everyone.id.to_s
+        SiteSetting.discourse_templates_categories = templates_sub_category_everyone.id.to_s
 
         get "/discourse_templates"
         expect(response.status).to eq(200)
 
         parsed = response.parsed_body
-        expected_response =
-          serialize_topics([template_item6, template_item7].sort_by(&:title))
+        expected_response = serialize_topics([template_item6, template_item7].sort_by(&:title))
 
         expect(parsed["templates"]).to eq(expected_response)
       end
 
       it "should list topics from multiple parent categories" do
-        SiteSetting.discourse_templates_categories =
-          [templates_sub_category_everyone, templates_other_parent_category].map(&:id).join("|")
+        SiteSetting.discourse_templates_categories = [
+          templates_sub_category_everyone,
+          templates_other_parent_category,
+        ].map(&:id).join("|")
 
         get "/discourse_templates"
         expect(response.status).to eq(200)
 
         parsed = response.parsed_body
         expected_response =
-          serialize_topics([template_item6, template_item7, template_item_from_other_parent].sort_by(&:title))
+          serialize_topics(
+            [template_item6, template_item7, template_item_from_other_parent].sort_by(&:title),
+          )
 
         expect(parsed["templates"]).to eq(expected_response)
       end
@@ -155,28 +130,25 @@ describe DiscourseTemplates::TemplatesController do
               template_item1,
               template_item2,
               template_item6,
-              template_item7
-            ].sort_by(&:title)
+              template_item7,
+            ].sort_by(&:title),
           )
 
         expect(parsed["templates"]).to eq(expected_response)
       end
 
       it "should not be able to use templates if can't see topics in the category" do
-        SiteSetting.discourse_templates_categories =
-          templates_sub_category_moderators.id.to_s
+        SiteSetting.discourse_templates_categories = templates_sub_category_moderators.id.to_s
 
         get "/discourse_templates"
         expect(response.status).to eq(403)
 
-        SiteSetting.discourse_templates_categories =
-          templates_sub_category_group.id.to_s
+        SiteSetting.discourse_templates_categories = templates_sub_category_group.id.to_s
 
         get "/discourse_templates"
         expect(response.status).to eq(403)
 
-        SiteSetting.discourse_templates_categories =
-          templates_sub_category_group2.id.to_s
+        SiteSetting.discourse_templates_categories = templates_sub_category_group2.id.to_s
 
         get "/discourse_templates"
         expect(response.status).to eq(403)
@@ -190,8 +162,10 @@ describe DiscourseTemplates::TemplatesController do
       end
 
       it "should list topics in the parent category and subcategories that the moderator can see" do
-        SiteSetting.discourse_templates_categories =
-          [templates_parent_category, templates_other_parent_category].map(&:id).join("|")
+        SiteSetting.discourse_templates_categories = [
+          templates_parent_category,
+          templates_other_parent_category,
+        ].map(&:id).join("|")
 
         get "/discourse_templates"
         expect(response.status).to eq(200)
@@ -206,8 +180,8 @@ describe DiscourseTemplates::TemplatesController do
               template_item3,
               template_item6,
               template_item7,
-              template_item_from_other_parent
-            ].sort_by(&:title)
+              template_item_from_other_parent,
+            ].sort_by(&:title),
           )
 
         expect(parsed["templates"]).to eq(expected_response)
@@ -216,8 +190,10 @@ describe DiscourseTemplates::TemplatesController do
 
     context "when an user belonging to a group is logged" do
       it "should list topics in the parent category and subcategories that the user can see" do
-        SiteSetting.discourse_templates_categories =
-          [templates_parent_category, templates_other_parent_category].map(&:id).join("|")
+        SiteSetting.discourse_templates_categories = [
+          templates_parent_category,
+          templates_other_parent_category,
+        ].map(&:id).join("|")
 
         sign_in(user_in_group1)
 
@@ -234,8 +210,8 @@ describe DiscourseTemplates::TemplatesController do
               template_item4,
               template_item6,
               template_item7,
-              template_item_from_other_parent
-            ].sort_by(&:title)
+              template_item_from_other_parent,
+            ].sort_by(&:title),
           )
 
         expect(parsed["templates"]).to eq(expected_response)
@@ -255,8 +231,8 @@ describe DiscourseTemplates::TemplatesController do
               template_item5,
               template_item6,
               template_item7,
-              template_item_from_other_parent
-            ].sort_by(&:title)
+              template_item_from_other_parent,
+            ].sort_by(&:title),
           )
 
         expect(parsed["templates"]).to eq(expected_response)
@@ -265,8 +241,10 @@ describe DiscourseTemplates::TemplatesController do
 
     context "when an admin is logged" do
       before do
-        SiteSetting.discourse_templates_categories =
-          [templates_parent_category, templates_other_parent_category].map(&:id).join("|")
+        SiteSetting.discourse_templates_categories = [
+          templates_parent_category,
+          templates_other_parent_category,
+        ].map(&:id).join("|")
 
         sign_in(admin)
         Group.refresh_automatic_groups!
@@ -288,8 +266,8 @@ describe DiscourseTemplates::TemplatesController do
               template_item5,
               template_item6,
               template_item7,
-              template_item_from_other_parent
-            ].sort_by(&:title)
+              template_item_from_other_parent,
+            ].sort_by(&:title),
           )
 
         expect(parsed["templates"]).to eq(expected_response)
@@ -318,8 +296,8 @@ describe DiscourseTemplates::TemplatesController do
               template_item5,
               template_item6,
               template_item7,
-              template_item_from_other_parent
-            ].sort_by(&:title)
+              template_item_from_other_parent,
+            ].sort_by(&:title),
           )
 
         expect(parsed["templates"]).to eq(expected_response)
@@ -328,8 +306,7 @@ describe DiscourseTemplates::TemplatesController do
 
     context "when no user is signed in" do
       it "should return 404" do
-        SiteSetting.discourse_templates_categories =
-          templates_sub_category_everyone.id.to_s
+        SiteSetting.discourse_templates_categories = templates_sub_category_everyone.id.to_s
 
         get "/discourse_templates"
         expect(response.status).to eq(404)
@@ -382,8 +359,7 @@ describe DiscourseTemplates::TemplatesController do
 
     context "when a template is used" do
       before do
-        SiteSetting.discourse_templates_categories =
-          templates_sub_category_moderators.id.to_s
+        SiteSetting.discourse_templates_categories = templates_sub_category_moderators.id.to_s
 
         Group.refresh_automatic_groups!(:moderators)
         sign_in(moderator)

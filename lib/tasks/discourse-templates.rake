@@ -14,15 +14,9 @@ def create_category
   old_settings_canned_replies_groups =
     SiteSetting.find_by(name: "canned_replies_groups")&.value || ""
   old_settings_canned_replies_everyone_enabled =
-    SiteSetting
-      .find_by(name: "canned_replies_everyone_enabled")
-      &.value
-      &.starts_with?("t") || false
+    SiteSetting.find_by(name: "canned_replies_everyone_enabled")&.value&.starts_with?("t") || false
   old_settings_canned_replies_everyone_can_edit =
-    SiteSetting
-      .find_by(name: "canned_replies_everyone_can_edit")
-      &.value
-      &.starts_with?("t") || false
+    SiteSetting.find_by(name: "canned_replies_everyone_can_edit")&.value&.starts_with?("t") || false
 
   category = nil
 
@@ -32,7 +26,7 @@ def create_category
         name: I18n.t("default_category_template.name")[0...50], # category names are limited to 50 chars in discourse
         description: I18n.t("default_category_template.description"),
         user: Discourse.system_user,
-        all_topics_wiki: true
+        all_topics_wiki: true,
       )
   end
 
@@ -43,8 +37,7 @@ def create_category
   # if they are available
   groups = Group.all
 
-  granted_group_list =
-    old_settings_canned_replies_groups.split("|").map(&:downcase)
+  granted_group_list = old_settings_canned_replies_groups.split("|").map(&:downcase)
 
   groups
     .select { |group| granted_group_list.include?(group.name.downcase) }
@@ -54,10 +47,7 @@ def create_category
   # based on the two settings available
   if old_settings_canned_replies_everyone_enabled
     permissions.merge!(
-      {
-        everyone:
-          old_settings_canned_replies_everyone_can_edit ? :full : :readonly
-      }
+      { everyone: old_settings_canned_replies_everyone_can_edit ? :full : :readonly },
     )
   end
 
@@ -79,12 +69,7 @@ def create_category
 end
 
 def create_topic_from_v1_reply(reply, category)
-  topic =
-    Topic.new(
-      title: reply[:title],
-      user: Discourse.system_user,
-      category_id: category.id
-    )
+  topic = Topic.new(title: reply[:title], user: Discourse.system_user, category_id: category.id)
   topic.custom_fields = { DiscourseTemplates::PLUGIN_NAME => reply[:id] }
   topic.skip_callbacks = true
 
@@ -92,21 +77,13 @@ def create_topic_from_v1_reply(reply, category)
     raise "ERROR importing #{reply[:id]}: #{reply[:title]} - #{errors.full_messages}"
   end
 
-  post =
-    topic.posts.build(
-      raw: reply[:content],
-      user: Discourse.system_user,
-      wiki: true
-    )
+  post = topic.posts.build(raw: reply[:content], user: Discourse.system_user, wiki: true)
   unless post.save!(validate: false)
     raise "ERROR importing #{reply[:id]}: #{reply[:title]} - #{errors.full_messages}"
   end
 
   usage_count =
-    DiscourseTemplates::UsageCount.new(
-      topic_id: topic.id,
-      usage_count: reply[:usages] || 0
-    )
+    DiscourseTemplates::UsageCount.new(topic_id: topic.id, usage_count: reply[:usages] || 0)
   usage_count.save
 
   topic
@@ -151,13 +128,10 @@ def migrate_data
 
       canned_replies_plugin_name = "discourse-canned-replies"
       canned_replies_store_name = "replies"
-      replies_v1 =
-        PluginStore.get(canned_replies_plugin_name, canned_replies_store_name)
+      replies_v1 = PluginStore.get(canned_replies_plugin_name, canned_replies_store_name)
 
       count = replies_v1&.size || 0
-      if count == 0
-        puts "no canned replies from v1 were located to be migrated to v2"
-      end
+      puts "no canned replies from v1 were located to be migrated to v2" if count == 0
 
       # duplicate topic titles must be temporarily enabled to ensure that all
       # canned replies can be imported since there is no guarantee that a previous
@@ -171,10 +145,7 @@ def migrate_data
 
         # search if a previous topic was already imported from this canned reply
         existing_topic =
-          TopicCustomField.find_by(
-            name: DiscourseTemplates::PLUGIN_NAME,
-            value: reply[:id]
-          )
+          TopicCustomField.find_by(name: DiscourseTemplates::PLUGIN_NAME, value: reply[:id])
 
         if existing_topic.blank?
           topic = create_topic_from_v1_reply(reply, category)
@@ -220,11 +191,12 @@ def purge_old_data
       canned_replies_plugin_name = "discourse-canned-replies"
       canned_replies_store_name = "replies"
       old_replies =
-        PluginStoreRow.find_by(plugin_name: canned_replies_plugin_name, key: canned_replies_store_name)
+        PluginStoreRow.find_by(
+          plugin_name: canned_replies_plugin_name,
+          key: canned_replies_store_name,
+        )
 
-      if old_replies.present?
-        old_replies.destroy!
-      end
+      old_replies.destroy! if old_replies.present?
 
       puts "Finished!"
     rescue StandardError => e

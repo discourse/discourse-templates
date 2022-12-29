@@ -3,9 +3,7 @@
 require "rails_helper"
 
 describe CurrentUserSerializer, type: :serializer do
-  subject(:serializer) do
-    described_class.new(user, scope: guardian, root: false)
-  end
+  subject(:serializer) { described_class.new(user, scope: guardian, root: false) }
 
   describe "CurrentUserSerializer extension" do
     let!(:user) { Fabricate(:user) }

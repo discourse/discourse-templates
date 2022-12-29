@@ -16,11 +16,7 @@ describe DiscourseTemplates::TopicQueryExtension do
     fab!(:other_topics) { Fabricate.times(5, :topic, category: other_category) }
     fab!(:discourse_templates_category) { Fabricate(:category_with_definition) }
     fab!(:templates) do
-      Fabricate.times(
-        100,
-        :template_item,
-        category: discourse_templates_category
-      )
+      Fabricate.times(100, :template_item, category: discourse_templates_category)
     end
 
     before { SiteSetting.discourse_templates_categories = discourse_templates_category.id.to_s }
@@ -40,8 +36,10 @@ describe DiscourseTemplates::TopicQueryExtension do
     end
 
     it "retrieves topics from multiple parent_categories" do
-      SiteSetting.discourse_templates_categories =
-        [discourse_templates_category, other_category].map(&:id).join("|")
+      SiteSetting.discourse_templates_categories = [
+        discourse_templates_category,
+        other_category,
+      ].map(&:id).join("|")
 
       topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size + other_topics.size)
@@ -73,9 +71,7 @@ describe DiscourseTemplates::TopicQueryExtension do
       expect(topics.size).to eq(templates.size)
 
       unlisted_replies = templates.sample(templates.size * 0.15)
-      unlisted_replies.each do |template|
-        template.update_status("visible", false, user)
-      end
+      unlisted_replies.each { |template| template.update_status("visible", false, user) }
 
       topics = topic_query.list_category_templates.topics
       expect(topics.size).to eq(templates.size - unlisted_replies.size)
@@ -116,7 +112,6 @@ describe DiscourseTemplates::TopicQueryExtension do
   end
 
   describe "list_private_templates" do
-
     fab!(:user_a) { Fabricate(:user) }
     fab!(:user_b) { Fabricate(:user) }
     fab!(:group) do
@@ -133,29 +128,13 @@ describe DiscourseTemplates::TopicQueryExtension do
     fab!(:tag_a) { Fabricate(:tag, name: "templates") }
     fab!(:tag_b) { Fabricate(:tag, name: "private-templates") }
     fab!(:private_templates_tag_a) do
-      Fabricate.times(
-        25,
-        :private_template_item,
-        user: user,
-        tags: [tag_a]
-      )
+      Fabricate.times(25, :private_template_item, user: user, tags: [tag_a])
     end
     fab!(:private_templates_tag_b) do
-      Fabricate.times(
-        18,
-        :private_template_item,
-        user: user,
-        tags: [tag_b]
-      )
+      Fabricate.times(18, :private_template_item, user: user, tags: [tag_b])
     end
     fab!(:private_messages_from_user_a) do
-      Fabricate.times(
-        5,
-        :private_template_item,
-        user: user_a,
-        recipient: user,
-        tags: [tag_a]
-      )
+      Fabricate.times(5, :private_template_item, user: user_a, recipient: user, tags: [tag_a])
     end
 
     before do

@@ -16,14 +16,10 @@ module DiscourseTemplates
       template_id = params.require(:id)
       topic = Topic.find_by(id: template_id)
 
-      if topic.blank?
-        return render_json_error("Invalid template id", status: 422)
-      end
+      return render_json_error("Invalid template id", status: 422) if topic.blank?
 
       unless topic.template?(current_user)
-        return(
-          render_json_error("Id does not belong to a template", status: 422)
-        )
+        return(render_json_error("Id does not belong to a template", status: 422))
       end
 
       record = topic.increment_template_item_usage_count!
@@ -36,7 +32,7 @@ module DiscourseTemplates
         # limit defined in a hidden setting with a sane default value (1000) that should be enough to fetch all
         # templates at once in most cases, but it still small enough to prevent things to blow up if the user
         # selected the wrong category in settings with thousands and thousands of posts
-        per_page: SiteSetting.discourse_templates_max_replies_fetched.to_i
+        per_page: SiteSetting.discourse_templates_max_replies_fetched.to_i,
       }
 
       topic_query = TopicQuery.new(current_user, list_options)

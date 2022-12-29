@@ -11,9 +11,9 @@ Fabricator(:template_item, from: :topic) do
         if transients[:content]
           transients[:content]
         else
-          sequence(:title) do |i|
-            "This is the content of an awesome template #{i.to_s.rjust(6, "0")}"
-          end
+          sequence(
+            :title,
+          ) { |i| "This is the content of an awesome template #{i.to_s.rjust(6, "0")}" }
         end
       end
     end
@@ -31,9 +31,9 @@ Fabricator(:private_template_item, from: :private_message_topic) do
         if transients[:content]
           transients[:content]
         else
-          sequence(:title) do |i|
-            "This is the content of an awesome private template #{i.to_s.rjust(6, "0")}"
-          end
+          sequence(
+            :title,
+          ) { |i| "This is the content of an awesome private template #{i.to_s.rjust(6, "0")}" }
         end
       end
     end

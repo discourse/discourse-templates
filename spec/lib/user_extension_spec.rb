@@ -45,14 +45,18 @@ describe DiscourseTemplates::UserExtension do
 
     context "when multiples parent categories are specified" do
       it "is false when the user cannot access any of the parent categories" do
-        SiteSetting.discourse_templates_categories =
-          [templates_private_category, templates_private_category2].map(&:id).join("|")
+        SiteSetting.discourse_templates_categories = [
+          templates_private_category,
+          templates_private_category2,
+        ].map(&:id).join("|")
         expect(user.can_use_templates?).to eq(false)
       end
 
       it "is true when user can access at least one of the parent categories" do
-        SiteSetting.discourse_templates_categories =
-          [templates_private_category, templates_private_category2].map(&:id).join("|")
+        SiteSetting.discourse_templates_categories = [
+          templates_private_category,
+          templates_private_category2,
+        ].map(&:id).join("|")
         expect(moderator.can_use_templates?).to eq(true)
       end
     end
@@ -117,11 +121,10 @@ describe DiscourseTemplates::UserExtension do
       expect(user.can_use_private_templates?).to eq(false)
       expect(other_user.can_use_private_templates?).to eq(true)
 
-      SiteSetting.discourse_templates_groups_allowed_private_templates = "#{group.id.to_s}|#{other_group.id.to_s}"
+      SiteSetting.discourse_templates_groups_allowed_private_templates =
+        "#{group.id.to_s}|#{other_group.id.to_s}"
       expect(user.can_use_private_templates?).to eq(true)
       expect(other_user.can_use_private_templates?).to eq(true)
     end
-
   end
-
 end

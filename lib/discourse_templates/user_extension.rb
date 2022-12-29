@@ -27,7 +27,8 @@ module DiscourseTemplates::UserExtension
     return false if SiteSetting.discourse_templates_private_templates_tags.blank?
     return true if guardian.is_staff?
 
-    allowed_groups_ids = SiteSetting.discourse_templates_groups_allowed_private_templates&.split("|")&.map(&:to_i)
+    allowed_groups_ids =
+      SiteSetting.discourse_templates_groups_allowed_private_templates&.split("|")&.map(&:to_i)
 
     allowed_groups_ids.any? do |group_id|
       return false if group_id == 0
