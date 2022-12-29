@@ -35,7 +35,8 @@ describe DiscourseTemplates::GuardianExtension do
       SiteSetting.discourse_templates_categories = discourse_templates_category.id.to_s
       SiteSetting.tagging_enabled = true
       SiteSetting.discourse_templates_enable_private_templates = true
-      SiteSetting.discourse_templates_groups_allowed_private_templates = "#{group.id.to_s}|#{other_group.id.to_s}"
+      SiteSetting.discourse_templates_groups_allowed_private_templates =
+        "#{group.id.to_s}|#{other_group.id.to_s}"
       SiteSetting.discourse_templates_private_templates_tags = "templates"
     end
 
@@ -94,21 +95,24 @@ describe DiscourseTemplates::GuardianExtension do
 
     context "when multiple parent categories are specified" do
       it "is true when user can access at least one category" do
-        SiteSetting.discourse_templates_categories =
-          [templates_private_category, templates_private_category2].map(&:id).join("|")
+        SiteSetting.discourse_templates_categories = [
+          templates_private_category,
+          templates_private_category2,
+        ].map(&:id).join("|")
         expect(Guardian.new(moderator).can_use_category_templates?).to eq(true)
       end
 
       it "is false when user can't access any category" do
-        SiteSetting.discourse_templates_categories =
-          [templates_private_category, templates_private_category2].map(&:id).join("|")
+        SiteSetting.discourse_templates_categories = [
+          templates_private_category,
+          templates_private_category2,
+        ].map(&:id).join("|")
         expect(Guardian.new(user).can_use_category_templates?).to eq(false)
       end
     end
   end
 
   describe "can_use_private_templates?" do
-
     before do
       SiteSetting.tagging_enabled = true
       SiteSetting.discourse_templates_enable_private_templates = true
@@ -136,7 +140,8 @@ describe DiscourseTemplates::GuardianExtension do
       expect(Guardian.new(user).can_use_private_templates?).to eq(false)
       expect(Guardian.new(other_user).can_use_private_templates?).to eq(true)
 
-      SiteSetting.discourse_templates_groups_allowed_private_templates = "#{group.id.to_s}|#{other_group.id.to_s}"
+      SiteSetting.discourse_templates_groups_allowed_private_templates =
+        "#{group.id.to_s}|#{other_group.id.to_s}"
       expect(Guardian.new(user).can_use_private_templates?).to eq(true)
       expect(Guardian.new(other_user).can_use_private_templates?).to eq(true)
     end

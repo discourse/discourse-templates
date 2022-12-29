@@ -5,8 +5,8 @@ module DiscourseTemplates::TopicsHelper
     JSON.parse(
       ActiveModel::ArraySerializer.new(
         topics,
-        each_serializer: DiscourseTemplates::TemplatesSerializer
-      ).to_json
+        each_serializer: DiscourseTemplates::TemplatesSerializer,
+      ).to_json,
     )
   end
 end

@@ -27,22 +27,23 @@ module DiscourseTemplates::TopicExtension
   def template?(user)
     parent_categories_ids = SiteSetting.discourse_templates_categories&.split("|")&.map(&:to_i)
 
-    all_templates_categories_ids = parent_categories_ids.flat_map do |category_id|
-      Category.subcategory_ids(category_id).prepend(category_id)
-    end
+    all_templates_categories_ids =
+      parent_categories_ids.flat_map do |category_id|
+        Category.subcategory_ids(category_id).prepend(category_id)
+      end
 
     # it is template if the topic belongs to any of the template categories
     return true if all_templates_categories_ids.include?(self.category_id)
 
-    return false unless SiteSetting.tagging_enabled &&
-      SiteSetting.discourse_templates_enable_private_templates
+    unless SiteSetting.tagging_enabled && SiteSetting.discourse_templates_enable_private_templates
+      return false
+    end
 
     # or is a private message where the user is the author and at least one tag
     # matches with the tags configured in the plugin for private templates
     private_template_tags = SiteSetting.discourse_templates_private_templates_tags&.split("|")
 
-    archetype == Archetype.private_message &&
-      user_id == user&.id &&
+    archetype == Archetype.private_message && user_id == user&.id &&
       (tags.map(&:name) & private_template_tags).any?
   end
 end

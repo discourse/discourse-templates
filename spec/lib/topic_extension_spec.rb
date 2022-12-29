@@ -41,22 +41,19 @@ describe DiscourseTemplates::TopicExtension do
 
     context "with normal topics" do
       fab!(:templates_category) { Fabricate(:category_with_definition) }
-      fab!(:template) do
-        Fabricate(:template_item, category: templates_category)
+      fab!(:template) { Fabricate(:template_item, category: templates_category) }
+      fab!(:templates_subcategory) do
+        Fabricate(:category_with_definition, parent_category: templates_category)
       end
-      fab!(:templates_subcategory) { Fabricate(:category_with_definition, parent_category: templates_category) }
-      fab!(:template_on_sub) do
-        Fabricate(:template_item, category: templates_category)
-      end
+      fab!(:template_on_sub) { Fabricate(:template_item, category: templates_category) }
       fab!(:other_category) { Fabricate(:category_with_definition) }
       fab!(:other_topic) { Fabricate(:topic, category: other_category) }
 
-      before do
-        SiteSetting.discourse_templates_categories = templates_category.id.to_s
-      end
+      before { SiteSetting.discourse_templates_categories = templates_category.id.to_s }
 
       it "returns true when topic belongs to one of the assigned categories" do
-        SiteSetting.discourse_templates_categories = "#{templates_category.id.to_s}|#{other_category.id.to_s}"
+        SiteSetting.discourse_templates_categories =
+          "#{templates_category.id.to_s}|#{other_category.id.to_s}"
         expect(template.template?(user)).to eq(true)
         expect(other_topic.template?(user)).to eq(true)
       end
@@ -115,6 +112,5 @@ describe DiscourseTemplates::TopicExtension do
         expect(private_template_tag_b.template?(user)).to eq(true)
       end
     end
-
   end
 end

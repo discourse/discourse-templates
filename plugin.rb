@@ -36,15 +36,11 @@ after_initialize do
   reloadable_patch do |plugin|
     Guardian.class_eval { prepend DiscourseTemplates::GuardianExtension }
     Topic.class_eval { prepend DiscourseTemplates::TopicExtension }
-    TopicQuery.class_eval do
-      prepend DiscourseTemplates::TopicQueryExtension
-    end
+    TopicQuery.class_eval { prepend DiscourseTemplates::TopicQueryExtension }
     User.class_eval { prepend DiscourseTemplates::UserExtension }
   end
 
-  add_to_serializer(:current_user, :can_use_templates) do
-    object.can_use_templates?
-  end
+  add_to_serializer(:current_user, :can_use_templates) { object.can_use_templates? }
 
   Discourse::Application.routes.append do
     mount ::DiscourseTemplates::Engine, at: "/discourse_templates"
