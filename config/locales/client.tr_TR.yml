@@ -8,9 +8,9 @@ tr_TR:
   js:
     keyboard_shortcuts_help:
       templates:
-        title: "Şablonlar (bir metin alanı içinde)"
+        title: "Şablonlar (metin alanı içinde)"
         insert_template: "%{shortcut} Şablon ekle"
     templates:
       filter_hint: "Başlığa göre filtrele..."
       insert_template: "Şablon ekle"
-      close_templates: "Şablon seçiciyi kapatın"
+      close_templates: "Şablon seçiciyi kapat"
