@@ -1,21 +1,25 @@
-{{#conditional-loading-spinner condition=loadingReplies}}
+<ConditionalLoadingSpinner @condition={{loadingReplies}}>
   <div class="templates-filter-bar">
     {{#if siteSettings.tagging_enabled}}
-      {{templates-tag-drop
-        availableTags=availableTags
-        tagId=selectedTag
-        onChange=(action "changeSelectedTag")
-      }}
+      <TemplatesTagDrop
+        @availableTags={{availableTags}}
+        @tagId={{selectedTag}}
+        @onChange={{action "changeSelectedTag"}}
+      />
     {{/if}}
-    {{text-field
-      class="templates-filter"
-      value=listFilter
-      placeholder=(i18n "templates.filter_hint")
-    }}
+    <TextField
+      @class="templates-filter"
+      @value={{listFilter}}
+      placeholder={{i18n "templates.filter_hint"}}
+    />
   </div>
   <div class="templates-list">
     {{#each filteredReplies as |r|}}
-      {{template-item template=r model=model onInsertTemplate=(action "insertTemplate")}}
+      <TemplateItem
+        @template={{r}}
+        @model={{model}}
+        @onInsertTemplate={{action "insertTemplate"}}
+      />
     {{/each}}
   </div>
-{{/conditional-loading-spinner}}
+</ConditionalLoadingSpinner>

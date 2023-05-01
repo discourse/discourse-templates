@@ -1,17 +1,22 @@
 {{#if active}}
   <div class="modal-header hijacked-modal-header">
-    <DButton @icon="angle-double-left" @class="btn-flat modal-close close"
-             @title="templates.close_templates"
-             @action={{action "hide"}}/>
+    <DButton
+      @icon="angle-double-left"
+      class="btn-flat modal-close close"
+      @title="templates.close_templates"
+      @action={{action "hide"}}
+    />
     <div class="title">
       <h3 id="discourse-modal-title">{{i18n "templates.insert_template"}}</h3>
     </div>
   </div>
-  <div class="modal-body hijacked-modal-body discourse-templates discourse-templates-modal">
-    {{templates-filterable-list
-      textarea=textarea
-      model=model
-      onBeforeInsertTemplate=(action "hide")
-    }}
+  <div
+    class="modal-body hijacked-modal-body discourse-templates discourse-templates-modal"
+  >
+    <TemplatesFilterableList
+      @textarea={{textarea}}
+      @model={{model}}
+      @onBeforeInsertTemplate={{action "hide"}}
+    />
   </div>
 {{/if}}

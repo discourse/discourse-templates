@@ -3,11 +3,11 @@
     <div class="template-item-title-text">{{template.title}}</div>
 
     <div class="actions">
-      {{d-button
-        class="templates-apply"
-        action=(action "apply")
-        icon="far-clipboard"
-      }}
+      <DButton
+        @class="templates-apply"
+        @action={{action "apply"}}
+        @icon="far-clipboard"
+      />
     </div>
   </summary>
 
