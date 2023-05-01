@@ -1,7 +1,10 @@
 {{#if templatesVisible}}
   <div class="d-editor-preview">
-    <DButton class="modal-close close btn-flat" @action={{action "hide"}} />
-    @icon="times" />
+    <DButton
+      class="modal-close close btn-flat"
+      @action={{action "hide"}}
+      @icon="times"
+    />
     <TemplatesFilterableList
       @model={{model}}
       @onAfterInsertTemplate={{action "hide"}}
