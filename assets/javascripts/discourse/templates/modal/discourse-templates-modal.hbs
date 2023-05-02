@@ -1,10 +1,10 @@
-{{#d-modal-body
-  title="templates.insert_template"
-  class="discourse-templates discourse-templates-modal"
-}}
-  {{templates-filterable-list
-    textarea=textarea
-    model=model
-    onAfterInsertTemplate=(action "hide")
-  }}
-{{/d-modal-body}}
+<DModalBody
+  @title="templates.insert_template"
+  @class="discourse-templates discourse-templates-modal"
+>
+  <TemplatesFilterableList
+    @textarea={{textarea}}
+    @model={{model}}
+    @onAfterInsertTemplate={{action "hide"}}
+  />
+</DModalBody>
