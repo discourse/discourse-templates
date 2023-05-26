@@ -6,6 +6,6 @@
   "license": "GPL-2.0-only",
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.7",
-    "eslint-config-discourse": "^3.1.0"
+    "eslint-config-discourse": "^3.4.0"
   }
 }
