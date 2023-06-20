@@ -5,3 +5,12 @@
 # https://translate.discourse.org/
 
 pl_PL:
+  js:
+    keyboard_shortcuts_help:
+      templates:
+        title: "Szablony (w obszarze tekstowym)"
+        insert_template: "%{shortcut} Wstaw szablon"
+    templates:
+      filter_hint: "Filtruj według tytułu..."
+      insert_template: "Wstaw szablon"
+      close_templates: "Zamknij selektor szablonów"
