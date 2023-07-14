@@ -5,7 +5,7 @@ import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { prepareTemplate } from "../../../lib/apply-template";
 
-export default class Item extends Component {
+export default class DTemplatesItem extends Component {
   @action
   apply() {
     const template = prepareTemplate(

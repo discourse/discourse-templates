@@ -11,7 +11,7 @@ import { ALL_TAGS_ID, NO_TAG_ID } from "select-kit/components/tag-drop";
 import { insertTemplateIntoComposer } from "../../../lib/apply-template";
 import TextareaManipulator from "../../../lib/textarea-manipulator";
 
-export default class TemplatesFilterableList extends Component {
+export default class DTemplatesFilterableList extends Component {
   @service siteSettings;
 
   @tracked loading = true;

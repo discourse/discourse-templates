@@ -3,10 +3,10 @@
   <ConditionalLoadingSpinner @condition={{this.loading}}>
     <div class="templates-filter-bar">
       {{#if this.siteSettings.tagging_enabled}}
-        <TemplatesTagDrop
+        <DTemplates::TagDrop
           @availableTags={{this.availableTags}}
           @tagId={{this.selectedTag}}
-          @onChange={{action "changeSelectedTag"}}
+          @onChangeSelectedTag={{action "changeSelectedTag"}}
         />
       {{/if}}
       <TextField
