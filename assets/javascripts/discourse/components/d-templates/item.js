@@ -1,5 +1,5 @@
-import Component from "@glimmer/component";
 import { action } from "@ember/object";
+import Component from "@glimmer/component";
 
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";

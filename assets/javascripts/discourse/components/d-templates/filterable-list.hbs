@@ -1,0 +1,28 @@
+<div class="templates-filterable-list" {{did-insert this.load}}>
+
+  <ConditionalLoadingSpinner @condition={{this.loading}}>
+    <div class="templates-filter-bar">
+      {{#if this.siteSettings.tagging_enabled}}
+        <TemplatesTagDrop
+          @availableTags={{this.availableTags}}
+          @tagId={{this.selectedTag}}
+          @onChange={{action "changeSelectedTag"}}
+        />
+      {{/if}}
+      <TextField
+        class="templates-filter"
+        @value={{this.listFilter}}
+        placeholder={{i18n "templates.filter_hint"}}
+      />
+    </div>
+    <div class="templates-list">
+      {{#each this.filteredReplies as |r|}}
+        <DTemplates::Item
+          @template={{r}}
+          @model={{@model}}
+          @onInsertTemplate={{action "insertTemplate"}}
+        />
+      {{/each}}
+    </div>
+  </ConditionalLoadingSpinner>
+</div>
