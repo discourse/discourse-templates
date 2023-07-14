@@ -6,7 +6,7 @@ import { popupAjaxError } from "discourse/lib/ajax-error";
 import TextareaTextManipulation from "discourse/mixins/textarea-text-manipulation";
 import discourseComputed from "discourse-common/utils/decorators";
 import { ALL_TAGS_ID, NO_TAG_ID } from "select-kit/components/tag-drop";
-import { insertTemplateIntoComposer } from "../lib/apply-template";
+import { insertTemplateIntoComposer } from "../../lib/apply-template";
 
 export default Component.extend(TextareaTextManipulation, {
   classNames: ["templates-filterable-list"],

@@ -3,7 +3,7 @@ import { action } from "@ember/object";
 
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
-import { prepareTemplate } from "../lib/apply-template";
+import { prepareTemplate } from "../../lib/apply-template";
 
 export default Component.extend({
   classNames: ["templates-template-item"],
