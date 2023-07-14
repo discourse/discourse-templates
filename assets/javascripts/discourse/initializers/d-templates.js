@@ -27,7 +27,7 @@ function patchComposer(api) {
     actions: {
       showTemplatesButton() {
         if (this.site.mobileView) {
-          showModal("discourse-templates-modal");
+          showModal("d-templates-modal");
         } else {
           this.appEvents.trigger("composer:show-preview");
           this.appEvents.trigger("discourse-templates:show");
@@ -80,10 +80,10 @@ function addKeyboardShortcut(api, container) {
           });
         } else {
           const modalController = container.lookup(
-            "controller:discourse-templates-modal"
+            "controller:d-templates-modal"
           );
 
-          showModal("discourse-templates-modal");
+          showModal("d-templates-modal");
           modalController.set("textarea", activeElement);
         }
       }

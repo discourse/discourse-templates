@@ -284,16 +284,14 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
     assert.ok(
       [
         ...queryAll(
-          ".modal-inner-container > :not(.discourse-templates-modal-hijacker)"
+          ".modal-inner-container > :not(.d-templates-modal-hijacker)"
         ),
       ].every((elem) => elem.style.display === "none"),
       "it hides all other elements inside the modal's inner container"
     );
     assert.ok(
       [
-        ...queryAll(
-          ".modal-inner-container > .discourse-templates-modal-hijacker"
-        ),
+        ...queryAll(".modal-inner-container > .d-templates-modal-hijacker"),
       ].every((elem) => elem.style.display !== "none"),
       "it shows the UI injected in the modal"
     );
@@ -317,9 +315,7 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
     await textarea.focus();
 
     const existingElements = [
-      ...queryAll(
-        ".modal-inner-container > :not(.discourse-templates-modal-hijacker)"
-      ),
+      ...queryAll(".modal-inner-container > :not(.d-templates-modal-hijacker)"),
     ];
     const existingStyleDisplay = existingElements.map(
       (elem) => elem.style.display
