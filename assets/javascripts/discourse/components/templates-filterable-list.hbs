@@ -15,7 +15,7 @@
   </div>
   <div class="templates-list">
     {{#each filteredReplies as |r|}}
-      <TemplateItem
+      <DTemplates::Item
         @template={{r}}
         @model={{model}}
         @onInsertTemplate={{action "insertTemplate"}}
