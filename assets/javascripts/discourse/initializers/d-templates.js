@@ -1,5 +1,4 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
-import DTemplatesModalForm from "../components/d-templates/modal/form";
 
 export default {
   name: "discourse-templates-add-ui-builder",
@@ -13,7 +12,7 @@ export default {
       currentUser?.can_use_templates
     ) {
       withPluginApi("0.5", (api) => {
-        patchComposer(api);
+        patchComposer(api, container);
         addOptionsMenuItem(api);
         addKeyboardShortcut(api, container);
       });
@@ -22,16 +21,13 @@ export default {
 };
 
 function patchComposer(api, container) {
+  const dTemplates = container.lookup("service:d-templates");
+
   api.modifyClass("controller:composer", {
     pluginId: "discourse-templates",
     actions: {
-      showTemplatesButton() {
-        if (this.site.mobileView) {
-          container.lookup("service:modal").show(DTemplatesModalForm);
-        } else {
-          this.appEvents.trigger("composer:show-preview");
-          this.appEvents.trigger("discourse-templates:show");
-        }
+      insertTemplate() {
+        dTemplates.insertIntoComposer();
       },
     },
   });
@@ -42,7 +38,7 @@ function addOptionsMenuItem(api) {
     return {
       id: "discourse_templates_button",
       icon: "far-clipboard",
-      action: "showTemplatesButton",
+      action: "insertTemplate",
       label: "templates.insert_template",
     };
   });
@@ -58,6 +54,7 @@ function addKeyboardShortcut(api, container) {
       event.preventDefault();
 
       const appEvents = container.lookup("service:app-events");
+      const dTemplates = container.lookup("service:d-templates");
 
       const activeElement = document.activeElement;
 
@@ -72,17 +69,8 @@ function addKeyboardShortcut(api, container) {
       }
 
       if (activeElement?.nodeName === "TEXTAREA") {
-        const modal = document.querySelector(".d-modal");
-
-        if (modal?.contains(activeElement)) {
-          appEvents.trigger("discourse-templates:hijack-modal", {
-            textarea: activeElement,
-          });
-        } else {
-          container
-            .lookup("service:modal")
-            .show(DTemplatesModalForm, { model: { textarea: activeElement } });
-        }
+        dTemplates.insertIntoTextArea(activeElement);
+        return;
       }
     },
     {
