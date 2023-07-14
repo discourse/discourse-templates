@@ -1,0 +1,13 @@
+<DModal
+  @closeModal={{@closeModal}}
+  @title={{i18n "templates.insert_template"}}
+  class="discourse-templates d-templates-modal"
+>
+  <:body>
+    <DTemplates::FilterableList
+      @textarea={{this.textarea}}
+      @model={{this.dataModel}}
+      @onAfterInsertTemplate={{@closeModal}}
+    />
+  </:body>
+</DModal>
