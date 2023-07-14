@@ -30,6 +30,7 @@ async function selectCategory() {
 acceptance("discourse-templates", function (needs) {
   needs.settings({
     discourse_templates_enabled: true,
+    allow_uncategorized_topics: true,
     tagging_enabled: true,
   });
   needs.user({
