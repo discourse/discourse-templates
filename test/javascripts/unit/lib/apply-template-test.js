@@ -47,71 +47,71 @@ discourseModule(
 
         // simple replacement
         template = {
-          templateTitle: `test title:%{${key}}`,
-          templateContent: `test response:%{${key}}, %{${key}}, %{${key}}`,
+          title: `test title:%{${key}}`,
+          content: `test response:%{${key}}, %{${key}}, %{${key}}`,
         };
         expected = {
-          templateTitle: `test title:${expectedVariables[key]}`,
-          templateContent: `test response:${expectedVariables[key]}, ${expectedVariables[key]}, ${expectedVariables[key]}`,
+          title: `test title:${expectedVariables[key]}`,
+          content: `test response:${expectedVariables[key]}, ${expectedVariables[key]}, ${expectedVariables[key]}`,
         };
 
         preparedTemplate = prepareTemplate(
-          template.templateTitle,
-          template.templateContent,
+          template.title,
+          template.content,
           fakeModel
         );
         assert.strictEqual(
-          preparedTemplate.templateTitle,
-          expected.templateTitle,
+          preparedTemplate.title,
+          expected.title,
           `%{${key}} simple replacement/title`
         );
         assert.strictEqual(
-          preparedTemplate.templateContent,
-          expected.templateContent,
+          preparedTemplate.content,
+          expected.content,
           `%{${key}} simple replacement/content`
         );
 
         // replacement with fallback (variables defined)
         template = {
-          templateTitle: `test title:%{${key},fallback:${key.toUpperCase()}}`,
-          templateContent: `test response:%{${key},fallback:${key.toUpperCase()}}, %{${key},fallback:${key.toUpperCase()}}, %{${key},fallback:${key.toUpperCase()}}`,
+          title: `test title:%{${key},fallback:${key.toUpperCase()}}`,
+          content: `test response:%{${key},fallback:${key.toUpperCase()}}, %{${key},fallback:${key.toUpperCase()}}, %{${key},fallback:${key.toUpperCase()}}`,
         };
 
         preparedTemplate = prepareTemplate(
-          template.templateTitle,
-          template.templateContent,
+          template.title,
+          template.content,
           fakeModel
         );
         assert.strictEqual(
-          preparedTemplate.templateTitle,
-          expected.templateTitle,
+          preparedTemplate.title,
+          expected.title,
           `%{${key}} replacement with fallback - variable defined/title`
         );
         assert.strictEqual(
-          preparedTemplate.templateContent,
-          expected.templateContent,
+          preparedTemplate.content,
+          expected.content,
           `%{${key}} replacement with fallback - variable defined/content`
         );
 
         // replacement with fallback (variables undefined)
         expected = {
-          templateTitle: `test title:${key.toUpperCase()}`,
-          templateContent: `test response:${key.toUpperCase()}, ${key.toUpperCase()}, ${key.toUpperCase()}`,
+          title: `test title:${key.toUpperCase()}`,
+          content: `test response:${key.toUpperCase()}, ${key.toUpperCase()}, ${key.toUpperCase()}`,
         };
 
         preparedTemplate = prepareTemplate(
-          template.templateTitle,
-          template.templateContent,
+          template.title,
+          template.content,
           EmberObject.create()
         );
         assert.strictEqual(
-          preparedTemplate.templateTitle,
-          expected.templateTitle,
+          preparedTemplate.title,
+          expected.title,
           `%{${key}} replacement with fallback - variable undefined/title`
         );
         assert.strictEqual(
-          preparedTemplate.templateContent,
-          expected.templateContent,
+          preparedTemplate.content,
+          expected.content,
           `%{${key}} replacement with fallback - variable undefined/content`
         );
       });

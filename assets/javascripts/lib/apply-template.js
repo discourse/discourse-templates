@@ -1,6 +1,4 @@
-import { getOwner } from "discourse-common/lib/get-owner";
-
-export function prepareTemplate(templateTitle, templateContent, model) {
+export function prepareTemplate(title, content, model) {
   // Replace variables with values.
   if (model) {
     const vars = {
@@ -19,46 +17,28 @@ export function prepareTemplate(templateTitle, templateContent, model) {
 
     for (let key in vars) {
       if (vars[key]) {
-        templateTitle = templateTitle.replace(
+        title = title.replace(
           new RegExp(`%{${key}(,fallback:.[^}]*)?}`, "g"),
           vars[key]
         );
-        templateContent = templateContent.replace(
+        content = content.replace(
           new RegExp(`%{${key}(,fallback:.[^}]*)?}`, "g"),
           vars[key]
         );
       } else {
-        templateTitle = templateTitle.replace(
+        title = title.replace(
           new RegExp(`%{${key},fallback:(.[^}]*)}`, "g"),
           "$1"
         );
-        templateTitle = templateTitle.replace(new RegExp(`%{${key}}`, "g"), "");
-        templateContent = templateContent.replace(
+        title = title.replace(new RegExp(`%{${key}}`, "g"), "");
+        content = content.replace(
           new RegExp(`%{${key},fallback:(.[^}]*)}`, "g"),
           "$1"
         );
-        templateContent = templateContent.replace(
-          new RegExp(`%{${key}}`, "g"),
-          ""
-        );
+        content = content.replace(new RegExp(`%{${key}}`, "g"), "");
       }
     }
   }
 
-  return { templateTitle, templateContent };
-}
-
-export function insertTemplateIntoComposer(
-  model,
-  { templateTitle, templateContent }
-) {
-  // insert the title if blank
-  if (model && !model.title) {
-    model.set("title", templateTitle);
-  }
-
-  // insert the content of the template in the compose
-  getOwner(this)
-    .lookup("service:app-events")
-    .trigger("composer:insert-block", templateContent);
+  return { title, content };
 }

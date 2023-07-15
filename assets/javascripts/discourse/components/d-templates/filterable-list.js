@@ -3,13 +3,10 @@ import { inject as service } from "@ember/service";
 import { schedule } from "@ember/runloop";
 import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
-import { getOwner } from "discourse-common/lib/get-owner";
 import { bind } from "discourse-common/utils/decorators";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { ALL_TAGS_ID, NO_TAG_ID } from "select-kit/components/tag-drop";
-import { insertTemplateIntoComposer } from "../../../lib/apply-template";
-import TextareaManipulator from "../../../lib/textarea-manipulator";
 
 export default class DTemplatesFilterableList extends Component {
   @service siteSettings;
@@ -103,15 +100,7 @@ export default class DTemplatesFilterableList extends Component {
   @action
   insertTemplate(template) {
     this.args.onBeforeInsertTemplate?.();
-
-    if (this.args.textarea) {
-      new TextareaManipulator(getOwner(this), this.args.textarea).addBlock(
-        template.templateContent
-      );
-    } else {
-      insertTemplateIntoComposer(this.args.model, template);
-    }
-
+    this.args.onInsertTemplate?.(template);
     this.args.onAfterInsertTemplate?.();
   }
 }

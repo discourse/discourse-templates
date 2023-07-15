@@ -27,7 +27,7 @@ function patchComposer(api, container) {
     pluginId: "discourse-templates",
     actions: {
       insertTemplate() {
-        dTemplates.insertIntoComposer();
+        dTemplates.showComposerUI();
       },
     },
   });
@@ -47,30 +47,17 @@ function addOptionsMenuItem(api) {
 function addKeyboardShortcut(api, container) {
   const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
   const modKey = isMac ? "meta" : "ctrl";
+  const dTemplates = container.lookup("service:d-templates");
 
   api.addKeyboardShortcut(
     `${modKey}+shift+i`,
     (event) => {
       event.preventDefault();
 
-      const appEvents = container.lookup("service:app-events");
-      const dTemplates = container.lookup("service:d-templates");
-
-      const activeElement = document.activeElement;
-
-      const composerModel = container.lookup("controller:composer").model;
-      const composerElement = document.querySelector(".d-editor");
-
-      if (composerModel && composerElement?.contains(activeElement)) {
-        appEvents.trigger("composer:show-preview");
-        appEvents.trigger("composer-messages:close");
-        appEvents.trigger("discourse-templates:show");
-        return;
-      }
-
-      if (activeElement?.nodeName === "TEXTAREA") {
-        dTemplates.insertIntoTextArea(activeElement);
-        return;
+      if (dTemplates.isComposerFocused()) {
+        dTemplates.showComposerUI();
+      } else if (dTemplates.isTextAreaFocused()) {
+        dTemplates.showTextAreaUI();
       }
     },
     {

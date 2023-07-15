@@ -21,12 +21,13 @@ export default {
   },
 
   @action
-  show({ textarea }) {
+  show({ textarea, onInsertTemplate }) {
     const container = document.querySelector(".modal-inner-container");
 
     if (textarea) {
       this.set("active", true);
       this.set("textarea", textarea);
+      this.set("onInsertTemplate", onInsertTemplate);
 
       Array.from(container.children).forEach((element) => {
         if (element === this.element) {

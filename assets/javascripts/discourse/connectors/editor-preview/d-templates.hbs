@@ -1,4 +1,4 @@
-{{#if templatesVisible}}
+{{#if this.templatesVisible}}
   <div class="d-editor-preview">
     <DButton
       class="modal-close close btn-flat"
@@ -6,7 +6,7 @@
       @icon="times"
     />
     <DTemplates::FilterableList
-      @model={{this.model}}
+      @onInsertTemplate={{this.onInsertTemplate}}
       @onAfterInsertTemplate={{action "hide"}}
     />
   </div>
