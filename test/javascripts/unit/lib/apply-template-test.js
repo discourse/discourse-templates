@@ -1,12 +1,13 @@
 import EmberObject from "@ember/object";
 import { discourseModule } from "discourse/tests/helpers/qunit-helpers";
-import { prepareTemplate } from "discourse/plugins/discourse-templates/lib/apply-template";
+import { replaceVariables } from "discourse/plugins/discourse-templates/lib/replace-variables";
+import extractVariablesFromComposerModel from "discourse/plugins/discourse-templates/lib/variables-composer";
 import { test } from "qunit";
 
 discourseModule(
-  "Unit | Plugins | discourse-templates | Lib | apply-template",
+  "Unit | Plugins | discourse-templates | Lib | replace-variables",
   function () {
-    test("prepareTemplate", function (assert) {
+    test("replaceVariables", function (assert) {
       const expectedVariables = {
         my_username: "heisenberg",
         my_name: "Walter White",
@@ -55,10 +56,12 @@ discourseModule(
           content: `test response:${expectedVariables[key]}, ${expectedVariables[key]}, ${expectedVariables[key]}`,
         };
 
-        preparedTemplate = prepareTemplate(
+        const templateVariables = extractVariablesFromComposerModel(fakeModel);
+
+        preparedTemplate = replaceVariables(
           template.title,
           template.content,
-          fakeModel
+          templateVariables
         );
         assert.strictEqual(
           preparedTemplate.title,
@@ -77,10 +80,10 @@ discourseModule(
           content: `test response:%{${key},fallback:${key.toUpperCase()}}, %{${key},fallback:${key.toUpperCase()}}, %{${key},fallback:${key.toUpperCase()}}`,
         };
 
-        preparedTemplate = prepareTemplate(
+        preparedTemplate = replaceVariables(
           template.title,
           template.content,
-          fakeModel
+          templateVariables
         );
         assert.strictEqual(
           preparedTemplate.title,
@@ -99,10 +102,10 @@ discourseModule(
           content: `test response:${key.toUpperCase()}, ${key.toUpperCase()}, ${key.toUpperCase()}`,
         };
 
-        preparedTemplate = prepareTemplate(
+        preparedTemplate = replaceVariables(
           template.title,
           template.content,
-          EmberObject.create()
+          {}
         );
         assert.strictEqual(
           preparedTemplate.title,

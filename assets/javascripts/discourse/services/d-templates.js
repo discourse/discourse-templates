@@ -1,8 +1,9 @@
 import Service, { inject as service } from "@ember/service";
 import { getOwner } from "discourse-common/lib/get-owner";
 import DTemplatesModalForm from "../components/d-templates/modal/form";
-import { prepareTemplate } from "../../lib/apply-template";
+import { replaceVariables } from "../../lib/replace-variables";
 import TextareaManipulator from "../../lib/textarea-manipulator";
+import extractVariablesFromComposerModel from "../../lib/variables-composer";
 
 export default class DTemplatesService extends Service {
   @service appEvents;
@@ -72,7 +73,7 @@ export default class DTemplatesService extends Service {
   }
 
   #insertTemplateIntoTextArea(textarea, template) {
-    template = prepareTemplate(template.title, template.content); // generic textarea with unknown model
+    template = replaceVariables(template.title, template.content); // generic textarea with unknown model
 
     new TextareaManipulator(getOwner(this), textarea).addBlock(
       template.content
@@ -81,7 +82,12 @@ export default class DTemplatesService extends Service {
 
   #insertTemplateIntoComposer(template) {
     const composerModel = getOwner(this).lookup("controller:composer").model;
-    template = prepareTemplate(template.title, template.content, composerModel);
+    const templateVariables = extractVariablesFromComposerModel(composerModel);
+    template = replaceVariables(
+      template.title,
+      template.content,
+      templateVariables
+    );
 
     // insert the title if blank
     if (composerModel && !composerModel.title) {
