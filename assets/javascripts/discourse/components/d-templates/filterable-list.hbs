@@ -6,7 +6,7 @@
         <DTemplates::TagDrop
           @availableTags={{this.availableTags}}
           @tagId={{this.selectedTag}}
-          @onChangeSelectedTag={{action "changeSelectedTag"}}
+          @onChangeSelectedTag={{this.changeSelectedTag}}
         />
       {{/if}}
       <TextField
@@ -20,7 +20,7 @@
         <DTemplates::Item
           @template={{r}}
           @model={{@model}}
-          @onInsertTemplate={{action "insertTemplate"}}
+          @onInsertTemplate={{this.insertTemplate}}
         />
       {{/each}}
     </div>

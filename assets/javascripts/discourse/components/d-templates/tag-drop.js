@@ -41,6 +41,6 @@ export default class DTemplatesTagDrop extends TagDrop {
   onChange(tagId, tag) {
     // overrides the action onChange of the parent with the value received in
     // the property onChangeSelectedTag in the handlebars template
-    this.onChangeSelectedTag && this.onChangeSelectedTag(tagId, tag);
+    this.onChangeSelectedTag?.(tagId, tag);
   }
 }
