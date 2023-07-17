@@ -1,3 +1,4 @@
+import { getOwner } from "discourse-common/lib/get-owner";
 import { withPluginApi } from "discourse/lib/plugin-api";
 
 export default {
@@ -12,22 +13,20 @@ export default {
       currentUser?.can_use_templates
     ) {
       withPluginApi("0.5", (api) => {
-        patchComposer(api, container);
+        patchComposer(api);
         addOptionsMenuItem(api);
-        addKeyboardShortcut(api, container);
+        addKeyboardShortcut(api);
       });
     }
   },
 };
 
-function patchComposer(api, container) {
-  const dTemplates = container.lookup("service:d-templates");
-
+function patchComposer(api) {
   api.modifyClass("controller:composer", {
     pluginId: "discourse-templates",
     actions: {
       insertTemplate() {
-        dTemplates.showComposerUI();
+        getOwner(this).lookup("service:d-templates").showComposerUI();
       },
     },
   });
@@ -44,15 +43,15 @@ function addOptionsMenuItem(api) {
   });
 }
 
-function addKeyboardShortcut(api, container) {
+function addKeyboardShortcut(api) {
   const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
   const modKey = isMac ? "meta" : "ctrl";
-  const dTemplates = container.lookup("service:d-templates");
 
   api.addKeyboardShortcut(
     `${modKey}+shift+i`,
     (event) => {
       event.preventDefault();
+      const dTemplates = getOwner(this).lookup("service:d-templates");
 
       if (dTemplates.isComposerFocused()) {
         dTemplates.showComposerUI();
