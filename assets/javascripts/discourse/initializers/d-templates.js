@@ -1,4 +1,3 @@
-import { getOwner } from "discourse-common/lib/get-owner";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import DTemplatesModalForm from "../components/d-templates/modal/form";
 
@@ -22,13 +21,13 @@ export default {
   },
 };
 
-function patchComposer(api) {
+function patchComposer(api, container) {
   api.modifyClass("controller:composer", {
     pluginId: "discourse-templates",
     actions: {
       showTemplatesButton() {
         if (this.site.mobileView) {
-          getOwner(this).lookup("service:modal").show(DTemplatesModalForm);
+          container.lookup("service:modal").show(DTemplatesModalForm);
         } else {
           this.appEvents.trigger("composer:show-preview");
           this.appEvents.trigger("discourse-templates:show");
@@ -80,7 +79,7 @@ function addKeyboardShortcut(api, container) {
             textarea: activeElement,
           });
         } else {
-          getOwner(this)
+          container
             .lookup("service:modal")
             .show(DTemplatesModalForm, { model: { textarea: activeElement } });
         }
