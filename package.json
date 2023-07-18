@@ -1,11 +1,11 @@
 {
   "name": "discourse-templates",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "repository": "https://github.com/discourse/discourse-templates",
   "author": "Discourse",
   "license": "GPL-2.0-only",
   "devDependencies": {
-    "@arkweid/lefthook": "^0.7.7",
-    "eslint-config-discourse": "^3.1.0"
+    "lefthook": "^1.2.0",
+    "eslint-config-discourse": "^3.5.0"
   }
 }

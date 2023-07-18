@@ -1,3 +1,5 @@
+import { getOwner } from "discourse-common/lib/get-owner";
+
 export function prepareTemplate(templateTitle, templateContent, model) {
   // Replace variables with values.
   if (model) {
@@ -47,16 +49,16 @@ export function prepareTemplate(templateTitle, templateContent, model) {
 }
 
 export function insertTemplateIntoComposer(
-  context,
+  model,
   { templateTitle, templateContent }
 ) {
-  const model = context.get("model");
-
   // insert the title if blank
   if (model && !model.title) {
     model.set("title", templateTitle);
   }
 
   // insert the content of the template in the compose
-  context.appEvents.trigger("composer:insert-block", templateContent);
+  getOwner(this)
+    .lookup("service:app-events")
+    .trigger("composer:insert-block", templateContent);
 }

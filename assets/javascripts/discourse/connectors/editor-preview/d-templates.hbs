@@ -5,8 +5,8 @@
       @action={{action "hide"}}
       @icon="times"
     />
-    <TemplatesFilterableList
-      @model={{model}}
+    <DTemplates::FilterableList
+      @model={{this.model}}
       @onAfterInsertTemplate={{action "hide"}}
     />
   </div>

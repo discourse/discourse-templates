@@ -1,5 +1,5 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
-import showModal from "discourse/lib/show-modal";
+import DTemplatesModalForm from "../components/d-templates/modal/form";
 
 export default {
   name: "discourse-templates-add-ui-builder",
@@ -21,13 +21,13 @@ export default {
   },
 };
 
-function patchComposer(api) {
+function patchComposer(api, container) {
   api.modifyClass("controller:composer", {
     pluginId: "discourse-templates",
     actions: {
       showTemplatesButton() {
         if (this.site.mobileView) {
-          showModal("discourse-templates-modal");
+          container.lookup("service:modal").show(DTemplatesModalForm);
         } else {
           this.appEvents.trigger("composer:show-preview");
           this.appEvents.trigger("discourse-templates:show");
@@ -79,12 +79,9 @@ function addKeyboardShortcut(api, container) {
             textarea: activeElement,
           });
         } else {
-          const modalController = container.lookup(
-            "controller:discourse-templates-modal"
-          );
-
-          showModal("discourse-templates-modal");
-          modalController.set("textarea", activeElement);
+          container
+            .lookup("service:modal")
+            .show(DTemplatesModalForm, { model: { textarea: activeElement } });
         }
       }
     },

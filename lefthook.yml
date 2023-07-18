@@ -4,6 +4,14 @@ pre-commit:
     rubocop:
       glob: "*.rb"
       run: bundle exec rubocop --parallel {staged_files}
+    stree:
+      glob: "*.rb"
+      run: |
+        if test -f .streerc; then
+          bundle exec stree check {staged_files}
+        else
+          echo "Stree config not detected for this repository. Skipping."
+        fi
     prettier:
       glob: "*.js"
       include: "assets/javascripts|test/javascripts"
@@ -12,15 +20,14 @@ pre-commit:
       glob: "*.scss"
       include: "assets/stylesheets"
       run: yarn prettier --list-different {staged_files}
+    prettier-hbs:
+      glob: "*.hbs"
+      include: "assets/javascripts|test/javascripts"
+      run: yarn prettier --list-different {staged_files}
     eslint:
       glob: "*.js"
       include: "assets/javascripts|test/javascripts"
       run: yarn eslint -f compact {staged_files}
-    ember-template-lint:
-      run: yarn run ember-template-lint {staged_files}
-    yaml-syntax:
-      glob: "*.{yaml,yml}"
-      run: bundle exec yaml-lint {staged_files}
 
 commands: &commands
   bundle-install:
@@ -41,11 +48,56 @@ post-merge:
 post-rewrite:
   commands: *commands
 
+fix-staged:
+  commands:
+    rubocop:
+      glob: "*.rb"
+      run: bundle exec rubocop -a --parallel {staged_files}
+    stree:
+      glob: "*.rb"
+      run: |
+        if test -f .streerc; then
+          bundle exec stree write {staged_files}
+        else
+          echo "Stree config not detected for this repository. Skipping."
+        fi
+    prettier:
+      glob: "*.{js,hbs,scss}"
+      include: "assets/javascripts|assets/stylesheets|test/javascripts"
+      run: yarn prettier --write {staged_files}
+
+fix-all:
+  commands:
+    rubocop:
+      glob: "*.rb"
+      run: bundle exec rubocop -a --parallel {all_files}
+    stree:
+      glob: "*.rb"
+      run: |
+        if test -f .streerc; then
+          bundle exec stree write {all_files}
+        else
+          echo "Stree config not detected for this repository. Skipping."
+        fi
+    prettier:
+      glob: "*.{js,hbs,scss}"
+      include: "assets/javascripts|assets/stylesheets|test/javascripts"
+      run: yarn prettier --write {all_files}
+
 lints:
   parallel: true
   commands:
     rubocop:
+      glob: "*.rb"
       run: bundle exec rubocop --parallel
+    stree:
+      glob: "*.rb"
+      run: |
+        if test -f .streerc; then
+          bundle exec stree check {staged_files}
+        else
+          echo "Stree config not detected for this repository. Skipping."
+        fi
     prettier:
       glob: "*.js"
       include: "assets/javascripts|test/javascripts"
@@ -58,8 +110,3 @@ lints:
       run: yarn eslint assets/javascripts
     eslint-test-js:
       run: yarn eslint test/javascripts
-    ember-template-lint:
-      run: yarn run ember-template-lint assets/javascripts
-    yaml-syntax:
-      glob: "*.{yaml,yml}"
-      run: bundle exec yaml-lint {all_files}
