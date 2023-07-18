@@ -2,7 +2,7 @@
 
 # name: discourse-templates
 # about: Use topics in a category as source for templates that can be quickly used in the composer
-# version: 2.3.0
+# version: 2.4.0
 # authors: Discourse (discourse-templates), Jay Pfaffman and André Pereira (canned-replies)
 # url: https://github.com/discourse/discourse-templates
 # transpile_js: true
