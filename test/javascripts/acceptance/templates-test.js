@@ -1,5 +1,6 @@
 import { click, fillIn, triggerKeyEvent, visit } from "@ember/test-helpers";
 import { clearPopupMenuOptionsCallback } from "discourse/controllers/composer";
+import { PLATFORM_KEY_MODIFIER } from "discourse/lib/keyboard-shortcuts";
 import {
   acceptance,
   count,
@@ -176,7 +177,7 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
 
   const triggerKeyboardShortcut = async () => {
     // Testing keyboard events is tough!
-    const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+    const isMac = PLATFORM_KEY_MODIFIER.toLowerCase() === "meta";
     await triggerKeyEvent(document, "keydown", "I", {
       ...(isMac ? { metaKey: true } : { ctrlKey: true }),
       shiftKey: true,

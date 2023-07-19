@@ -1,4 +1,5 @@
 import { getOwner } from "discourse-common/lib/get-owner";
+import { PLATFORM_KEY_MODIFIER } from "discourse/lib/keyboard-shortcuts";
 import { withPluginApi } from "discourse/lib/plugin-api";
 
 export default {
@@ -44,11 +45,8 @@ function addOptionsMenuItem(api) {
 }
 
 function addKeyboardShortcut(api, container) {
-  const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
-  const modKey = isMac ? "meta" : "ctrl";
-
   api.addKeyboardShortcut(
-    `${modKey}+shift+i`,
+    `${PLATFORM_KEY_MODIFIER}+shift+i`,
     (event) => {
       event.preventDefault();
       const dTemplates = container.lookup("service:d-templates");
@@ -65,7 +63,7 @@ function addKeyboardShortcut(api, container) {
         category: "templates",
         name: "templates.insert_template",
         definition: {
-          keys1: [modKey, "shift", "I"],
+          keys1: [PLATFORM_KEY_MODIFIER, "shift", "I"],
           keysDelimiter: "plus",
         },
       },
