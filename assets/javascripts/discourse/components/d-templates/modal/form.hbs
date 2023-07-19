@@ -5,8 +5,8 @@
 >
   <:body>
     <DTemplates::FilterableList
-      @textarea={{this.textarea}}
-      @onInsertTemplate={{this.onInsertTemplate}}
+      @textarea={{@model.textarea}}
+      @onInsertTemplate={{@model.onInsertTemplate}}
       @onAfterInsertTemplate={{@closeModal}}
     />
   </:body>

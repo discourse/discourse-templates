@@ -15,7 +15,7 @@ export default {
       withPluginApi("0.5", (api) => {
         patchComposer(api);
         addOptionsMenuItem(api);
-        addKeyboardShortcut(api);
+        addKeyboardShortcut(api, container);
       });
     }
   },
@@ -43,7 +43,7 @@ function addOptionsMenuItem(api) {
   });
 }
 
-function addKeyboardShortcut(api) {
+function addKeyboardShortcut(api, container) {
   const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
   const modKey = isMac ? "meta" : "ctrl";
 
@@ -51,7 +51,7 @@ function addKeyboardShortcut(api) {
     `${modKey}+shift+i`,
     (event) => {
       event.preventDefault();
-      const dTemplates = getOwner(this).lookup("service:d-templates");
+      const dTemplates = container.lookup("service:d-templates");
 
       if (dTemplates.isComposerFocused()) {
         dTemplates.showComposerUI();
