@@ -11,7 +11,7 @@ export default class DTemplatesService extends Service {
   @service site;
 
   showComposerUI() {
-    const onInsertTemplate = this.#insertTemplateIntoComposer;
+    const onInsertTemplate = this.#insertTemplateIntoComposer.bind(this);
 
     if (this.site.mobileView) {
       this.#showModal(null, onInsertTemplate); // textarea must be empty when targeting the composer
@@ -95,8 +95,6 @@ export default class DTemplatesService extends Service {
     }
 
     // insert the content of the template in the composer
-    getOwner(this)
-      .lookup("service:app-events")
-      .trigger("composer:insert-block", template.content);
+    this.appEvents.trigger("composer:insert-block", template.content);
   }
 }
