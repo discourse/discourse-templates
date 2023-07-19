@@ -22,7 +22,7 @@ export function replaceVariables(title, content, modelVariables) {
   const variables = {
     ...(modelVariables || {}),
     my_username: currentUser?.username,
-    my_name: currentUser?.name,
+    my_name: currentUser?.name || currentUser?.username,
   };
 
   if (variables && typeof variables === "object") {
