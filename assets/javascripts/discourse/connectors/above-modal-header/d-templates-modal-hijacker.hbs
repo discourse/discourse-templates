@@ -14,8 +14,8 @@
     class="modal-body hijacked-modal-body discourse-templates d-templates-modal"
   >
     <DTemplates::FilterableList
-      @textarea={{textarea}}
-      @model={{model}}
+      @textarea={{this.textarea}}
+      @onInsertTemplate={{this.onInsertTemplate}}
       @onBeforeInsertTemplate={{action "hide"}}
     />
   </div>

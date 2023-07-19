@@ -1,5 +1,6 @@
 import { click, fillIn, triggerKeyEvent, visit } from "@ember/test-helpers";
 import { clearPopupMenuOptionsCallback } from "discourse/controllers/composer";
+import { PLATFORM_KEY_MODIFIER } from "discourse/lib/keyboard-shortcuts";
 import {
   acceptance,
   count,
@@ -48,7 +49,7 @@ acceptance("discourse-templates", function (needs) {
     await click("#create-topic");
     await selectCategory();
     await popUpMenu.expand();
-    await popUpMenu.selectRowByValue("showTemplatesButton");
+    await popUpMenu.selectRowByValue("insertTemplate");
 
     const tagDropdown = selectKit(".templates-filter-bar .tag-drop");
     await tagDropdown.expand();
@@ -92,7 +93,7 @@ acceptance("discourse-templates", function (needs) {
     await click("#create-topic");
     await selectCategory();
     await popUpMenu.expand();
-    await popUpMenu.selectRowByValue("showTemplatesButton");
+    await popUpMenu.selectRowByValue("insertTemplate");
 
     await fillIn(".templates-filter-bar input.templates-filter", "test");
     assert.equal(
@@ -118,7 +119,7 @@ acceptance("discourse-templates", function (needs) {
     await click("#create-topic");
     await selectCategory();
     await popUpMenu.expand();
-    await popUpMenu.selectRowByValue("showTemplatesButton");
+    await popUpMenu.selectRowByValue("insertTemplate");
 
     await click("#template-item-9 .templates-apply");
 
@@ -152,7 +153,7 @@ acceptance(
       await click("#create-topic");
       await selectCategory();
       await popUpMenu.expand();
-      await popUpMenu.selectRowByValue("showTemplatesButton");
+      await popUpMenu.selectRowByValue("insertTemplate");
 
       assert.ok(
         !exists(".templates-filter-bar .tag-drop"),
@@ -176,7 +177,7 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
 
   const triggerKeyboardShortcut = async () => {
     // Testing keyboard events is tough!
-    const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+    const isMac = PLATFORM_KEY_MODIFIER.toLowerCase() === "meta";
     await triggerKeyEvent(document, "keydown", "I", {
       ...(isMac ? { metaKey: true } : { ctrlKey: true }),
       shiftKey: true,

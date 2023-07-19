@@ -1,12 +1,13 @@
 import EmberObject from "@ember/object";
 import { discourseModule } from "discourse/tests/helpers/qunit-helpers";
-import { prepareTemplate } from "discourse/plugins/discourse-templates/lib/apply-template";
+import { replaceVariables } from "discourse/plugins/discourse-templates/lib/replace-variables";
+import extractVariablesFromComposerModel from "discourse/plugins/discourse-templates/lib/variables-composer";
 import { test } from "qunit";
 
 discourseModule(
-  "Unit | Plugins | discourse-templates | Lib | apply-template",
+  "Unit | Plugins | discourse-templates | Lib | replace-variables",
   function () {
-    test("prepareTemplate", function (assert) {
+    test("replaceVariables", function (assert) {
       const expectedVariables = {
         my_username: "heisenberg",
         my_name: "Walter White",
@@ -47,71 +48,73 @@ discourseModule(
 
         // simple replacement
         template = {
-          templateTitle: `test title:%{${key}}`,
-          templateContent: `test response:%{${key}}, %{${key}}, %{${key}}`,
+          title: `test title:%{${key}}`,
+          content: `test response:%{${key}}, %{${key}}, %{${key}}`,
         };
         expected = {
-          templateTitle: `test title:${expectedVariables[key]}`,
-          templateContent: `test response:${expectedVariables[key]}, ${expectedVariables[key]}, ${expectedVariables[key]}`,
+          title: `test title:${expectedVariables[key]}`,
+          content: `test response:${expectedVariables[key]}, ${expectedVariables[key]}, ${expectedVariables[key]}`,
         };
 
-        preparedTemplate = prepareTemplate(
-          template.templateTitle,
-          template.templateContent,
-          fakeModel
+        const templateVariables = extractVariablesFromComposerModel(fakeModel);
+
+        preparedTemplate = replaceVariables(
+          template.title,
+          template.content,
+          templateVariables
         );
         assert.strictEqual(
-          preparedTemplate.templateTitle,
-          expected.templateTitle,
+          preparedTemplate.title,
+          expected.title,
           `%{${key}} simple replacement/title`
         );
         assert.strictEqual(
-          preparedTemplate.templateContent,
-          expected.templateContent,
+          preparedTemplate.content,
+          expected.content,
           `%{${key}} simple replacement/content`
         );
 
         // replacement with fallback (variables defined)
         template = {
-          templateTitle: `test title:%{${key},fallback:${key.toUpperCase()}}`,
-          templateContent: `test response:%{${key},fallback:${key.toUpperCase()}}, %{${key},fallback:${key.toUpperCase()}}, %{${key},fallback:${key.toUpperCase()}}`,
+          title: `test title:%{${key},fallback:${key.toUpperCase()}}`,
+          content: `test response:%{${key},fallback:${key.toUpperCase()}}, %{${key},fallback:${key.toUpperCase()}}, %{${key},fallback:${key.toUpperCase()}}`,
         };
 
-        preparedTemplate = prepareTemplate(
-          template.templateTitle,
-          template.templateContent,
-          fakeModel
+        preparedTemplate = replaceVariables(
+          template.title,
+          template.content,
+          templateVariables
         );
         assert.strictEqual(
-          preparedTemplate.templateTitle,
-          expected.templateTitle,
+          preparedTemplate.title,
+          expected.title,
           `%{${key}} replacement with fallback - variable defined/title`
         );
         assert.strictEqual(
-          preparedTemplate.templateContent,
-          expected.templateContent,
+          preparedTemplate.content,
+          expected.content,
           `%{${key}} replacement with fallback - variable defined/content`
         );
 
         // replacement with fallback (variables undefined)
         expected = {
-          templateTitle: `test title:${key.toUpperCase()}`,
-          templateContent: `test response:${key.toUpperCase()}, ${key.toUpperCase()}, ${key.toUpperCase()}`,
+          title: `test title:${key.toUpperCase()}`,
+          content: `test response:${key.toUpperCase()}, ${key.toUpperCase()}, ${key.toUpperCase()}`,
         };
 
-        preparedTemplate = prepareTemplate(
-          template.templateTitle,
-          template.templateContent,
-          EmberObject.create()
+        preparedTemplate = replaceVariables(
+          template.title,
+          template.content,
+          {}
         );
         assert.strictEqual(
-          preparedTemplate.templateTitle,
-          expected.templateTitle,
+          preparedTemplate.title,
+          expected.title,
           `%{${key}} replacement with fallback - variable undefined/title`
         );
         assert.strictEqual(
-          preparedTemplate.templateContent,
-          expected.templateContent,
+          preparedTemplate.content,
+          expected.content,
           `%{${key}} replacement with fallback - variable undefined/content`
         );
       });

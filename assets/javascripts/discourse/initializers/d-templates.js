@@ -1,5 +1,6 @@
+import { getOwner } from "discourse-common/lib/get-owner";
+import { PLATFORM_KEY_MODIFIER } from "discourse/lib/keyboard-shortcuts";
 import { withPluginApi } from "discourse/lib/plugin-api";
-import DTemplatesModalForm from "../components/d-templates/modal/form";
 
 export default {
   name: "discourse-templates-add-ui-builder",
@@ -21,17 +22,12 @@ export default {
   },
 };
 
-function patchComposer(api, container) {
+function patchComposer(api) {
   api.modifyClass("controller:composer", {
     pluginId: "discourse-templates",
     actions: {
-      showTemplatesButton() {
-        if (this.site.mobileView) {
-          container.lookup("service:modal").show(DTemplatesModalForm);
-        } else {
-          this.appEvents.trigger("composer:show-preview");
-          this.appEvents.trigger("discourse-templates:show");
-        }
+      insertTemplate() {
+        getOwner(this).lookup("service:d-templates").showComposerUI();
       },
     },
   });
@@ -42,47 +38,23 @@ function addOptionsMenuItem(api) {
     return {
       id: "discourse_templates_button",
       icon: "far-clipboard",
-      action: "showTemplatesButton",
+      action: "insertTemplate",
       label: "templates.insert_template",
     };
   });
 }
 
 function addKeyboardShortcut(api, container) {
-  const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
-  const modKey = isMac ? "meta" : "ctrl";
-
   api.addKeyboardShortcut(
-    `${modKey}+shift+i`,
+    `${PLATFORM_KEY_MODIFIER}+shift+i`,
     (event) => {
       event.preventDefault();
+      const dTemplates = container.lookup("service:d-templates");
 
-      const appEvents = container.lookup("service:app-events");
-
-      const activeElement = document.activeElement;
-
-      const composerModel = container.lookup("controller:composer").model;
-      const composerElement = document.querySelector(".d-editor");
-
-      if (composerModel && composerElement?.contains(activeElement)) {
-        appEvents.trigger("composer:show-preview");
-        appEvents.trigger("composer-messages:close");
-        appEvents.trigger("discourse-templates:show");
-        return;
-      }
-
-      if (activeElement?.nodeName === "TEXTAREA") {
-        const modal = document.querySelector(".d-modal");
-
-        if (modal?.contains(activeElement)) {
-          appEvents.trigger("discourse-templates:hijack-modal", {
-            textarea: activeElement,
-          });
-        } else {
-          container
-            .lookup("service:modal")
-            .show(DTemplatesModalForm, { model: { textarea: activeElement } });
-        }
+      if (dTemplates.isComposerFocused) {
+        dTemplates.showComposerUI();
+      } else if (dTemplates.isTextAreaFocused) {
+        dTemplates.showTextAreaUI();
       }
     },
     {
@@ -91,7 +63,7 @@ function addKeyboardShortcut(api, container) {
         category: "templates",
         name: "templates.insert_template",
         definition: {
-          keys1: [modKey, "shift", "I"],
+          keys1: [PLATFORM_KEY_MODIFIER, "shift", "I"],
           keysDelimiter: "plus",
         },
       },

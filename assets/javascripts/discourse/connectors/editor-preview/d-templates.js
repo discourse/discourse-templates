@@ -25,11 +25,13 @@ export default {
   },
 
   @action
-  show() {
+  show({ onInsertTemplate }) {
     const elemEditorPreview = document.querySelector(SELECTOR_EDITOR_PREVIEW);
     if (elemEditorPreview) {
       elemEditorPreview.style.display = "none";
     }
+
+    this.set("onInsertTemplate", onInsertTemplate);
     this.set("templatesVisible", true);
   },
 
