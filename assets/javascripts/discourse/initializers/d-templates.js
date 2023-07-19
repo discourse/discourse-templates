@@ -1,6 +1,7 @@
 import { getOwner } from "discourse-common/lib/get-owner";
 import { PLATFORM_KEY_MODIFIER } from "discourse/lib/keyboard-shortcuts";
 import { withPluginApi } from "discourse/lib/plugin-api";
+import extractVariablesFromChatChannel from "../../lib/variables-chat-channel";
 
 export default {
   name: "discourse-templates-add-ui-builder",
@@ -17,6 +18,7 @@ export default {
         patchComposer(api);
         addOptionsMenuItem(api);
         addKeyboardShortcut(api, container);
+        addChatIntegration(api, container);
       });
     }
   },
@@ -44,6 +46,8 @@ function addOptionsMenuItem(api) {
   });
 }
 
+const templateTargets = [];
+
 function addKeyboardShortcut(api, container) {
   api.addKeyboardShortcut(
     `${PLATFORM_KEY_MODIFIER}+shift+i`,
@@ -53,7 +57,20 @@ function addKeyboardShortcut(api, container) {
 
       if (dTemplates.isComposerFocused) {
         dTemplates.showComposerUI();
-      } else if (dTemplates.isTextAreaFocused) {
+        return;
+      }
+
+      for (const target of templateTargets) {
+        if (
+          dTemplates.isTextAreaFocused &&
+          target?.isFocused?.(document.activeElement)
+        ) {
+          dTemplates.showTextAreaUI(target?.variables);
+          return;
+        }
+      }
+
+      if (dTemplates.isTextAreaFocused) {
         dTemplates.showTextAreaUI();
       }
     },
@@ -69,4 +86,32 @@ function addKeyboardShortcut(api, container) {
       },
     }
   );
+}
+
+function addChatIntegration(api, container) {
+  if (container.lookup("service:chat")?.userCanChat) {
+    templateTargets.push({
+      isFocused: function (element) {
+        return element?.id === "channel-composer";
+      },
+      variables: function () {
+        const chat = getOwner(this).lookup("service:chat");
+        const channelComposer = getOwner(this).lookup(
+          "service:chat-channel-composer"
+        );
+
+        const activeChannel = chat?.activeChannel;
+        const currentMessage = channelComposer?.message;
+
+        const router = getOwner(this).lookup("service:router");
+        const variables = extractVariablesFromChatChannel(
+          activeChannel,
+          currentMessage,
+          router
+        );
+
+        return variables;
+      },
+    });
+  }
 }
