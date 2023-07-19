@@ -7,12 +7,14 @@ import { test } from "qunit";
 discourseModule(
   "Unit | Plugins | discourse-templates | Lib | replace-variables",
   function () {
-    test("replaceVariables", function (assert) {
+    test("replaceVariables | composer", function (assert) {
       const expectedVariables = {
         my_username: "heisenberg",
         my_name: "Walter White",
         topic_title: "Villains",
         topic_url: "/t/villains/6",
+        context_title: "Villains",
+        context_url: "/t/villains/6",
         original_poster_username: "mr_hide",
         original_poster_name: "Dr. Henry Jekyll",
         reply_to_username: "dracula",

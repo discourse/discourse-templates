@@ -3,7 +3,7 @@ export default function extractVariablesFromComposerModel(model) {
     return {};
   }
 
-  return {
+  const composerVariables = {
     my_username: model.user.username,
     my_name: model.user.name,
     topic_title: model.topic?.title,
@@ -15,5 +15,11 @@ export default function extractVariablesFromComposerModel(model) {
     last_poster_username: model.topic?.last_poster_username,
     reply_to_or_last_poster_username:
       model.post?.username || model.topic?.last_poster_username,
+  };
+
+  return {
+    ...composerVariables,
+    context_title: composerVariables.topic_title,
+    context_url: composerVariables.topic_url,
   };
 }

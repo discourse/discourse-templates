@@ -1,6 +1,8 @@
 const allowedVariables = [
   "my_username",
   "my_name",
+  "context_title",
+  "context_url",
   "topic_title",
   "topic_url",
   "original_poster_username",
