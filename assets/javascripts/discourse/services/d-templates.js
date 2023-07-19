@@ -36,7 +36,7 @@ export default class DTemplatesService extends Service {
     }
   }
 
-  isComposerFocused() {
+  get isComposerFocused() {
     const activeElement = document.activeElement;
 
     const composerModel = getOwner(this).lookup("controller:composer").model;
@@ -45,7 +45,7 @@ export default class DTemplatesService extends Service {
     return composerModel && composerElement?.contains(activeElement);
   }
 
-  isTextAreaFocused() {
+  get isTextAreaFocused() {
     return this.#isTextArea(document.activeElement);
   }
 

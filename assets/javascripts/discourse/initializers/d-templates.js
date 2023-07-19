@@ -51,9 +51,9 @@ function addKeyboardShortcut(api, container) {
       event.preventDefault();
       const dTemplates = container.lookup("service:d-templates");
 
-      if (dTemplates.isComposerFocused()) {
+      if (dTemplates.isComposerFocused) {
         dTemplates.showComposerUI();
-      } else if (dTemplates.isTextAreaFocused()) {
+      } else if (dTemplates.isTextAreaFocused) {
         dTemplates.showTextAreaUI();
       }
     },
