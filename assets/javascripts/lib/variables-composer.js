@@ -4,8 +4,6 @@ export default function extractVariablesFromComposerModel(model) {
   }
 
   const composerVariables = {
-    my_username: model.user.username,
-    my_name: model.user.name,
     topic_title: model.topic?.title,
     topic_url: model.topic?.url,
     original_poster_username: model.topic?.details.created_by.username,
