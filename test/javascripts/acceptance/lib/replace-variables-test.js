@@ -2,7 +2,7 @@ import EmberObject from "@ember/object";
 import { test } from "qunit";
 import { acceptance } from "discourse/tests/helpers/qunit-helpers";
 import {
-  TEMPLATE_ALLOWED_VARIABLES,
+  TEMPLATES_ALLOWED_VARIABLES,
   replaceVariables,
 } from "discourse/plugins/discourse-templates/lib/replace-variables";
 import extractVariablesFromComposerModel from "discourse/plugins/discourse-templates/lib/variables-composer";
@@ -47,7 +47,7 @@ acceptance(
         },
       });
 
-      for (const key of TEMPLATE_ALLOWED_VARIABLES) {
+      for (const key of TEMPLATES_ALLOWED_VARIABLES) {
         let template, expected, preparedTemplate;
 
         // simple replacement
@@ -118,8 +118,6 @@ acceptance(
         context_url: "/chat/c/villains/6",
         reply_to_username: "dracula",
         reply_to_name: "Vlad",
-        last_poster_username: "frankenstein",
-        reply_to_or_last_poster_username: "dracula",
       };
 
       const fakeChannelModel = EmberObject.create({
@@ -141,7 +139,7 @@ acceptance(
         },
       });
 
-      for (const key of TEMPLATE_ALLOWED_VARIABLES) {
+      for (const key of TEMPLATES_ALLOWED_VARIABLES) {
         let template, expected, preparedTemplate;
 
         // simple replacement
@@ -212,7 +210,7 @@ acceptance(
     test("all variables", function (assert) {
       const router = this.container.lookup("service:router");
 
-      for (const key of TEMPLATE_ALLOWED_VARIABLES) {
+      for (const key of TEMPLATES_ALLOWED_VARIABLES) {
         let template, expected, preparedTemplate;
 
         // simple replacement

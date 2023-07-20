@@ -25,9 +25,6 @@ export default function extractVariablesFromChatThread(
       : null,
     reply_to_username: inReplyTo?.user?.username,
     reply_to_name: inReplyTo?.user?.name,
-    last_poster_username: thread?.lastMessage?.user?.username,
-    reply_to_or_last_poster_username:
-      inReplyTo?.user?.username || thread?.lastMessage?.user?.username,
   };
 
   return {

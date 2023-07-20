@@ -1,6 +1,7 @@
 import User from "discourse/models/user";
 
-export const TEMPLATE_ALLOWED_VARIABLES = Object.freeze([
+// keep this list synchronized with the list in spec/plugin_helper.rb
+export const TEMPLATES_ALLOWED_VARIABLES = Object.freeze([
   "my_username",
   "my_name",
   "chat_channel_name",
@@ -28,7 +29,7 @@ export function replaceVariables(title, content, modelVariables) {
   };
 
   if (variables && typeof variables === "object") {
-    for (const key of TEMPLATE_ALLOWED_VARIABLES) {
+    for (const key of TEMPLATES_ALLOWED_VARIABLES) {
       if (variables[key]) {
         title = title.replace(
           new RegExp(`%{${key}(,fallback:.[^}]*)?}`, "g"),
