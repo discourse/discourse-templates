@@ -3,15 +3,15 @@ export default function extractVariablesFromChatChannel(
   message,
   router
 ) {
-  if (!channel) {
+  if (!channel && !message) {
     return {};
   }
 
   const inReplyTo = message?.inReplyTo;
 
   const channelVariables = {
-    chat_channel_name: channel.title,
-    chat_channel_url: channel.routeModels
+    chat_channel_name: channel?.title,
+    chat_channel_url: channel?.routeModels
       ? router?.urlFor("chat.channel", ...channel.routeModels)
       : null,
     reply_to_username: inReplyTo?.user?.username,

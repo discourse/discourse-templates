@@ -5,6 +5,8 @@ export const TEMPLATE_ALLOWED_VARIABLES = Object.freeze([
   "my_name",
   "chat_channel_name",
   "chat_channel_url",
+  "chat_thread_name",
+  "chat_thread_url",
   "context_title",
   "context_url",
   "topic_title",
