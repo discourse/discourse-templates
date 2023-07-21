@@ -28,8 +28,7 @@ export default class DTemplatesService extends Service {
 
     const modal = document.querySelector(".d-modal");
     const onInsertTemplate = this.#insertTemplateIntoTextArea.bind(this);
-    const extractVariables = (model) =>
-      variablesExtractor ? variablesExtractor(model) : null;
+    const extractVariables = (model) => variablesExtractor?.(model);
 
     if (modal?.contains(textarea)) {
       this.#highjackModal(textarea, (template) => {
@@ -114,7 +113,7 @@ export default class DTemplatesService extends Service {
     return replaceVariables(title, content, {
       ...variables,
       my_username: this.currentUser?.username,
-      my_name: this.currentUser?.name,
+      my_name: this.currentUser?.displayName,
     });
   }
 }

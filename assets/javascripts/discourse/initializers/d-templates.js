@@ -161,15 +161,11 @@ function addChatIntegration(api, container) {
     // add custom keyboard shortcut handlers for the chat channel composer and chat thread composer
     _templateShortcutTargets.push(
       {
-        isFocused: function (element) {
-          return element?.id === "channel-composer";
-        },
+        isFocused: (element) => element?.id === "channel-composer",
         variables: channelVariablesExtractor,
       },
       {
-        isFocused: function (element) {
-          return element?.id === "thread-composer";
-        },
+        isFocused: (element) => element?.id === "thread-composer",
         variables: threadVariablesExtractor,
       }
     );
