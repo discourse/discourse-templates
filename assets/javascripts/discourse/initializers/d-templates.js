@@ -90,84 +90,82 @@ function addKeyboardShortcut(api, container) {
 }
 
 function addChatIntegration(api, container) {
-  if (container.lookup("service:chat")?.userCanChat) {
-    const channelVariablesExtractor = function () {
-      const chat = getOwner(this).lookup("service:chat");
-      const channelComposer = getOwner(this).lookup(
-        "service:chat-channel-composer"
-      );
-
-      const activeChannel = chat?.activeChannel;
-      const currentMessage = channelComposer?.message;
-      const router = getOwner(this).lookup("service:router");
-
-      return extractVariablesFromChatChannel(
-        activeChannel,
-        currentMessage,
-        router
-      );
-    };
-
-    const threadVariablesExtractor = function () {
-      const chat = getOwner(this).lookup("service:chat");
-      const threadComposer = getOwner(this).lookup(
-        "service:chat-thread-composer"
-      );
-
-      const activeThread = chat?.activeChannel?.activeThread;
-      const currentMessage = threadComposer?.message;
-      const router = getOwner(this).lookup("service:router");
-
-      return extractVariablesFromChatThread(
-        activeThread,
-        currentMessage,
-        router
-      );
-    };
-
-    // add a custom chat composer button
-    api.registerChatComposerButton({
-      id: "d-templates-chat-insert-template-btn",
-      icon: "far-clipboard",
-      label: "templates.insert_template",
-      position: "dropdown",
-      action: function () {
-        let contextVariablesExtractor;
-        switch (this.context) {
-          case "channel":
-            contextVariablesExtractor = channelVariablesExtractor.bind(this);
-            break;
-          case "thread":
-            contextVariablesExtractor = threadVariablesExtractor.bind(this);
-            break;
-          default:
-            contextVariablesExtractor = null;
-        }
-
-        const textarea = this.composer?.textarea?.textarea; // this.composer.textarea is a TextareaInteractor instance
-
-        getOwner(this)
-          .lookup("service:d-templates")
-          .showTextAreaUI(contextVariablesExtractor, textarea);
-      },
-      displayed() {
-        return (
-          this.composer?.textarea &&
-          (this.context === "channel" || this.context === "thread")
-        );
-      },
-    });
-
-    // add custom keyboard shortcut handlers for the chat channel composer and chat thread composer
-    _templateShortcutTargets.push(
-      {
-        isFocused: (element) => element?.id === "channel-composer",
-        variables: channelVariablesExtractor,
-      },
-      {
-        isFocused: (element) => element?.id === "thread-composer",
-        variables: threadVariablesExtractor,
-      }
-    );
+  if (!container.lookup("service:chat")?.userCanChat) {
+    return;
   }
+
+  const channelVariablesExtractor = function () {
+    const chat = getOwner(this).lookup("service:chat");
+    const channelComposer = getOwner(this).lookup(
+      "service:chat-channel-composer"
+    );
+
+    const activeChannel = chat?.activeChannel;
+    const currentMessage = channelComposer?.message;
+    const router = getOwner(this).lookup("service:router");
+
+    return extractVariablesFromChatChannel(
+      activeChannel,
+      currentMessage,
+      router
+    );
+  };
+
+  const threadVariablesExtractor = function () {
+    const chat = getOwner(this).lookup("service:chat");
+    const threadComposer = getOwner(this).lookup(
+      "service:chat-thread-composer"
+    );
+
+    const activeThread = chat?.activeChannel?.activeThread;
+    const currentMessage = threadComposer?.message;
+    const router = getOwner(this).lookup("service:router");
+
+    return extractVariablesFromChatThread(activeThread, currentMessage, router);
+  };
+
+  // add a custom chat composer button
+  api.registerChatComposerButton({
+    id: "d-templates-chat-insert-template-btn",
+    icon: "far-clipboard",
+    label: "templates.insert_template",
+    position: "dropdown",
+    action: function () {
+      let contextVariablesExtractor;
+      switch (this.context) {
+        case "channel":
+          contextVariablesExtractor = channelVariablesExtractor.bind(this);
+          break;
+        case "thread":
+          contextVariablesExtractor = threadVariablesExtractor.bind(this);
+          break;
+        default:
+          contextVariablesExtractor = null;
+      }
+
+      const textarea = this.composer?.textarea?.textarea; // this.composer.textarea is a TextareaInteractor instance
+
+      getOwner(this)
+        .lookup("service:d-templates")
+        .showTextAreaUI(contextVariablesExtractor, textarea);
+    },
+    displayed() {
+      return (
+        this.composer?.textarea &&
+        (this.context === "channel" || this.context === "thread")
+      );
+    },
+  });
+
+  // add custom keyboard shortcut handlers for the chat channel composer and chat thread composer
+  _templateShortcutTargets.push(
+    {
+      isFocused: (element) => element?.id === "channel-composer",
+      variables: channelVariablesExtractor,
+    },
+    {
+      isFocused: (element) => element?.id === "thread-composer",
+      variables: threadVariablesExtractor,
+    }
+  );
 }
