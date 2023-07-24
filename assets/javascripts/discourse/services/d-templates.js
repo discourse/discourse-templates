@@ -9,6 +9,7 @@ export default class DTemplatesService extends Service {
   @service appEvents;
   @service modal;
   @service site;
+  @service currentUser;
 
   showComposerUI() {
     const onInsertTemplate = this.#insertTemplateIntoComposer.bind(this);
@@ -20,19 +21,24 @@ export default class DTemplatesService extends Service {
     }
   }
 
-  showTextAreaUI(textarea = document.activeElement) {
+  showTextAreaUI(variablesExtractor = null, textarea = document.activeElement) {
     if (!this.#isTextArea(textarea)) {
       return;
     }
 
     const modal = document.querySelector(".d-modal");
-    const onInsertTemplate = (template) =>
-      this.#insertTemplateIntoTextArea(textarea, template);
+    const onInsertTemplate = this.#insertTemplateIntoTextArea.bind(this);
+    const extractVariables = (model) => variablesExtractor?.(model);
 
     if (modal?.contains(textarea)) {
-      this.#highjackModal(textarea, onInsertTemplate);
+      this.#highjackModal(textarea, (template) => {
+        const modalModel = this.modal.activeModal?.opts?.model;
+        onInsertTemplate(textarea, template, extractVariables(modalModel));
+      });
     } else {
-      this.#showModal(textarea, onInsertTemplate);
+      this.#showModal(textarea, (template) =>
+        onInsertTemplate(textarea, template, extractVariables())
+      );
     }
   }
 
@@ -72,8 +78,12 @@ export default class DTemplatesService extends Service {
     this.appEvents.trigger("discourse-templates:show", { onInsertTemplate });
   }
 
-  #insertTemplateIntoTextArea(textarea, template) {
-    template = replaceVariables(template.title, template.content); // generic textarea with unknown model
+  #insertTemplateIntoTextArea(textarea, template, variables) {
+    template = this.#replaceTemplateVariables(
+      template.title,
+      template.content,
+      variables
+    );
 
     new TextareaManipulator(getOwner(this), textarea).addBlock(
       template.content
@@ -83,7 +93,8 @@ export default class DTemplatesService extends Service {
   #insertTemplateIntoComposer(template) {
     const composerModel = getOwner(this).lookup("controller:composer").model;
     const templateVariables = extractVariablesFromComposerModel(composerModel);
-    template = replaceVariables(
+
+    template = this.#replaceTemplateVariables(
       template.title,
       template.content,
       templateVariables
@@ -96,5 +107,13 @@ export default class DTemplatesService extends Service {
 
     // insert the content of the template in the composer
     this.appEvents.trigger("composer:insert-block", template.content);
+  }
+
+  #replaceTemplateVariables(title, content, variables = {}) {
+    return replaceVariables(title, content, {
+      ...variables,
+      my_username: this.currentUser?.username,
+      my_name: this.currentUser?.displayName,
+    });
   }
 }
