@@ -164,8 +164,6 @@ RSpec.describe "Inserting templates in the chat composer", type: :system do
 
   context "when typing a message in the thread composer" do
     before do
-      SiteSetting.enable_experimental_chat_threaded_discussions = true
-
       channel_1.threading_enabled = true
       channel_1.save!
 
