@@ -244,7 +244,7 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
 
     await triggerKeyboardShortcut();
     assert.ok(
-      exists(".d-modal.discourse-templates"),
+      exists(".d-modal.d-templates"),
       "It displayed the standard templates modal"
     );
   });
