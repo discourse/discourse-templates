@@ -1,4 +1,4 @@
-.discourse-templates {
+.d-templates {
   .templates-filter-bar {
     display: flex;
     max-width: var(--modal-max-width);
@@ -74,7 +74,7 @@
 }
 
 #reply-control {
-  .discourse-templates {
+  .d-templates {
     position: relative;
     height: 100%;
     width: 100%;

@@ -10,9 +10,7 @@
       <h3 id="discourse-modal-title">{{i18n "templates.insert_template"}}</h3>
     </div>
   </div>
-  <div
-    class="modal-body hijacked-modal-body discourse-templates d-templates-modal"
-  >
+  <div class="modal-body hijacked-modal-body d-templates d-templates-modal">
     <DTemplates::FilterableList
       @textarea={{this.textarea}}
       @onInsertTemplate={{this.onInsertTemplate}}
