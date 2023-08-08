@@ -10,7 +10,11 @@ module PageObjects
       end
 
       def open?
-        super && has_css?(".d-templates-modal")
+        super && has_css?(".d-templates-modal") && finished_loading?
+      end
+
+      def finished_loading?
+        has_no_css?(".d-templates-modal .spinner")
       end
 
       def select_template(id)
