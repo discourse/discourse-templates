@@ -119,3 +119,12 @@
     display: none;
   }
 }
+
+.template-topic-controls {
+  display: flex;
+  justify-content: right;
+  width: calc(
+    var(--topic-body-width) + var(--topic-body-width-padding) * 2 + 45px
+  );
+  gap: 0.5em;
+}

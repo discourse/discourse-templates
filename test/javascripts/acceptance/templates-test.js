@@ -11,6 +11,7 @@ import {
 import selectKit from "discourse/tests/helpers/select-kit-helper";
 import { test } from "qunit";
 import TemplatesFixtures from "../fixtures/templates-fixtures";
+import { cloneJSON } from "discourse-common/lib/object";
 
 function templatesPretender(server, helper) {
   const repliesPath = "/discourse_templates";
@@ -376,5 +377,29 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
         exists(".modal-body.hijacked-modal-body .templates-filterable-list"),
       "it did not keep the injected UI"
     );
+  });
+});
+
+import topicFixtures from "discourse/tests/fixtures/topic";
+
+acceptance("discourse-templates - buttons on topics", function (needs) {
+  needs.user();
+  needs.settings({
+    allow_uncategorized_topics: true,
+  });
+
+  needs.pretender((server, helper) => {
+    const topicResponse = cloneJSON(topicFixtures["/t/280/1.json"]);
+    topicResponse.is_template = true;
+
+    server.get("/t/280.json", () => helper.response(topicResponse));
+    server.get("/raw/280/1", () => [200, {}, "post raw content"]);
+  });
+
+  test("Can open composer using button on topic", async function (assert) {
+    await visit("/t/280");
+
+    await click(".template-new-topic");
+    assert.dom("textarea.d-editor-input").hasValue("post raw content");
   });
 });
