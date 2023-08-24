@@ -14,11 +14,15 @@ RSpec.describe "Inserting templates in the chat composer", type: :system do
   end
 
   fab!(:channel_1) { Fabricate(:chat_channel) }
-  fab!(:message_1) { Fabricate(:chat_message, user: current_user, chat_channel: channel_1) }
-  fab!(:message_2) do
-    Fabricate(:chat_message, chat_channel: channel_1, user: other_user, in_reply_to: message_1)
+  fab!(:message_1) do
+    Fabricate(:chat_message, user: current_user, chat_channel: channel_1, use_service: true)
   end
-  fab!(:message_3) { Fabricate(:chat_message, user: other_user, chat_channel: channel_1) }
+  fab!(:message_2) do
+    Fabricate(:chat_message, user: other_user, in_reply_to: message_1, use_service: true)
+  end
+  fab!(:message_3) do
+    Fabricate(:chat_message, user: other_user, chat_channel: channel_1, use_service: true)
+  end
 
   let(:chat_page) { PageObjects::Pages::Chat.new }
   let(:channel_page) { PageObjects::Pages::ChatChannel.new }
