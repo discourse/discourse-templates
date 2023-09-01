@@ -181,11 +181,7 @@ RSpec.describe "Inserting templates in the chat composer", type: :system do
 
         # thread page does not define the methods open_action_menu and click_action_button
         thread_page.composer.component.find(".chat-composer-dropdown__trigger-btn").click
-        thread_page
-          .composer
-          .component
-          .find(".chat-composer-dropdown__action-btn.d-templates-chat-insert-template-btn")
-          .click
+        find(".chat-composer-dropdown__action-btn.d-templates-chat-insert-template-btn").click
 
         insert_template_modal.open?
         insert_template_modal.select_template(template_simple.id)
@@ -198,11 +194,7 @@ RSpec.describe "Inserting templates in the chat composer", type: :system do
 
         # thread page does not define the methods open_action_menu and click_action_button
         thread_page.composer.component.find(".chat-composer-dropdown__trigger-btn").click
-        thread_page
-          .composer
-          .component
-          .find(".chat-composer-dropdown__action-btn.d-templates-chat-insert-template-btn")
-          .click
+        find(".chat-composer-dropdown__action-btn.d-templates-chat-insert-template-btn").click
 
         insert_template_modal.open?
         insert_template_modal.select_template(template_variables.id)
