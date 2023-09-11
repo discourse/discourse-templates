@@ -6,7 +6,6 @@ import {
   count,
   exists,
   query,
-  queryAll,
 } from "discourse/tests/helpers/qunit-helpers";
 import selectKit from "discourse/tests/helpers/select-kit-helper";
 import { test } from "qunit";
@@ -259,7 +258,7 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
     await assertTemplateWasInserted(assert, textarea);
   });
 
-  test("Modal | Hijack modal | Template is inserted", async (assert) => {
+  test("Modal | Templates Modal | Stacked Modals | Template is inserted", async (assert) => {
     await visit("/t/topic-for-group-moderators/2480");
     await click(".show-more-actions");
     await click(".show-post-admin-menu");
@@ -272,7 +271,7 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
     await assertTemplateWasInserted(assert, textarea);
   });
 
-  test("Modal | Hijack modal | It hijacks the modal UI", async (assert) => {
+  test("Modal | Templates Modal | Stacked Modals | Closing the template modal returns the focus to the original modal textarea", async (assert) => {
     await visit("/t/topic-for-group-moderators/2480");
     await click(".show-more-actions");
     await click(".show-post-admin-menu");
@@ -280,101 +279,17 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
 
     const textarea = query(".modal-body textarea");
     await textarea.focus();
-
-    await triggerKeyboardShortcut();
-    assert.ok(
-      [
-        ...queryAll(
-          ".modal-inner-container > :not(.d-templates-modal-hijacker)"
-        ),
-      ].every((elem) => elem.style.display === "none"),
-      "it hides all other elements inside the modal's inner container"
-    );
-    assert.ok(
-      [
-        ...queryAll(".modal-inner-container > .d-templates-modal-hijacker"),
-      ].every((elem) => elem.style.display !== "none"),
-      "it shows the UI injected in the modal"
-    );
-    assert.ok(
-      exists(".modal-header.hijacked-modal-header .title"),
-      "it shows the new hijacked title of the modal"
-    );
-    assert.ok(
-      exists(".modal-body.hijacked-modal-body .templates-filterable-list"),
-      "it shows the template list"
-    );
-  });
-
-  test("Modal | Hijack modal | The go back button restores the original modal interface", async (assert) => {
-    await visit("/t/topic-for-group-moderators/2480");
-    await click(".show-more-actions");
-    await click(".show-post-admin-menu");
-    await click(".add-notice");
-
-    const textarea = query(".modal-body textarea");
-    await textarea.focus();
-
-    const existingElements = [
-      ...queryAll(".modal-inner-container > :not(.d-templates-modal-hijacker)"),
-    ];
-    const existingStyleDisplay = existingElements.map(
-      (elem) => elem.style.display
-    );
-
-    await triggerKeyboardShortcut();
-    assert.ok(
-      existingElements.every((elem) => elem.style.display === "none"),
-      "it hides all other elements inside the modal's inner container"
-    );
-    assert.ok(
-      exists(".modal-header.hijacked-modal-header .title") &&
-        exists(".modal-body.hijacked-modal-body .templates-filterable-list"),
-      "it displayed the new injected UI"
-    );
-    await click(".modal-header.hijacked-modal-header .modal-close");
-    assert.ok(
-      existingElements.every(
-        (elem, idx) => elem.style.display === existingStyleDisplay[idx]
-      ),
-      "it restores the previous existing elements style.display"
-    );
     assert.notOk(
-      exists(".modal-header.hijacked-modal-header .title") &&
-        exists(".modal-body.hijacked-modal-body .templates-filterable-list"),
-      "it removed the injected UI"
+      exists(".d-templates-modal"),
+      "the templates modal does not exist yet"
     );
-  });
-
-  test("Modal | Hijack modal | It does not keep state if modal is closed", async (assert) => {
-    await visit("/t/topic-for-group-moderators/2480");
-    await click(".show-more-actions");
-    await click(".show-post-admin-menu");
-    await click(".add-notice");
-
-    const textarea = query(".modal-body textarea");
-    await textarea.focus();
-
     await triggerKeyboardShortcut();
+    assert.ok(exists(".d-templates-modal"), "it displayed the templates modal");
+
+    await click(".d-templates-modal .btn.modal-close");
     assert.ok(
-      exists(".modal-header.hijacked-modal-header .title") &&
-        exists(".modal-body.hijacked-modal-body .templates-filterable-list"),
-      "it displayed the new injected UI"
-    );
-
-    // close the modal while hijacked
-    await triggerKeyEvent("#main-outlet", "keydown", "Escape");
-    assert.ok(!exists(".d-modal:visible"), "The modal should have been closed");
-
-    // now open the modal again to test that the hijacking did not leak between modal
-    // invocations
-    await click(".show-more-actions");
-    await click(".show-post-admin-menu");
-    await click(".add-notice");
-    assert.notOk(
-      exists(".modal-header.hijacked-modal-header .title") ||
-        exists(".modal-body.hijacked-modal-body .templates-filterable-list"),
-      "it did not keep the injected UI"
+      textarea === document.activeElement,
+      "it focused the original textarea again after closing the templates modal"
     );
   });
 });

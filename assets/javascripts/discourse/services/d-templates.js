@@ -1,6 +1,5 @@
 import Service, { inject as service } from "@ember/service";
 import { getOwner } from "discourse-common/lib/get-owner";
-import DTemplatesModalForm from "../components/d-templates/modal/form";
 import { replaceVariables } from "../../lib/replace-variables";
 import TextareaManipulator from "../../lib/textarea-manipulator";
 import extractVariablesFromComposerModel from "../../lib/variables-composer";
@@ -27,15 +26,21 @@ export default class DTemplatesService extends Service {
       return;
     }
 
-    const modal = document.querySelector(".d-modal:not(.d-templates)");
+    const modal = document.querySelector(".d-modal");
     const onInsertTemplate = this.#insertTemplateIntoTextArea.bind(this);
     const extractVariables = (model) => variablesExtractor?.(model);
 
     if (modal?.contains(textarea)) {
-      this.#showModal(textarea, (template) => {
-        const modalModel = this.modal.activeModal?.opts?.model;
-        onInsertTemplate(textarea, template, extractVariables(modalModel));
-      });
+      if (!modal.classList.contains("d-templates")) {
+        this.#showModal(textarea, (template) => {
+          const modalModel = this.modal.activeModal?.opts?.model;
+          onInsertTemplate(textarea, template, extractVariables(modalModel));
+        });
+      }
+    } else {
+      this.#showModal(textarea, (template) =>
+        onInsertTemplate(textarea, template, extractVariables())
+      );
     }
   }
 
