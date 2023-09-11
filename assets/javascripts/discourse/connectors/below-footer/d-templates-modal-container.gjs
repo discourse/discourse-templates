@@ -6,7 +6,7 @@ export default class DTemplatesModalContainer extends Component {
   @service dTemplatesModal;
 
   <template>
-    {{#if this.dTemplatesModal.showing}}
+    {{#if this.dTemplatesModal.model}}
       <div class="modal-container d-templates-modal-container">
         <DTemplatesModalForm @closeModal={{this.dTemplatesModal.hide}} @model={{this.dTemplatesModal.model}} />
       </div>
