@@ -1,6 +1,5 @@
 import Service, { inject as service } from "@ember/service";
 import { getOwner } from "discourse-common/lib/get-owner";
-import DTemplatesModalForm from "../components/d-templates/modal/form";
 import { replaceVariables } from "../../lib/replace-variables";
 import TextareaManipulator from "../../lib/textarea-manipulator";
 import extractVariablesFromComposerModel from "../../lib/variables-composer";
@@ -10,6 +9,7 @@ export default class DTemplatesService extends Service {
   @service modal;
   @service site;
   @service currentUser;
+  @service dTemplatesModal;
 
   showComposerUI() {
     const onInsertTemplate = this.#insertTemplateIntoComposer.bind(this);
@@ -31,10 +31,12 @@ export default class DTemplatesService extends Service {
     const extractVariables = (model) => variablesExtractor?.(model);
 
     if (modal?.contains(textarea)) {
-      this.#highjackModal(textarea, (template) => {
-        const modalModel = this.modal.activeModal?.opts?.model;
-        onInsertTemplate(textarea, template, extractVariables(modalModel));
-      });
+      if (!modal.classList.contains("d-templates")) {
+        this.#showModal(textarea, (template) => {
+          const modalModel = this.modal.activeModal?.opts?.model;
+          onInsertTemplate(textarea, template, extractVariables(modalModel));
+        });
+      }
     } else {
       this.#showModal(textarea, (template) =>
         onInsertTemplate(textarea, template, extractVariables())
@@ -67,9 +69,7 @@ export default class DTemplatesService extends Service {
   }
 
   #showModal(textarea, onInsertTemplate) {
-    this.modal.show(DTemplatesModalForm, {
-      model: { textarea, onInsertTemplate },
-    });
+    this.dTemplatesModal.show({ textarea, onInsertTemplate });
   }
 
   #showComposerPreviewUI(onInsertTemplate) {

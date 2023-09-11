@@ -13,7 +13,7 @@ pre-commit:
           echo "Stree config not detected for this repository. Skipping."
         fi
     prettier:
-      glob: "*.js"
+      glob: "*.{js,gjs}"
       include: "assets/javascripts|test/javascripts"
       run: yarn prettier --list-different {staged_files}
     prettier-scss:
@@ -25,7 +25,7 @@ pre-commit:
       include: "assets/javascripts|test/javascripts"
       run: yarn prettier --list-different {staged_files}
     eslint:
-      glob: "*.js"
+      glob: "*.{js,gjs}"
       include: "assets/javascripts|test/javascripts"
       run: yarn eslint -f compact {staged_files}
 
@@ -62,7 +62,7 @@ fix-staged:
           echo "Stree config not detected for this repository. Skipping."
         fi
     prettier:
-      glob: "*.{js,hbs,scss}"
+      glob: "*.{js,gjs,hbs,scss}"
       include: "assets/javascripts|assets/stylesheets|test/javascripts"
       run: yarn prettier --write {staged_files}
 
@@ -80,7 +80,7 @@ fix-all:
           echo "Stree config not detected for this repository. Skipping."
         fi
     prettier:
-      glob: "*.{js,hbs,scss}"
+      glob: "*.{js,gjs,hbs,scss}"
       include: "assets/javascripts|assets/stylesheets|test/javascripts"
       run: yarn prettier --write {all_files}
 
@@ -99,7 +99,11 @@ lints:
           echo "Stree config not detected for this repository. Skipping."
         fi
     prettier:
-      glob: "*.js"
+      glob: "*.{js,gjs}"
+      include: "assets/javascripts|test/javascripts"
+      run: yarn prettier --list-different {all_files}
+    prettier-hbs:
+      glob: "*.hbs"
       include: "assets/javascripts|test/javascripts"
       run: yarn prettier --list-different {all_files}
     prettier-scss:
