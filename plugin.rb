@@ -42,6 +42,12 @@ after_initialize do
 
   add_to_serializer(:current_user, :can_use_templates) { object.can_use_templates? }
 
+  add_to_serializer(
+    :topic_view,
+    :is_template,
+    include_condition: -> { object.topic.template?(scope.user) },
+  ) { true }
+
   Discourse::Application.routes.append do
     mount ::DiscourseTemplates::Engine, at: "/discourse_templates"
   end

@@ -8,3 +8,5 @@ en:
       filter_hint: "Filter by title..."
       insert_template: "Insert template"
       close_templates: "Close the templates selector"
+      copy: "Copy template"
+      new_topic: "New topic from template"
