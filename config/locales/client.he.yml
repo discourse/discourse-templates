@@ -14,3 +14,5 @@ he:
       filter_hint: "סנן לפי כותרת…"
       insert_template: "הוספת תבנית"
       close_templates: "סגירת בורר התבניות"
+      copy: "העתקת תבנית"
+      new_topic: "נושא חדש מתבנית"
