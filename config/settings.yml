@@ -1,4 +1,4 @@
-plugins:
+discourse_templates:
   discourse_templates_enabled:
     default: true
     client: true

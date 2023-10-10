@@ -1,4 +1,9 @@
 en:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_templates: "Discourse Templates"
   js:
     keyboard_shortcuts_help:
       templates:
