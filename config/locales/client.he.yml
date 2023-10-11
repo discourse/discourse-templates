@@ -5,6 +5,11 @@
 # https://translate.discourse.org/
 
 he:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_templates: "תבניות Discourse"
   js:
     keyboard_shortcuts_help:
       templates:
