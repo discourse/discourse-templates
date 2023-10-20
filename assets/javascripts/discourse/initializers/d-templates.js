@@ -15,8 +15,7 @@ export default {
       siteSettings.discourse_templates_enabled &&
       currentUser?.can_use_templates
     ) {
-      withPluginApi("0.5", (api) => {
-        patchComposer(api);
+      withPluginApi("1.15.0", (api) => {
         addOptionsMenuItem(api);
         addKeyboardShortcut(api, container);
         addChatIntegration(api, container);
@@ -25,25 +24,15 @@ export default {
   },
 };
 
-function patchComposer(api) {
-  api.modifyClass("controller:composer", {
-    pluginId: "discourse-templates",
-    actions: {
-      insertTemplate() {
-        getOwner(this).lookup("service:d-templates").showComposerUI();
-      },
-    },
-  });
-}
-
 function addOptionsMenuItem(api) {
-  api.addToolbarPopupMenuOptionsCallback(() => {
-    return {
-      id: "discourse_templates_button",
-      icon: "far-clipboard",
-      action: "insertTemplate",
-      label: "templates.insert_template",
-    };
+  const dTemplates = api.container.lookup("service:d-templates");
+
+  api.addComposerToolbarPopupMenuOption({
+    icon: "far-clipboard",
+    label: "templates.insert_template",
+    action: () => {
+      dTemplates.showComposerUI();
+    },
   });
 }
 
