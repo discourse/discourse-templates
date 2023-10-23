@@ -1,5 +1,4 @@
 import { click, fillIn, triggerKeyEvent, visit } from "@ember/test-helpers";
-import { clearPopupMenuOptionsCallback } from "discourse/controllers/composer";
 import { PLATFORM_KEY_MODIFIER } from "discourse/lib/keyboard-shortcuts";
 import {
   acceptance,
@@ -39,7 +38,6 @@ acceptance("discourse-templates", function (needs) {
   });
 
   needs.pretender(templatesPretender);
-  needs.hooks.beforeEach(() => clearPopupMenuOptionsCallback());
 
   test("Filtering by tags", async (assert) => {
     const popUpMenu = await selectKit(".toolbar-popup-menu-options");
@@ -143,7 +141,6 @@ acceptance(
     });
 
     needs.pretender(templatesPretender);
-    needs.hooks.beforeEach(() => clearPopupMenuOptionsCallback());
 
     test("Filtering by tags", async (assert) => {
       const popUpMenu = await selectKit(".toolbar-popup-menu-options");
@@ -173,7 +170,6 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
   });
 
   needs.pretender(templatesPretender);
-  needs.hooks.beforeEach(() => clearPopupMenuOptionsCallback());
 
   const triggerKeyboardShortcut = async () => {
     // Testing keyboard events is tough!
