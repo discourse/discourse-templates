@@ -15,7 +15,7 @@ export default {
       siteSettings.discourse_templates_enabled &&
       currentUser?.can_use_templates
     ) {
-      withPluginApi("1.13.0", (e) => {
+      withPluginApi("1.13.0", (api) => {
         addOptionsMenuItem(api);
         addKeyboardShortcut(api, container);
         addChatIntegration(api, container);
