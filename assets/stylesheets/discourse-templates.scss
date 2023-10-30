@@ -124,9 +124,10 @@
 
 .template-topic-controls {
   display: flex;
-  justify-content: right;
-  width: calc(
-    var(--topic-body-width) + var(--topic-body-width-padding) * 2 + 45px
-  );
+  flex-wrap: wrap;
   gap: 0.5em;
+  margin-bottom: 1em;
+  .mobile-view & {
+    font-size: var(--font-down-1);
+  }
 }
