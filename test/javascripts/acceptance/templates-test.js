@@ -262,7 +262,7 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
     await click(".show-post-admin-menu");
     await click(".add-notice");
 
-    const textarea = query(".modal-body textarea");
+    const textarea = query(".d-modal__body textarea");
     await textarea.focus();
 
     await triggerKeyboardShortcut();
@@ -275,7 +275,7 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
     await click(".show-post-admin-menu");
     await click(".add-notice");
 
-    const textarea = query(".modal-body textarea");
+    const textarea = query(".d-modal__body textarea");
     await textarea.focus();
     assert.notOk(
       exists(".d-templates-modal"),
