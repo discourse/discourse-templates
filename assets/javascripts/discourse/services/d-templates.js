@@ -1,5 +1,5 @@
 import Service, { inject as service } from "@ember/service";
-import { getOwner } from "discourse-common/lib/get-owner";
+import { getOwner } from "@ember/application";
 import { replaceVariables } from "../../lib/replace-variables";
 import TextareaManipulator from "../../lib/textarea-manipulator";
 import extractVariablesFromComposerModel from "../../lib/variables-composer";
