@@ -1,4 +1,4 @@
-import { getOwner } from "discourse-common/lib/get-owner";
+import { getOwnerWithFallback } from "discourse-common/lib/get-owner";
 import { PLATFORM_KEY_MODIFIER } from "discourse/lib/keyboard-shortcuts";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import extractVariablesFromChatChannel from "../../lib/variables-chat-channel";
@@ -84,14 +84,14 @@ function addChatIntegration(api, container) {
   }
 
   const channelVariablesExtractor = function () {
-    const chat = getOwner(this).lookup("service:chat");
-    const channelComposer = getOwner(this).lookup(
+    const chat = getOwnerWithFallback(this).lookup("service:chat");
+    const channelComposer = getOwnerWithFallback(this).lookup(
       "service:chat-channel-composer"
     );
 
     const activeChannel = chat?.activeChannel;
     const currentMessage = channelComposer?.message;
-    const router = getOwner(this).lookup("service:router");
+    const router = getOwnerWithFallback(this).lookup("service:router");
 
     return extractVariablesFromChatChannel(
       activeChannel,
@@ -101,14 +101,14 @@ function addChatIntegration(api, container) {
   };
 
   const threadVariablesExtractor = function () {
-    const chat = getOwner(this).lookup("service:chat");
-    const threadComposer = getOwner(this).lookup(
+    const chat = getOwnerWithFallback(this).lookup("service:chat");
+    const threadComposer = getOwnerWithFallback(this).lookup(
       "service:chat-thread-composer"
     );
 
     const activeThread = chat?.activeChannel?.activeThread;
     const currentMessage = threadComposer?.message;
-    const router = getOwner(this).lookup("service:router");
+    const router = getOwnerWithFallback(this).lookup("service:router");
 
     return extractVariablesFromChatThread(activeThread, currentMessage, router);
   };
@@ -134,7 +134,7 @@ function addChatIntegration(api, container) {
 
       const textarea = this.composer?.textarea?.textarea; // this.composer.textarea is a TextareaInteractor instance
 
-      getOwner(this)
+      getOwnerWithFallback(this)
         .lookup("service:d-templates")
         .showTextAreaUI(contextVariablesExtractor, textarea);
     },

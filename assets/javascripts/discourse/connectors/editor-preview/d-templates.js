@@ -1,5 +1,5 @@
 import { action } from "@ember/object";
-import { getOwner } from "discourse-common/lib/get-owner";
+import { getOwnerWithFallback } from "discourse-common/lib/get-owner";
 
 const SELECTOR_EDITOR_PREVIEW =
   "#reply-control .d-editor-preview-wrapper > .d-editor-preview";
@@ -8,7 +8,7 @@ export default {
   setupComponent(args, component) {
     component.setProperties({
       templatesVisible: false,
-      model: getOwner(this).lookup("controller:composer").model,
+      model: getOwnerWithFallback(this).lookup("controller:composer").model,
     });
 
     this.appEvents.on("discourse-templates:show", this, "show");
