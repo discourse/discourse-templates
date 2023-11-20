@@ -2,9 +2,9 @@
   .templates-filter-bar {
     display: flex;
     max-width: var(--modal-max-width);
-
     border-bottom: 1px solid var(--primary-low);
     margin-bottom: 1em;
+    padding-top: 1px;
     padding-bottom: 1em;
 
     .select-kit {
