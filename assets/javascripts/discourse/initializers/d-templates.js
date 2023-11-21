@@ -85,12 +85,8 @@ function addChatIntegration(api, container) {
 
   const channelVariablesExtractor = function () {
     const chat = getOwnerWithFallback(this).lookup("service:chat");
-    const channelComposer = getOwnerWithFallback(this).lookup(
-      "service:chat-channel-composer"
-    );
-
     const activeChannel = chat?.activeChannel;
-    const currentMessage = channelComposer?.message;
+    const currentMessage = activeChannel?.draft;
     const router = getOwnerWithFallback(this).lookup("service:router");
 
     return extractVariablesFromChatChannel(
@@ -102,12 +98,8 @@ function addChatIntegration(api, container) {
 
   const threadVariablesExtractor = function () {
     const chat = getOwnerWithFallback(this).lookup("service:chat");
-    const threadComposer = getOwnerWithFallback(this).lookup(
-      "service:chat-thread-composer"
-    );
-
     const activeThread = chat?.activeChannel?.activeThread;
-    const currentMessage = threadComposer?.message;
+    const currentMessage = activeThread?.draft;
     const router = getOwnerWithFallback(this).lookup("service:router");
 
     return extractVariablesFromChatThread(activeThread, currentMessage, router);
