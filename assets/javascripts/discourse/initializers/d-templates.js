@@ -1,6 +1,6 @@
-import { getOwnerWithFallback } from "discourse-common/lib/get-owner";
 import { PLATFORM_KEY_MODIFIER } from "discourse/lib/keyboard-shortcuts";
 import { withPluginApi } from "discourse/lib/plugin-api";
+import { getOwnerWithFallback } from "discourse-common/lib/get-owner";
 import extractVariablesFromChatChannel from "../../lib/variables-chat-channel";
 import extractVariablesFromChatThread from "../../lib/variables-chat-thread";
 

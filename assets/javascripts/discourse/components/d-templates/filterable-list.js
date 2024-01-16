@@ -1,11 +1,11 @@
-import { action, computed } from "@ember/object";
-import { inject as service } from "@ember/service";
-import { schedule } from "@ember/runloop";
 import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
-import { bind } from "discourse-common/utils/decorators";
+import { action, computed } from "@ember/object";
+import { schedule } from "@ember/runloop";
+import { inject as service } from "@ember/service";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
+import { bind } from "discourse-common/utils/decorators";
 import { ALL_TAGS_ID, NO_TAG_ID } from "select-kit/components/tag-drop";
 
 export default class DTemplatesFilterableList extends Component {

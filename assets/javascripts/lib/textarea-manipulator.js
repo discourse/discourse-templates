@@ -1,5 +1,5 @@
-import EmberObject from "@ember/object";
 import { setOwner } from "@ember/application";
+import EmberObject from "@ember/object";
 import TextareaTextManipulation from "discourse/mixins/textarea-text-manipulation";
 
 export default class TextareaManipulator extends EmberObject.extend(
