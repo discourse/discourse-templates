@@ -1,6 +1,6 @@
+import { tracked } from "@glimmer/tracking";
 import { action } from "@ember/object";
 import Service from "@ember/service";
-import { tracked } from "@glimmer/tracking";
 
 export default class DTemplatesModalService extends Service {
   @tracked model = null;

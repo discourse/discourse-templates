@@ -52,8 +52,7 @@ describe DiscourseTemplates::TopicExtension do
       before { SiteSetting.discourse_templates_categories = templates_category.id.to_s }
 
       it "returns true when topic belongs to one of the assigned categories" do
-        SiteSetting.discourse_templates_categories =
-          "#{templates_category.id.to_s}|#{other_category.id.to_s}"
+        SiteSetting.discourse_templates_categories = "#{templates_category.id}|#{other_category.id}"
         expect(template.template?(user)).to eq(true)
         expect(other_topic.template?(user)).to eq(true)
       end

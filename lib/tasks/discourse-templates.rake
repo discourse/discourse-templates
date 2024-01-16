@@ -161,7 +161,7 @@ def migrate_data
     end
     puts "", "Canned replies migration to templates finished!"
   rescue StandardError => e
-    puts e.to_s
+    puts e
     puts "Transaction aborted! All changes were rolled back!"
   end
 end
@@ -200,7 +200,7 @@ def purge_old_data
 
       puts "Finished!"
     rescue StandardError => e
-      puts e.to_s
+      puts e
       puts "Transaction aborted! All changes were rolled back!"
     end
   end

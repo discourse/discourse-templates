@@ -122,7 +122,7 @@ describe DiscourseTemplates::UserExtension do
       expect(other_user.can_use_private_templates?).to eq(true)
 
       SiteSetting.discourse_templates_groups_allowed_private_templates =
-        "#{group.id.to_s}|#{other_group.id.to_s}"
+        "#{group.id}|#{other_group.id}"
       expect(user.can_use_private_templates?).to eq(true)
       expect(other_user.can_use_private_templates?).to eq(true)
     end

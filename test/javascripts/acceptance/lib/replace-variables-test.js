@@ -2,11 +2,11 @@ import EmberObject from "@ember/object";
 import { test } from "qunit";
 import { acceptance } from "discourse/tests/helpers/qunit-helpers";
 import {
-  TEMPLATES_ALLOWED_VARIABLES,
   replaceVariables,
+  TEMPLATES_ALLOWED_VARIABLES,
 } from "discourse/plugins/discourse-templates/lib/replace-variables";
-import extractVariablesFromComposerModel from "discourse/plugins/discourse-templates/lib/variables-composer";
 import extractVariablesFromChatChannel from "discourse/plugins/discourse-templates/lib/variables-chat-channel";
+import extractVariablesFromComposerModel from "discourse/plugins/discourse-templates/lib/variables-composer";
 
 acceptance(
   "Acceptance | Plugins | discourse-templates | Lib | replace-variables | models",

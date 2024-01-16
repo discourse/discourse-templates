@@ -36,7 +36,7 @@ describe DiscourseTemplates::GuardianExtension do
       SiteSetting.tagging_enabled = true
       SiteSetting.discourse_templates_enable_private_templates = true
       SiteSetting.discourse_templates_groups_allowed_private_templates =
-        "#{group.id.to_s}|#{other_group.id.to_s}"
+        "#{group.id}|#{other_group.id}"
       SiteSetting.discourse_templates_private_templates_tags = "templates"
     end
 
@@ -141,7 +141,7 @@ describe DiscourseTemplates::GuardianExtension do
       expect(Guardian.new(other_user).can_use_private_templates?).to eq(true)
 
       SiteSetting.discourse_templates_groups_allowed_private_templates =
-        "#{group.id.to_s}|#{other_group.id.to_s}"
+        "#{group.id}|#{other_group.id}"
       expect(Guardian.new(user).can_use_private_templates?).to eq(true)
       expect(Guardian.new(other_user).can_use_private_templates?).to eq(true)
     end

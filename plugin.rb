@@ -6,7 +6,6 @@
 # version: 2.5.0
 # authors: Discourse (discourse-templates), Jay Pfaffman and André Pereira (canned-replies)
 # url: https://github.com/discourse/discourse-templates
-# transpile_js: true
 
 enabled_site_setting :discourse_templates_enabled
 
