@@ -5,6 +5,11 @@
 # https://translate.discourse.org/
 
 fi:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_templates: "Discoursen Mallit"
   js:
     keyboard_shortcuts_help:
       templates:
@@ -14,3 +19,5 @@ fi:
       filter_hint: "Suodata nimen mukaan..."
       insert_template: "Lisää malli"
       close_templates: "Sulje mallien valitsin"
+      copy: "Kopioi malli"
+      new_topic: "Uusi ketju mallista"

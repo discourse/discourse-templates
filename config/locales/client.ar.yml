@@ -5,6 +5,11 @@
 # https://translate.discourse.org/
 
 ar:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_templates: "Discourse Templates"
   js:
     keyboard_shortcuts_help:
       templates:
@@ -14,3 +19,5 @@ ar:
       filter_hint: "التصفية حسب العنوان..."
       insert_template: "إدراج قالب"
       close_templates: "إغلاق محدِّد القوالب"
+      copy: "نسخ القالب"
+      new_topic: "موضوع جديد من القالب"
