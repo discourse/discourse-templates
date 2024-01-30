@@ -5,6 +5,11 @@
 # https://translate.discourse.org/
 
 tr_TR:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_templates: "Discourse Şablonları"
   js:
     keyboard_shortcuts_help:
       templates:
@@ -14,3 +19,5 @@ tr_TR:
       filter_hint: "Başlığa göre filtrele..."
       insert_template: "Şablon ekle"
       close_templates: "Şablon seçiciyi kapat"
+      copy: "Şablonu kopyala"
+      new_topic: "Şablondan yeni konu"

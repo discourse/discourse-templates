@@ -5,6 +5,11 @@
 # https://translate.discourse.org/
 
 ru:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_templates: "Плагин Discourse «Шаблоны»"
   js:
     keyboard_shortcuts_help:
       templates:
@@ -14,3 +19,5 @@ ru:
       filter_hint: "Фильтр по названию…"
       insert_template: "Вставить шаблон"
       close_templates: "Закрыть выбор шаблона"
+      copy: "Копировать шаблон"
+      new_topic: "Новая тема из шаблона"

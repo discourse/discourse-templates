@@ -5,6 +5,11 @@
 # https://translate.discourse.org/
 
 de:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_templates: "Discourse – Vorlagen"
   js:
     keyboard_shortcuts_help:
       templates:
@@ -14,3 +19,5 @@ de:
       filter_hint: "Nach Titel filtern …"
       insert_template: "Vorlage einfügen"
       close_templates: "Vorlagenauswahl schließen"
+      copy: "Vorlage kopieren"
+      new_topic: "Neues Thema aus Vorlage"

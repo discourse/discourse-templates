@@ -5,6 +5,11 @@
 # https://translate.discourse.org/
 
 ja:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_templates: "Discourse テンプレート"
   js:
     keyboard_shortcuts_help:
       templates:
@@ -14,3 +19,5 @@ ja:
       filter_hint: "タイトルで絞り込みます..."
       insert_template: "テンプレートの挿入"
       close_templates: "テンプレートセレクタを閉じる"
+      copy: "テンプレートのコピー"
+      new_topic: "テンプレートの新規トピック"

@@ -5,6 +5,11 @@
 # https://translate.discourse.org/
 
 zh_CN:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_templates: "Discourse Templates"
   js:
     keyboard_shortcuts_help:
       templates:
@@ -14,3 +19,5 @@ zh_CN:
       filter_hint: "按标题筛选…"
       insert_template: "插入模板"
       close_templates: "关闭模板选择器"
+      copy: "复制模板"
+      new_topic: "从模板新建话题"

@@ -5,6 +5,11 @@
 # https://translate.discourse.org/
 
 it:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_templates: "Modelli Discourse"
   js:
     keyboard_shortcuts_help:
       templates:
@@ -14,3 +19,5 @@ it:
       filter_hint: "Filtra per titolo..."
       insert_template: "Inserisci modello"
       close_templates: "Chiudi il selettore dei modelli"
+      copy: "Copia modello"
+      new_topic: "Nuovo argomento dal modello"
