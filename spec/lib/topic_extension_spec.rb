@@ -111,5 +111,34 @@ describe DiscourseTemplates::TopicExtension do
         expect(private_template_tag_b.template?(user)).to eq(true)
       end
     end
+
+    it "won't leak state into the Category.subcategory_ids cache" do
+      category = Fabricate(:category_with_definition)
+      subcategory = Fabricate(:category_with_definition, parent_category: category)
+      topic = Fabricate(:template_item, category: subcategory)
+      SiteSetting.discourse_templates_categories = category.id.to_s
+
+      # assert that the return of Category.subcategory_ids is what we expect before
+      # calling template? on the topic
+      expect(Category.subcategory_ids(category.id).size).to eq(2)
+      expect(Category.subcategory_ids(category.id)).to contain_exactly(category.id, subcategory.id)
+
+      expect(topic.template?(user)).to eq(true)
+
+      # the return of Category.subcategory_ids is what was not changed by the call to template?
+      expect(Category.subcategory_ids(category.id).size).to eq(2)
+      expect(Category.subcategory_ids(category.id)).to contain_exactly(category.id, subcategory.id)
+
+      # Now we'll change the category of the topic to a category that is not a template category
+      topic.update!(category: Fabricate(:category))
+
+      # The cache should be invalidated and the topic should no longer be considered a template
+      expect(topic.template?(user)).to eq(false)
+
+      # the return of Category.subcategory_ids is also not changed by the call to template? in a topic
+      # that is not a template
+      expect(Category.subcategory_ids(category.id).size).to eq(2)
+      expect(Category.subcategory_ids(category.id)).to contain_exactly(category.id, subcategory.id)
+    end
   end
 end
