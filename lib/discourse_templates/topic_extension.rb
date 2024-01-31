@@ -28,9 +28,7 @@ module DiscourseTemplates::TopicExtension
     parent_categories_ids = SiteSetting.discourse_templates_categories&.split("|")&.map(&:to_i)
 
     all_templates_categories_ids =
-      parent_categories_ids.flat_map do |category_id|
-        Category.subcategory_ids(category_id).prepend(category_id)
-      end
+      parent_categories_ids.flat_map { |category_id| Category.subcategory_ids(category_id) }
 
     # it is template if the topic belongs to any of the template categories
     return true if all_templates_categories_ids.include?(self.category_id)
