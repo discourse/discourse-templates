@@ -8,7 +8,7 @@ describe DiscourseTemplates::GuardianExtension do
     Group.refresh_automatic_groups!(:moderators)
     moderator
   end
-  fab!(:user) { Fabricate(:user) }
+  fab!(:user)
   fab!(:other_user) { Fabricate(:user) }
   fab!(:group) do
     group = Fabricate(:group)

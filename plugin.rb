@@ -23,21 +23,19 @@ after_initialize do
     end
   end
 
-  %w[
-    ../app/controllers/discourse_templates/templates_controller.rb
-    ../app/models/discourse_templates/usage_count.rb
-    ../app/serializers/discourse_templates/templates_serializer.rb
-    ../lib/discourse_templates/guardian_extension.rb
-    ../lib/discourse_templates/topic_extension.rb
-    ../lib/discourse_templates/topic_query_extension.rb
-    ../lib/discourse_templates/user_extension.rb
-  ].each { |path| load File.expand_path(path, __FILE__) }
+  require_relative "app/controllers/discourse_templates/templates_controller"
+  require_relative "app/models/discourse_templates/usage_count"
+  require_relative "app/serializers/discourse_templates/templates_serializer"
+  require_relative "lib/discourse_templates/guardian_extension"
+  require_relative "lib/discourse_templates/topic_extension"
+  require_relative "lib/discourse_templates/topic_query_extension"
+  require_relative "lib/discourse_templates/user_extension"
 
   reloadable_patch do |plugin|
-    Guardian.class_eval { prepend DiscourseTemplates::GuardianExtension }
-    Topic.class_eval { prepend DiscourseTemplates::TopicExtension }
-    TopicQuery.class_eval { prepend DiscourseTemplates::TopicQueryExtension }
-    User.class_eval { prepend DiscourseTemplates::UserExtension }
+    Guardian.prepend(DiscourseTemplates::GuardianExtension)
+    Topic.prepend(DiscourseTemplates::TopicExtension)
+    TopicQuery.prepend(DiscourseTemplates::TopicQueryExtension)
+    User.prepend(DiscourseTemplates::UserExtension)
   end
 
   add_to_serializer(:current_user, :can_use_templates) { object.can_use_templates? }
