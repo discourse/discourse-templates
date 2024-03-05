@@ -3,9 +3,9 @@
 require "rails_helper"
 
 describe DiscourseTemplates::UserExtension do
-  fab!(:admin) { Fabricate(:admin) }
-  fab!(:moderator) { Fabricate(:moderator) }
-  fab!(:user) { Fabricate(:user) }
+  fab!(:admin)
+  fab!(:moderator)
+  fab!(:user)
 
   describe "can_use_category_templates?" do
     fab!(:discourse_templates_category) { Fabricate(:category_with_definition) }

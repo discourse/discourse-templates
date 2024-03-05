@@ -6,9 +6,9 @@ require_relative "../helpers/topics_helper"
 RSpec.configure { |c| c.include DiscourseTemplates::TopicsHelper }
 
 describe DiscourseTemplates::TemplatesController do
-  fab!(:admin) { Fabricate(:admin) }
-  fab!(:moderator) { Fabricate(:moderator) }
-  fab!(:user) { Fabricate(:user) }
+  fab!(:admin)
+  fab!(:moderator)
+  fab!(:user)
   fab!(:user_in_group1) { Fabricate(:user) }
   fab!(:user_in_group2) { Fabricate(:user) }
   fab!(:group1) do

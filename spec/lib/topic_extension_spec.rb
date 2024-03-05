@@ -3,7 +3,7 @@
 require "rails_helper"
 
 describe DiscourseTemplates::TopicExtension do
-  fab!(:topic) { Fabricate(:topic) }
+  fab!(:topic)
 
   describe Topic, type: :model do
     it { is_expected.to have_one :template_item_usage }
@@ -37,7 +37,7 @@ describe DiscourseTemplates::TopicExtension do
   end
 
   describe "template?" do
-    fab!(:user) { Fabricate(:user) }
+    fab!(:user)
 
     context "with normal topics" do
       fab!(:templates_category) { Fabricate(:category_with_definition) }
