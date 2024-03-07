@@ -71,6 +71,20 @@
       margin-bottom: 0;
     }
   }
+
+  .template-item-source-link {
+    color: var(--primary-high);
+    font-size: var(--font-down-1);
+    text-align: right;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    display: block;
+    border-bottom: 1px solid var(--primary-low);
+
+    &:hover {
+      color: var(--tertiary);
+    }
+  }
 }
 
 #reply-control {
