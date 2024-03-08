@@ -2,6 +2,8 @@
   @closeModal={{@closeModal}}
   @title={{i18n "templates.insert_template"}}
   class="d-templates d-templates-modal"
+  {{did-insert this.bindEvents}}
+  {{will-destroy this.unbindEvents}}
 >
   <:body>
     <DTemplates::FilterableList
