@@ -12,11 +12,9 @@
   </summary>
 
   <div class="templates-content">
-    <a href="/t/{{@template.id}}" class="template-item-source-link">
-      {{d-icon "crosshairs"}}
-      {{i18n "templates.source"}}
-    </a>
-    
+    <DTemplates::ItemContent
+      @template={{@template}}
+    />
     <CookText @rawText={{@template.content}} />
   </div>
 </details>
