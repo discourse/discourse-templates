@@ -6,7 +6,7 @@ require_relative "../helpers/topics_helper"
 RSpec.configure { |c| c.include DiscourseTemplates::TopicsHelper }
 
 describe DiscourseTemplates::TemplatesSerializer do
-  fab!(:template_item) { Fabricate(:template_item) } # uncategorized
+  fab!(:template_item) # uncategorized
   fab!(:tag1) { Fabricate(:tag, topics: [template_item], name: "tag1") }
   fab!(:tag2) { Fabricate(:tag, topics: [template_item], name: "tag2") }
 
@@ -21,6 +21,7 @@ describe DiscourseTemplates::TemplatesSerializer do
 
       expect(json[:id]).to eq(template_item.id)
       expect(json[:title]).to eq(template_item.title)
+      expect(json[:slug]).to eq(template_item.slug)
       expect(json[:content]).to eq(template_item.first_post.raw)
       expect(json[:tags]).to match_array(template_item.tags.map(&:name))
       expect(json[:usages]).to eq(0)
@@ -34,6 +35,7 @@ describe DiscourseTemplates::TemplatesSerializer do
 
       expect(json[:id]).to eq(template_item.id)
       expect(json[:title]).to eq(template_item.title)
+      expect(json[:slug]).to eq(template_item.slug)
       expect(json[:content]).to eq(template_item.first_post.raw)
       expect(json[:tags]).to eq(nil)
       expect(json[:usages]).to eq(0)
