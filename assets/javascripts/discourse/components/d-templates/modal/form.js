@@ -1,6 +1,5 @@
 import Component from "@glimmer/component";
 import { service } from "@ember/service";
-import { bind } from "discourse-common/utils/decorators";
 
 export default class Form extends Component {
   @service appEvents;
