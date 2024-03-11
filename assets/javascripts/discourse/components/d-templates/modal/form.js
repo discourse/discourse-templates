@@ -5,15 +5,15 @@ import { bind } from "discourse-common/utils/decorators";
 export default class Form extends Component {
   @service appEvents;
 
-  @bind
-  bindEvents() {
+  constructor() {
+    super(...arguments);
     if (this.args.closeModal) {
       this.appEvents.on("page:changed", this, this.args.closeModal);
     }
   }
 
-  @bind
-  unbindEvents() {
+  willDestroy() {
+    super.willDestroy(...arguments);
     if (this.args.closeModal) {
       this.appEvents.off("page:changed", this, this.args.closeModal);
     }
