@@ -1,4 +1,10 @@
-import { click, fillIn, triggerKeyEvent, visit } from "@ember/test-helpers";
+import {
+  click,
+  currentURL,
+  fillIn,
+  triggerKeyEvent,
+  visit,
+} from "@ember/test-helpers";
 import { test } from "qunit";
 import { PLATFORM_KEY_MODIFIER } from "discourse/lib/keyboard-shortcuts";
 import {
@@ -128,6 +134,51 @@ acceptance("discourse-templates", function (needs) {
       "it should replace variables"
     );
   });
+
+  test("Navigate to source", async (assert) => {
+    const popUpMenu = await selectKit(".toolbar-popup-menu-options");
+
+    await visit("/");
+
+    await click("#create-topic");
+    await selectCategory();
+    await popUpMenu.expand();
+    await popUpMenu.selectRowByName(I18n.t("templates.insert_template"));
+
+    const tagDropdown = selectKit(".templates-filter-bar .tag-drop");
+    await tagDropdown.expand();
+
+    await tagDropdown.fillInFilter(
+      "lorem",
+      ".templates-filter-bar .tag-drop input"
+    );
+    assert.deepEqual(
+      tagDropdown.displayedContent(),
+      [
+        {
+          name: "lorem",
+          id: "lorem",
+        },
+      ],
+      "it should filter tags in the dropdown"
+    );
+
+    await tagDropdown.selectRowByIndex(0);
+    assert.equal(
+      count(".templates-list .template-item"),
+      1,
+      "it should filter replies by tag"
+    );
+
+    await click("#template-item-130 .template-item-title");
+    await click("#template-item-130 .template-item-source-link");
+
+    assert.equal(
+      currentURL(),
+      "/t/lorem-ipsum-dolor-sit-amet/130",
+      "it should navigate to the source"
+    );
+  });
 });
 
 acceptance(
@@ -254,6 +305,49 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
 
     await triggerKeyboardShortcut();
     await assertTemplateWasInserted(assert, textarea);
+  });
+
+  test("Modal | Templates modal | Template is inserted", async (assert) => {
+    await visit("/u/charlie/preferences/profile");
+
+    const textarea = query(".d-editor-input");
+    await textarea.focus();
+
+    await triggerKeyboardShortcut();
+
+    const tagDropdown = selectKit(".templates-filter-bar .tag-drop");
+    await tagDropdown.expand();
+
+    await tagDropdown.fillInFilter(
+      "lorem",
+      ".templates-filter-bar .tag-drop input"
+    );
+    assert.deepEqual(
+      tagDropdown.displayedContent(),
+      [
+        {
+          name: "lorem",
+          id: "lorem",
+        },
+      ],
+      "it should filter tags in the dropdown"
+    );
+
+    await tagDropdown.selectRowByIndex(0);
+    assert.equal(
+      count(".templates-list .template-item"),
+      1,
+      "it should filter replies by tag"
+    );
+
+    await click("#template-item-130 .template-item-title");
+    await click("#template-item-130 .template-item-source-link");
+
+    assert.equal(
+      currentURL(),
+      "/t/lorem-ipsum-dolor-sit-amet/130",
+      "it should navigate to the source"
+    );
   });
 
   test("Modal | Templates Modal | Stacked Modals | Template is inserted", async (assert) => {
