@@ -15,3 +15,4 @@ en:
       close_templates: "Close the templates selector"
       copy: "Copy template"
       new_topic: "New topic from template"
+      source: "Source"

@@ -2,7 +2,7 @@
 
 module DiscourseTemplates
   class TemplatesSerializer < ApplicationSerializer
-    attributes :id, :title, :content, :tags, :usages
+    attributes :id, :title, :slug, :content, :tags, :usages
 
     def content
       object.first_post.raw

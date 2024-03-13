@@ -21,6 +21,7 @@ describe DiscourseTemplates::TemplatesSerializer do
 
       expect(json[:id]).to eq(template_item.id)
       expect(json[:title]).to eq(template_item.title)
+      expect(json[:slug]).to eq(template_item.slug)
       expect(json[:content]).to eq(template_item.first_post.raw)
       expect(json[:tags]).to match_array(template_item.tags.map(&:name))
       expect(json[:usages]).to eq(0)
@@ -34,6 +35,7 @@ describe DiscourseTemplates::TemplatesSerializer do
 
       expect(json[:id]).to eq(template_item.id)
       expect(json[:title]).to eq(template_item.title)
+      expect(json[:slug]).to eq(template_item.slug)
       expect(json[:content]).to eq(template_item.first_post.raw)
       expect(json[:tags]).to eq(nil)
       expect(json[:usages]).to eq(0)
