@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 fa_IR:
+  js:
+    templates:
+      filter_hint: "فیلتر بر اساس عنوان..."
+      source: "منبع"
