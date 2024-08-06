@@ -21,3 +21,4 @@ fi:
       close_templates: "Sulje mallien valitsin"
       copy: "Kopioi malli"
       new_topic: "Uusi ketju mallista"
+      source: "Lähde"
