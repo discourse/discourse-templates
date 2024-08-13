@@ -21,3 +21,4 @@ it:
       close_templates: "Chiudi il selettore dei modelli"
       copy: "Copia modello"
       new_topic: "Nuovo argomento dal modello"
+      source: "Fonte"
