@@ -70,7 +70,7 @@ function addKeyboardShortcut(api, container) {
         category: "templates",
         name: "templates.insert_template",
         definition: {
-          keys1: [PLATFORM_KEY_MODIFIER, "shift", "I"],
+          keys1: [PLATFORM_KEY_MODIFIER, "shift", "i"],
           keysDelimiter: "plus",
         },
       },
