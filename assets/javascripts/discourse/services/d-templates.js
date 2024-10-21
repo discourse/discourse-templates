@@ -1,7 +1,7 @@
 import { getOwner } from "@ember/application";
-import Service, { inject as service } from "@ember/service";
+import Service, { service } from "@ember/service";
+import TextareaTextManipulation from "discourse/lib/textarea-text-manipulation";
 import { replaceVariables } from "../../lib/replace-variables";
-import TextareaManipulator from "../../lib/textarea-manipulator";
 import extractVariablesFromComposerModel from "../../lib/variables-composer";
 
 export default class DTemplatesService extends Service {
@@ -85,7 +85,7 @@ export default class DTemplatesService extends Service {
       variables
     );
 
-    new TextareaManipulator(getOwner(this), textarea).addBlock(
+    new TextareaTextManipulation(getOwner(this), { textarea }).insertBlock(
       template.content
     );
   }
