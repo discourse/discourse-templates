@@ -61,13 +61,6 @@ export default class DTemplatesService extends Service {
     return element?.nodeName === "TEXTAREA";
   }
 
-  #highjackModal(textarea, onInsertTemplate) {
-    this.appEvents.trigger("discourse-templates:hijack-modal", {
-      textarea,
-      onInsertTemplate,
-    });
-  }
-
   #showModal(textarea, onInsertTemplate) {
     this.dTemplatesModal.show({ textarea, onInsertTemplate });
   }

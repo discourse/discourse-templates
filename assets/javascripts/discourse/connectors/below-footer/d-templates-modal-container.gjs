@@ -1,5 +1,5 @@
 import Component from "@glimmer/component";
-import { inject as service } from "@ember/service";
+import { service } from "@ember/service";
 import DTemplatesModalForm from "../../components/d-templates/modal/form";
 
 export default class DTemplatesModalContainer extends Component {
