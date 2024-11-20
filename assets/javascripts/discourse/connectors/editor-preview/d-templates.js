@@ -8,7 +8,7 @@ export default {
   setupComponent(args, component) {
     component.setProperties({
       templatesVisible: false,
-      model: getOwnerWithFallback(this).lookup("controller:composer").model,
+      model: getOwnerWithFallback(this).lookup("service:composer").model,
     });
 
     this.appEvents.on("discourse-templates:show", this, "show");

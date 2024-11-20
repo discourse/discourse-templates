@@ -47,7 +47,7 @@ export default class DTemplatesService extends Service {
   get isComposerFocused() {
     const activeElement = document.activeElement;
 
-    const composerModel = getOwner(this).lookup("controller:composer").model;
+    const composerModel = getOwner(this).lookup("service:composer").model;
     const composerElement = document.querySelector(".d-editor");
 
     return composerModel && composerElement?.contains(activeElement);
@@ -84,7 +84,7 @@ export default class DTemplatesService extends Service {
   }
 
   #insertTemplateIntoComposer(template) {
-    const composerModel = getOwner(this).lookup("controller:composer").model;
+    const composerModel = getOwner(this).lookup("service:composer").model;
     const templateVariables = extractVariablesFromComposerModel(composerModel);
 
     template = this.#replaceTemplateVariables(
