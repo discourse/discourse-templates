@@ -204,8 +204,8 @@ acceptance(
       await popUpMenu.expand();
       await popUpMenu.selectRowByName(I18n.t("templates.insert_template"));
 
-      assert.ok(
-        !exists(".templates-filter-bar .tag-drop"),
+      assert.notOk(
+        exists(".templates-filter-bar .tag-drop"),
         "tag drop down is not displayed"
       );
     });
@@ -379,8 +379,9 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
     assert.ok(exists(".d-templates-modal"), "it displayed the templates modal");
 
     await click(".d-templates-modal .btn.modal-close");
-    assert.ok(
-      textarea === document.activeElement,
+    assert.strictEqual(
+      textarea,
+      document.activeElement,
       "it focused the original textarea again after closing the templates modal"
     );
   });
