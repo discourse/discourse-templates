@@ -6,6 +6,8 @@
 
 ru:
   admin_js:
+    discourse_templates:
+      title: "Шаблоны"
     admin:
       site_settings:
         categories:

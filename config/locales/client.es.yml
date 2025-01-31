@@ -6,6 +6,8 @@
 
 es:
   admin_js:
+    discourse_templates:
+      title: "Plantillas"
     admin:
       site_settings:
         categories:

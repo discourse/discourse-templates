@@ -6,6 +6,8 @@
 
 de:
   admin_js:
+    discourse_templates:
+      title: "Vorlagen"
     admin:
       site_settings:
         categories:

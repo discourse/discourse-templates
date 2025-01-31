@@ -6,6 +6,8 @@
 
 it:
   admin_js:
+    discourse_templates:
+      title: "Modelli"
     admin:
       site_settings:
         categories:

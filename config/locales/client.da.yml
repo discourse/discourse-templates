@@ -5,6 +5,9 @@
 # https://translate.discourse.org/
 
 da:
+  admin_js:
+    discourse_templates:
+      title: "Skabeloner"
   js:
     keyboard_shortcuts_help:
       templates:

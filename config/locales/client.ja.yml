@@ -6,6 +6,8 @@
 
 ja:
   admin_js:
+    discourse_templates:
+      title: "テンプレート"
     admin:
       site_settings:
         categories:

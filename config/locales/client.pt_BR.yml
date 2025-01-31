@@ -6,6 +6,8 @@
 
 pt_BR:
   admin_js:
+    discourse_templates:
+      title: "Modelos"
     admin:
       site_settings:
         categories:

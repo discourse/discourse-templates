@@ -6,6 +6,8 @@
 
 fr:
   admin_js:
+    discourse_templates:
+      title: "Modèles"
     admin:
       site_settings:
         categories:

@@ -6,6 +6,8 @@
 
 zh_CN:
   admin_js:
+    discourse_templates:
+      title: "模板"
     admin:
       site_settings:
         categories:

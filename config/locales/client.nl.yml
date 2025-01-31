@@ -6,6 +6,8 @@
 
 nl:
   admin_js:
+    discourse_templates:
+      title: "Sjablonen"
     admin:
       site_settings:
         categories:

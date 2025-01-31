@@ -5,6 +5,9 @@
 # https://translate.discourse.org/
 
 pl_PL:
+  admin_js:
+    discourse_templates:
+      title: "Szablony"
   js:
     keyboard_shortcuts_help:
       templates:

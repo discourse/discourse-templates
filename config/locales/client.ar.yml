@@ -6,6 +6,8 @@
 
 ar:
   admin_js:
+    discourse_templates:
+      title: "القوالب"
     admin:
       site_settings:
         categories:
