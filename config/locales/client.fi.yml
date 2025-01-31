@@ -6,6 +6,8 @@
 
 fi:
   admin_js:
+    discourse_templates:
+      title: "Mallit"
     admin:
       site_settings:
         categories:

@@ -6,6 +6,8 @@
 
 tr_TR:
   admin_js:
+    discourse_templates:
+      title: "Şablonlar"
     admin:
       site_settings:
         categories:
