@@ -7,6 +7,7 @@ import {
 } from "@ember/test-helpers";
 import { test } from "qunit";
 import { PLATFORM_KEY_MODIFIER } from "discourse/lib/keyboard-shortcuts";
+import { cloneJSON } from "discourse/lib/object";
 import {
   acceptance,
   count,
@@ -14,8 +15,7 @@ import {
   query,
 } from "discourse/tests/helpers/qunit-helpers";
 import selectKit from "discourse/tests/helpers/select-kit-helper";
-import { cloneJSON } from "discourse-common/lib/object";
-import I18n from "discourse-i18n";
+import { i18n } from "discourse-i18n";
 import TemplatesFixtures from "../fixtures/templates-fixtures";
 
 function templatesPretender(server, helper) {
@@ -54,7 +54,7 @@ acceptance("discourse-templates", function (needs) {
     await click("#create-topic");
     await selectCategory();
     await popUpMenu.expand();
-    await popUpMenu.selectRowByName(I18n.t("templates.insert_template"));
+    await popUpMenu.selectRowByName(i18n("templates.insert_template"));
 
     const tagDropdown = selectKit(".templates-filter-bar .tag-drop");
     await tagDropdown.expand();
@@ -98,7 +98,7 @@ acceptance("discourse-templates", function (needs) {
     await click("#create-topic");
     await selectCategory();
     await popUpMenu.expand();
-    await popUpMenu.selectRowByName(I18n.t("templates.insert_template"));
+    await popUpMenu.selectRowByName(i18n("templates.insert_template"));
 
     await fillIn(".templates-filter-bar input.templates-filter", "test");
     assert.equal(
@@ -124,7 +124,7 @@ acceptance("discourse-templates", function (needs) {
     await click("#create-topic");
     await selectCategory();
     await popUpMenu.expand();
-    await popUpMenu.selectRowByName(I18n.t("templates.insert_template"));
+    await popUpMenu.selectRowByName(i18n("templates.insert_template"));
 
     await click("#template-item-9 .templates-apply");
 
@@ -143,7 +143,7 @@ acceptance("discourse-templates", function (needs) {
     await click("#create-topic");
     await selectCategory();
     await popUpMenu.expand();
-    await popUpMenu.selectRowByName(I18n.t("templates.insert_template"));
+    await popUpMenu.selectRowByName(i18n("templates.insert_template"));
 
     const tagDropdown = selectKit(".templates-filter-bar .tag-drop");
     await tagDropdown.expand();
@@ -202,7 +202,7 @@ acceptance(
       await click("#create-topic");
       await selectCategory();
       await popUpMenu.expand();
-      await popUpMenu.selectRowByName(I18n.t("templates.insert_template"));
+      await popUpMenu.selectRowByName(i18n("templates.insert_template"));
 
       assert.notOk(
         exists(".templates-filter-bar .tag-drop"),

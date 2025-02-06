@@ -5,7 +5,7 @@ import { schedule } from "@ember/runloop";
 import { service } from "@ember/service";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
-import { bind } from "discourse-common/utils/decorators";
+import { bind } from "discourse/lib/decorators";
 import { ALL_TAGS_ID, NO_TAG_ID } from "select-kit/components/tag-drop";
 
 export default class DTemplatesFilterableList extends Component {

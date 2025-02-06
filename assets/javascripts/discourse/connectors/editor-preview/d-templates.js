@@ -1,5 +1,5 @@
 import { action } from "@ember/object";
-import { getOwnerWithFallback } from "discourse-common/lib/get-owner";
+import { getOwnerWithFallback } from "discourse/lib/get-owner";
 
 const SELECTOR_EDITOR_PREVIEW =
   "#reply-control .d-editor-preview-wrapper > .d-editor-preview";
