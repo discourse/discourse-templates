@@ -11,6 +11,7 @@ export default class DiscourseTemplatesButton extends Component {
   }
 
   @service composer;
+
   @tracked copyConfirm = false;
 
   async fetchRaw() {

@@ -1,28 +1,36 @@
+import Component from "@ember/component";
 import { action } from "@ember/object";
-import { getOwnerWithFallback } from "discourse/lib/get-owner";
+import { service } from "@ember/service";
+import { classNames } from "@ember-decorators/component";
 
 const SELECTOR_EDITOR_PREVIEW =
   "#reply-control .d-editor-preview-wrapper > .d-editor-preview";
 
-export default {
-  setupComponent(args, component) {
-    component.setProperties({
-      templatesVisible: false,
-      model: getOwnerWithFallback(this).lookup("service:composer").model,
-    });
+@classNames("d-templates")
+export default class DTemplatesEditorPreview extends Component {
+  static shouldRender(args, component) {
+    return !component.site.mobileView;
+  }
+
+  @service appEvents;
+  @service site;
+
+  templatesVisible = false;
+  onInsertTemplate;
+
+  constructor() {
+    super(...arguments);
 
     this.appEvents.on("discourse-templates:show", this, "show");
     this.appEvents.on("discourse-templates:hide", this, "hide");
-  },
+  }
 
-  teardownComponent() {
+  willDestroy() {
+    super.willDestroy(...arguments);
+
     this.appEvents.off("discourse-templates:show", this, "show");
     this.appEvents.off("discourse-templates:hide", this, "hide");
-  },
-
-  shouldRender(args, component) {
-    return !component.site.mobileView;
-  },
+  }
 
   @action
   show({ onInsertTemplate }) {
@@ -33,7 +41,7 @@ export default {
 
     this.set("onInsertTemplate", onInsertTemplate);
     this.set("templatesVisible", true);
-  },
+  }
 
   @action
   hide() {
@@ -43,5 +51,5 @@ export default {
     }
 
     this.set("templatesVisible", false);
-  },
-};
+  }
+}

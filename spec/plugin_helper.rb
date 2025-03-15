@@ -2,7 +2,7 @@
 
 module DiscourseTemplatesSpecHelpers
   # keep this list synchronized with the list in assets/javascripts/lib/replace-variables.js
-  TEMPLATES_ALLOWED_VARIABLES ||=
+  TEMPLATES_ALLOWED_VARIABLES =
     Set.new(
       %w[
         my_username

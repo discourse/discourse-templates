@@ -54,6 +54,7 @@
   .template-item-title-text {
     font-weight: bold;
     margin-left: 0.5em;
+
     @include ellipsis;
   }
 
@@ -140,6 +141,7 @@
   flex-wrap: wrap;
   gap: 0.5em;
   margin-bottom: 1em;
+
   .mobile-view & {
     font-size: var(--font-down-1);
   }
