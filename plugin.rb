@@ -15,7 +15,7 @@ register_svg_icon "far-clipboard" if respond_to?(:register_svg_icon)
 
 after_initialize do
   module ::DiscourseTemplates
-    PLUGIN_NAME ||= "discourse-templates".freeze
+    PLUGIN_NAME = "discourse-templates".freeze
 
     class Engine < ::Rails::Engine
       engine_name DiscourseTemplates::PLUGIN_NAME
