@@ -8,8 +8,8 @@ const SELECTOR_EDITOR_PREVIEW =
 
 @classNames("d-templates")
 export default class DTemplatesEditorPreview extends Component {
-  static shouldRender(args, component) {
-    return !component.site.mobileView;
+  static shouldRender(args, context) {
+    return !context.site.mobileView;
   }
 
   @service appEvents;
