@@ -282,6 +282,24 @@ acceptance("discourse-templates | keyboard shortcut", function (needs) {
     await assertTemplateWasInserted(assert, textarea);
   });
 
+  test("Modal | Templates modal | Show the modal if the preview is hidden", async (assert) => {
+    await visit("/");
+
+    await click("#create-topic");
+    await selectCategory();
+
+    await click(".toggle-preview");
+
+    const textarea = query(".d-editor-input");
+    await textarea.focus();
+
+    await triggerKeyboardShortcut();
+    assert.ok(
+      exists(".d-modal.d-templates"),
+      "It displayed the standard templates modal"
+    );
+  });
+
   test("Modal | Templates modal | Show the modal if a textarea is focused", async (assert) => {
     // if the text area is outside a modal then simply show the insert template modal
     // because there is no need to hijack

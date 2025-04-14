@@ -10,11 +10,12 @@ export default class DTemplatesService extends Service {
   @service site;
   @service currentUser;
   @service dTemplatesModal;
+  @service composer;
 
   showComposerUI() {
     const onInsertTemplate = this.#insertTemplateIntoComposer.bind(this);
 
-    if (this.site.mobileView) {
+    if (this.site.mobileView || !this.composer.isPreviewVisible) {
       this.#showModal(null, onInsertTemplate); // textarea must be empty when targeting the composer
     } else {
       this.#showComposerPreviewUI(onInsertTemplate);
