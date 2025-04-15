@@ -127,6 +127,7 @@ RSpec.describe "Inserting templates in the chat composer", type: :system do
         chat_page.visit_channel(channel_1)
 
         channel_page.composer.focus # ensure the focus is the textarea
+        expect(channel_page.composer).to be_focused
 
         insert_template_modal.open_with_keyboard_shortcut
         insert_template_modal.open?
@@ -139,6 +140,7 @@ RSpec.describe "Inserting templates in the chat composer", type: :system do
         chat_page.visit_channel(channel_1)
 
         channel_page.composer.focus # ensure the focus is the textarea
+        expect(channel_page.composer).to be_focused
 
         insert_template_modal.open_with_keyboard_shortcut
         insert_template_modal.open?
@@ -154,6 +156,7 @@ RSpec.describe "Inserting templates in the chat composer", type: :system do
         channel_page.reply_to(message_1)
 
         channel_page.composer.focus # ensure the focus is the textarea
+        expect(channel_page.composer).to be_focused
 
         insert_template_modal.open_with_keyboard_shortcut
         insert_template_modal.open?
@@ -210,6 +213,7 @@ RSpec.describe "Inserting templates in the chat composer", type: :system do
         chat_page.visit_thread(message_2.thread)
 
         thread_page.composer.focus # ensure the focus is the textarea
+        expect(thread_page.composer).to be_focused
 
         insert_template_modal.open_with_keyboard_shortcut
         insert_template_modal.open?
@@ -222,6 +226,7 @@ RSpec.describe "Inserting templates in the chat composer", type: :system do
         chat_page.visit_thread(message_2.thread)
 
         thread_page.composer.focus # ensure the focus is the textarea
+        expect(thread_page.composer).to be_focused
 
         insert_template_modal.open_with_keyboard_shortcut
         insert_template_modal.open?
