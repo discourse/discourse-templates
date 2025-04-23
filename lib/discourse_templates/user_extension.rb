@@ -31,7 +31,7 @@ module DiscourseTemplates::UserExtension
       SiteSetting.discourse_templates_groups_allowed_private_templates&.split("|")&.map(&:to_i)
 
     allowed_groups_ids.any? do |group_id|
-      return false if group_id == 0
+      return true if group_id == Group::AUTO_GROUPS[:everyone]
 
       # the user can use templates if belongs to at least one of the allowed groups
       GroupUser.exists?(group_id: group_id, user_id: self.id)
