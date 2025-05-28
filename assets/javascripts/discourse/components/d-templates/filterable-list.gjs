@@ -1,12 +1,18 @@
 import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
 import { action, computed } from "@ember/object";
+import didInsert from "@ember/render-modifiers/modifiers/did-insert";
 import { schedule } from "@ember/runloop";
 import { service } from "@ember/service";
+import ConditionalLoadingSpinner from "discourse/components/conditional-loading-spinner";
+import TextField from "discourse/components/text-field";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { bind } from "discourse/lib/decorators";
+import { i18n } from "discourse-i18n";
 import { ALL_TAGS_ID, NO_TAG_ID } from "select-kit/components/tag-drop";
+import Item from "./item";
+import TagDrop from "./tag-drop";
 
 export default class DTemplatesFilterableList extends Component {
   @service siteSettings;
@@ -103,4 +109,35 @@ export default class DTemplatesFilterableList extends Component {
     this.args.onInsertTemplate?.(template);
     this.args.onAfterInsertTemplate?.();
   }
+
+  <template>
+    <div class="templates-filterable-list" {{didInsert this.load}}>
+
+      <ConditionalLoadingSpinner @condition={{this.loading}}>
+        <div class="templates-filter-bar">
+          {{#if this.siteSettings.tagging_enabled}}
+            <TagDrop
+              @availableTags={{this.availableTags}}
+              @tagId={{this.selectedTag}}
+              @onChangeSelectedTag={{this.changeSelectedTag}}
+            />
+          {{/if}}
+          <TextField
+            class="templates-filter"
+            @value={{this.listFilter}}
+            placeholder={{i18n "templates.filter_hint"}}
+          />
+        </div>
+        <div class="templates-list">
+          {{#each this.filteredReplies as |r|}}
+            <Item
+              @template={{r}}
+              @model={{@model}}
+              @onInsertTemplate={{this.insertTemplate}}
+            />
+          {{/each}}
+        </div>
+      </ConditionalLoadingSpinner>
+    </div>
+  </template>
 }
