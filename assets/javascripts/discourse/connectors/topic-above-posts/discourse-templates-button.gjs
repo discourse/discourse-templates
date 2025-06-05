@@ -2,6 +2,8 @@ import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
 import { action } from "@ember/object";
 import { service } from "@ember/service";
+import DButton from "discourse/components/d-button";
+import concatClass from "discourse/helpers/concat-class";
 import { ajax } from "discourse/lib/ajax";
 import discourseDebounce from "discourse/lib/debounce";
 
@@ -39,4 +41,25 @@ export default class DiscourseTemplatesButton extends Component {
   resetCopyButton() {
     this.copyConfirm = false;
   }
+
+  <template>
+    <div class="template-topic-controls">
+      <DButton
+        @icon={{if this.copyConfirm "check" "copy"}}
+        @action={{this.copy}}
+        @label="templates.copy"
+        class={{concatClass
+          "btn-default"
+          "template-copy"
+          (if this.copyConfirm "ok")
+        }}
+      />
+      <DButton
+        @action={{this.createNewTopic}}
+        @label="templates.new_topic"
+        @icon="plus"
+        class="template-new-topic"
+      />
+    </div>
+  </template>
 }
