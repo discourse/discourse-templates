@@ -47,14 +47,12 @@ acceptance("discourse-templates", function (needs) {
   needs.pretender(templatesPretender);
 
   test("Filtering by tags", async (assert) => {
-    const popUpMenu = await selectKit(".toolbar-popup-menu-options");
-
     await visit("/");
 
     await click("#create-topic");
     await selectCategory();
-    await popUpMenu.expand();
-    await popUpMenu.selectRowByName(i18n("templates.insert_template"));
+    await click(".toolbar-menu__options-trigger");
+    await click(`button[title="${i18n("templates.insert_template")}"]`);
 
     const tagDropdown = selectKit(".templates-filter-bar .tag-drop");
     await tagDropdown.expand();
@@ -91,14 +89,12 @@ acceptance("discourse-templates", function (needs) {
   });
 
   test("Filtering by text", async (assert) => {
-    const popUpMenu = await selectKit(".toolbar-popup-menu-options");
-
     await visit("/");
 
     await click("#create-topic");
     await selectCategory();
-    await popUpMenu.expand();
-    await popUpMenu.selectRowByName(i18n("templates.insert_template"));
+    await click(".toolbar-menu__options-trigger");
+    await click(`button[title="${i18n("templates.insert_template")}"]`);
 
     await fillIn(".templates-filter-bar input.templates-filter", "test");
     assert.equal(
@@ -117,14 +113,12 @@ acceptance("discourse-templates", function (needs) {
   });
 
   test("Replacing variables", async (assert) => {
-    const popUpMenu = await selectKit(".toolbar-popup-menu-options");
-
     await visit("/");
 
     await click("#create-topic");
     await selectCategory();
-    await popUpMenu.expand();
-    await popUpMenu.selectRowByName(i18n("templates.insert_template"));
+    await click(".toolbar-menu__options-trigger");
+    await click(`button[title="${i18n("templates.insert_template")}"]`);
 
     await click("#template-item-9 .templates-apply");
 
@@ -136,14 +130,12 @@ acceptance("discourse-templates", function (needs) {
   });
 
   test("Navigate to source", async (assert) => {
-    const popUpMenu = await selectKit(".toolbar-popup-menu-options");
-
     await visit("/");
 
     await click("#create-topic");
     await selectCategory();
-    await popUpMenu.expand();
-    await popUpMenu.selectRowByName(i18n("templates.insert_template"));
+    await click(".toolbar-menu__options-trigger");
+    await click(`button[title="${i18n("templates.insert_template")}"]`);
 
     const tagDropdown = selectKit(".templates-filter-bar .tag-drop");
     await tagDropdown.expand();
@@ -195,14 +187,12 @@ acceptance(
     needs.pretender(templatesPretender);
 
     test("Filtering by tags", async (assert) => {
-      const popUpMenu = await selectKit(".toolbar-popup-menu-options");
-
       await visit("/");
 
       await click("#create-topic");
       await selectCategory();
-      await popUpMenu.expand();
-      await popUpMenu.selectRowByName(i18n("templates.insert_template"));
+      await click(".toolbar-menu__options-trigger");
+      await click(`button[title="${i18n("templates.insert_template")}"]`);
 
       assert.notOk(
         exists(".templates-filter-bar .tag-drop"),
