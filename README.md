@@ -1,8 +1,5 @@
 # Discourse Templates plugin
 
-> [!IMPORTANT]
-> This plugin has now been bundled into Discourse core. See: https://meta.discourse.org/t/bundling-more-popular-plugins-with-discourse-core/373574
-
 This plugin adds support for inserting a template into the composer window via a UI.
 
 For more information please check the [Official Plugin Topic & Documentation](https://meta.discourse.org/t/discourse-templates/229250) on Meta. 
